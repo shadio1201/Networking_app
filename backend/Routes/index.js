@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-//Routes go here
+router.use('/api/v1/users', require('./users'));
 
-router.get('/', (req, res)=> {
-    res.send('This is a test!')
-})
+router.use('/api/v1/card', require('./cards'));
+
+router.use('/auth/v1', require('./auth'));
 
 module.exports = router;
