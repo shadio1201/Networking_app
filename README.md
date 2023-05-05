@@ -8,7 +8,7 @@ Sikkerhed:
 JWT
 
 Backend:
-Node, Express
+Node, Express, pg, supabasejs
 
 Database:
-Postgres SQL Database
+Postgres SQL Database, Supabase Storage
