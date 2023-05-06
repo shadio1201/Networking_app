@@ -1,7 +1,7 @@
 import React from 'react'
 import img from '../../assets/imgs/template-pic.jpg'
 import { HandThumbUpIcon } from '@heroicons/react/24/outline'
-import { BriefcaseIcon } from '@heroicons/react/24/solid'
+import { BriefcaseIcon, AcademicCapIcon } from '@heroicons/react/24/solid'
 
 export default function User() {
   return (
@@ -19,7 +19,8 @@ export default function User() {
           <p className="text-[14px]">Kolding, Syddanmark, Danmark</p>
           </span>
         </div>
-        <button className='absolute bottom-4 right-4 p-2 bg-slate-400 rounded-full cursor-pointer'>
+        <button className='absolute bottom-4 right-4 p-2 bg-slate-400 rounded-full cursor-pointer flex gap-1'>
+          52
           <HandThumbUpIcon className='h-6 w-6 text-slate-50' />
         </button>
       </div>
@@ -33,47 +34,118 @@ export default function User() {
         </p>
       </article>
 
+      { /* Experience section */ }
       <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Experience</h2>
         <ul className='text-slate-200 text-[14px]'>
-          <li className='my-4'>
+          <li className='my-2'>
             <span className='flex items-center gap-2'>
               <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
                 <BriefcaseIcon className='h-4 w-4' />
                 Key Account Manager
               </p>
-              <em>at </em>
-              <h3 className='font-bold'>The Club</h3>
             </span>
-            <p className='px-2 py-1'>
-              2018-2020
+            <p className='pt-1'>
+              Salesforce a/s
+            </p>
+            <p className='pb-1 text-slate-400'>
+              2018-2020 - Kolding, Danmark
             </p>
           </li>
-          <li className='my-4'>
+          <li className='my-2'>
             <span className='flex items-center gap-2'>
               <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
                 <BriefcaseIcon className='h-4 w-4' />
                 Intern salgsbackup
               </p>
-              <em>at </em>
-              <h3 className='text-[1rem] font-bold'>CCTV Nordic</h3>
             </span>
-            <p className='px-2 py-1'>2016-2018</p>
+            <p className='pt-1'>
+              CCTV Nordic
+            </p>
+            <p className='pb-1 text-slate-400'>
+              2016-2018 - Kolding, Danmark
+            </p>
           </li>
-          <li className='my-4'>
+          <li className='my-2'>
             <span className='flex items-center gap-2'>
               <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
                 <BriefcaseIcon className='h-4 w-4' />
                 Praktikant
               </p>
-              <em>at </em>
-              <h3 className='text-[1rem] font-bold'>WeMarket</h3>
             </span>
-            <p className='px-2 py-1'>2017-2022</p>
+            <p className='pt-1'>
+              WeMarket Kolding
+            </p>
+            <p className='pb-1 text-slate-400'>
+              2020-2023 - Kolding, Danmark
+            </p>
           </li>
         </ul>
       </article>
 
+
+      { /* Education section */ }
+      <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
+        <h2 className='font-bold pb-2'>Educations</h2>
+        <ul className='text-slate-200 text-[14px]'>
+          <li className='my-2'>
+            <span className='flex items-center gap-2'>
+              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
+                <AcademicCapIcon className='h-4 w-4' />
+                BA i webudvikling
+              </p>
+            </span>
+            <p className='pt-1'>
+              IBA, Erhvervsakademi Kolding
+            </p>
+            <p className='pb-1 text-slate-400'>
+              2022-2024 - Kolding, Danmark
+            </p>
+          </li>
+          <li className='my-2'>
+            <span className='flex items-center gap-2'>
+              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
+                <AcademicCapIcon className='h-4 w-4' />
+                Multimediedesigner, AP
+              </p>
+            </span>
+            <p className='pt-1'>
+                IBA, Erhvervsakademi Kolding
+            </p>
+            <p className='pb-1 text-slate-400'>
+              2020-2022 - Kolding, Danmark
+            </p>
+          </li>
+          <li className='my-2'>
+            <span className='flex items-center gap-2'>
+              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
+                <AcademicCapIcon className='h-4 w-4' />
+                STX
+              </p>
+            </span>
+            <p className='pt-1'>
+              Thisted gymnasium og HF
+            </p>
+            <p className='pb-1 text-slate-400'>
+              2014-2017 - Thisted, Danmark
+            </p>
+          </li>
+        </ul>
+      </article>
+
+      { /* Skills section */ }
+      <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
+        <h2 className='font-bold pb-2'>Skills</h2>
+        <ul className='text-slate-200 text-[14px] flex flex-1 flex-wrap gap-2'>
+          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>HTML</li>
+          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>CSS</li>
+          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>Javascript</li>
+          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>React</li>
+          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>Vue</li>
+          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>Express</li>
+          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>Nodejs</li>
+        </ul>
+      </article>
 
     </section>
     
