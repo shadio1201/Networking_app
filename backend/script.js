@@ -4,4 +4,8 @@ const password = uuidv4();
 
 const formatted = password.replace(/-/g, '');
 
-console.log(formatted)
+const array = ['b47d236c969c49caaded5ccda2297c8c', 'd3c834dc2a2149ad8ff98cbbd4487bbd']
+
+const string = JSON.stringify(array).replace(/[\[\]]+/g, '').replace(/"/g, "'");
+
+console.log(string)

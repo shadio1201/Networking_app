@@ -4,28 +4,38 @@ const { v4: uuidv4 } = require('uuid')
 
 module.exports = async (req, res, next) => {
 
-    const user_id = uuidv4().replace(/-/g, '');
+    //if email exist in database
+    const user = await pool.query('SELECT user_id FROM users WHERE email=$1', [req.body.email] );
 
-    const USER = [
-        user_id,
-        req.body.email,
-        req.body.firstname,
-        req.body.lastname,
-        req.body.password,
-        req.body.birthday,
-        req.body.details,
-        req.body.card_id
-    ]
+    if(!user[0]) {
+        const user_id = uuidv4().replace(/-/g, '');
 
-
-    try {
-        await pool.query('INSERT INTO users (user_id, email, first_name, last_name, password, birthday, contact_details, card_key) VALUES($1,$2,$3,$4,$5,$6,$7,$8)', USER );
-        next();
+        const USER = [
+            user_id,
+            req.body.email,
+            req.body.firstname,
+            req.body.lastname,
+            req.body.password,
+            req.body.birthday,
+        ]
+    
+    
+        try {
+            await pool.query('INSERT INTO users (user_id, email, first_name, last_name, password, birthday) VALUES($1,$2,$3,$4,$5,$6)', USER );
+            res.locals.id = user_id;
+            next();
+        }
+        catch (err) {
+            console.error(err)
+            res.json({
+            error: err.message
+            })
+        }
     }
-    catch (err) {
-        console.error(err)
+    else {
         res.json({
-        error: err.message
+            err: 'Email is already created. Please use a different email.'
         })
     }
+
 }
