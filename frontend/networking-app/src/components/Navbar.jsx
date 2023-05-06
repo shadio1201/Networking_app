@@ -2,6 +2,7 @@ import React from 'react'
 import Logo from '../../assets/imgs/Logo_active_white.svg'
 import { Bars3BottomRightIcon } from '@heroicons/react/24/outline'
 import { useUpdateSidebar } from '../contexts/SidebarContext'
+import { Link } from 'react-router-dom'
 
 export default function Navbar() {
 
@@ -10,7 +11,9 @@ export default function Navbar() {
   return (
     <header className='w-full py-4 flex items-center bg-slate-800/50 fixed top-0 z-40 backdrop-blur-sm'>
       <nav className='w-full flex justify-between px-8'>
-        <img src={Logo} className='w-12' alt="Linked logo" />
+        <Link to="/">
+          <img src={Logo} className='w-12' alt="Linked logo" />
+        </Link>
         <button onClick={toggleSidebar}>
           <Bars3BottomRightIcon className='w-6 h-6 text-slate-50' />
         </button>
