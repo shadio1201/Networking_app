@@ -12,7 +12,16 @@
 }
 
 .input {
-    @apply p-2 text-slate-800 mt-2;
+    @apply px-2 py-4 text-slate-800 mt-2 rounded-md border-2;
+}
+
+.input:focus,
+.input:valid {
+   @apply border-2 border-[#06beb6] outline-2 outline-[#06beb6];
+}
+
+.checkIfvalid:invalid {
+   @apply border-2 border-red-500 outline-2 outline-red-500;
 }
 
 label {

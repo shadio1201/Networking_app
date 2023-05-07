@@ -2,8 +2,11 @@ import React, { useRef, useState } from 'react'
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import '../signup.css';
 import Button from '../components/base/button.jsx';
+import { useNavigate } from 'react-router-dom'
 
 export default function Signup() {
+
+  const navigate = useNavigate();
 
   // Password confirmation
   const [password, setPassword] = useState('');
@@ -14,6 +17,7 @@ export default function Signup() {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [picture, setPicture] = useState(null)
   
   const imageUploader = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null)
@@ -21,13 +25,13 @@ export default function Signup() {
   const [isPending, setIsPending] = useState(false);
 
   const addProfileImage = (e) => {
+    setPicture(e.target.files[0]);
     const reader = new FileReader();
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
     reader.onload = (readerEvent) => {
       setSelectedImage(readerEvent.target.result);
-      console.log(readerEvent.target.result);
     }
 
   }
@@ -50,7 +54,7 @@ export default function Signup() {
       birthday,
     }
 
-    const res = await fetch('http://localhost:3000/api/v1/users/postUser',
+/*     const res = await fetch('http://localhost:3000/api/v1/users/postUser',
     { method: 'POST',
       headers: { "content-type" : "application/json"},
       body: JSON.stringify(user_data)
@@ -60,15 +64,23 @@ export default function Signup() {
       alert(err)
     }
 
-    const { id } = await res.json();
+    const { id } = await res.json(); */
 
-    await fetch('http://localhost:3000/api/v1/users/postUser',
+
+/*     const formData = new FormData();
+    formData.append('image', picture); */
+    
+/*     const toSent = { id, formData } */
+
+/*     if(selectedImage) {
+    await fetch('http://localhost:3000/api/v1/users/picture',
     { method: 'POST',
-      headers: { "content-type" : "application/json"},
-      body: JSON.stringify({ id, image: selectedImage })
+      body: formData
     })
-
+    } */
     setIsPending(false)
+
+    navigate('/succes');
 
   }
 
@@ -101,47 +113,47 @@ export default function Signup() {
                 <label>Username</label>
                 <input 
                 onChange={(e) => setUsername(e.target.value)}
-                value={username} placeholder='Username' className='input' type="text" name="Username" id="Username" />
+                value={username} required placeholder='Username' className={email ? 'input checkIfvalid' : 'input'} type="text" name="Username" id="Username" />
             </div>
             <div className='flex flex-col md:col-span-2'>
                 <label>Email</label>
                 <input 
                 onChange={(e) => setEmail(e.target.value)}
-                value={email} placeholder='Email' className='input' type="email" name="email" id="email" />
+                value={email} required placeholder='Email' className={email ? 'input checkIfvalid' : 'input'} type="email" name="email" id="email" />
             </div>
             <div className='flex flex-col'>
                 <label>Password</label>
                 <input 
                 onChange={(e) => setPassword(e.target.value)}
-                value={password} placeholder='Password' className='input' type="password" name="email" id="password" />
+                value={password} required placeholder='Password' className={password ? 'input checkIfvalid' : 'input'} type="password" name="email" id="password" />
             </div>
             <div className='flex flex-col'>
                 <label>Confirm Password</label>
                 <input 
                 onChange={(e) => setConfirmpassword(e.target.value)}
-                value={confirmpassword} placeholder='Confirm password' className='input' type="password" name="email" id="password_confirm" />
+                value={confirmpassword} required placeholder='Confirm password' className={confirmpassword ? 'input checkIfvalid' : 'input'} type="password" name="email" id="password_confirm" />
             </div>
             <div className='flex flex-col'>
                 <label>First name</label>
                 <input 
                 onChange={(e) => setFirstname(e.target.value)}
-                value={firstname} placeholder='First name' className='input' type="text" max="20" name="firstname" id="firstname" />
+                value={firstname} required placeholder='First name' className={firstname ? 'input checkIfvalid' : 'input'} type="text" max="20" name="firstname" id="firstname" />
             </div>
             <div className='flex flex-col'>
                 <label>Last name</label>
                 <input 
                 onChange={(e) => setLastname(e.target.value)}
-                value={lastname} placeholder='Last name' className='input' type="text" max="20" name="lastname" id="lastname" />
+                value={lastname} required placeholder='Last name' className={lastname ? 'input checkIfvalid' : 'input'} type="text" max="20" name="lastname" id="lastname" />
             </div>
             <div className='flex flex-col'>
                 <label>Birthday</label>
                 <input 
                 onChange={(e) => setBirthday(e.target.value)}
-                value={birthday} className='input' type="date" name="birthday" id="birthday" />
+                value={birthday} required className={birthday ? 'input checkIfvalid' : 'input'} type="date" name="birthday" id="birthday" />
             </div>
             
             {!isPending && <button onClick={handleSubmit} className='registerBtn'>Register</button>}
-            {isPending && <button className='registerBtn'>Creating user...</button>}
+            {isPending && <button disabled className='registerBtn'>Creating user...</button>}
         </form>
 
     </section>

@@ -1,15 +1,29 @@
 const pool = require('../../utilities/database');
 const supabase = require('../../utilities/storage');
+const fs = require('fs');
 
 module.exports = async (req, res, next) => {
 
         try {
-            const image = req.body.image;
-            await supabase.storage.from('images').upload(`profiles/${req.body.id}-profilePic.png`, image);
 
-            const { publicURL, error } = supabase.storage.from('images').getPublicUrl('profiles/${req.body.id}-profilePic.png');
+            console.log(req.body);
 
-            await pool.query('UPDATE users SET profile_pic=$1 WHERE user_id=$2', [publicURL, req.body.id] );
+            /* const buffer = Buffer.from(req.body.image, "base64");
+            const img = fs.writeFileSync(`${req.body.id}.jpg`, buffer);
+
+            const filename = `${req.body.id}-profile-picture`
+            const { data, error } = await supabase.storage.from('images').upload(filename, img, {
+                cacheControl: 3600,
+                upsert: false,
+            });
+
+            if(error) {
+                res.status(404).json(error);
+            }
+
+            const filepath = data.path
+
+            await pool.query('UPDATE users SET profile_pic=$1 WHERE user_id=$2', [filepath, req.body.id] ); */
             next();
         }
         catch (err) {
