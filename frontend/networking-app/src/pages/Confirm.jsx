@@ -26,7 +26,7 @@ export default function Confirm() {
 
         verifyToken();
 
-        navigate('/login');
+        navigate('/succes');
     /*       if(!state) {
             navigate('/');
           }
