@@ -19,8 +19,9 @@ CREATE TABLE users(
     approvals jsonb DEFAULT '{}',
     network_score DECIMAL(10,2),
     card_key VARCHAR(255) UNIQUE
-    FOREIGN KEY(card_key) REFERENCES cards(key_id) ON DELETE SET NULL
 );
+
+    FOREIGN KEY(card_key) REFERENCES cards(key_id) ON DELETE SET NULL
 
 CREATE TABLE cards(
     card_id VARCHAR(255) PRIMARY KEY,
