@@ -2,6 +2,7 @@ CREATE DATABASE NetworkDatabase;
 
 CREATE TABLE users(
     user_id VARCHAR(100) PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE,
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
@@ -17,7 +18,9 @@ CREATE TABLE users(
     educations jsonb DEFAULT '{}',
     skills jsonb DEFAULT '{}',
     approvals jsonb DEFAULT '{}',
+    saved_profiles jsonb DEFAULT '{}',
     network_score DECIMAL(10,2),
+    isActive BOOLEAN DEFAULT FALSE,
     card_key VARCHAR(255) UNIQUE
 );
 
@@ -90,3 +93,18 @@ CREATE TRIGGER auto_insert_cardId
         "email": "test2@test.dk"
     }
 }
+
+UPDATE users SET experience='[{"position":"Multimedie Designer, AP","company":"IBA, Erhvervsakademi", "periode":"2020-2022", "location": "Kolding, Danmark"}]' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
+
+UPDATE users SET educations='[{"education":"Multimedie Designer, AP","school":"IBA, Erhvervsakademi", "periode":"2020-2022", "location": "Kolding, Danmark"}]' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
+
+UPDATE users SET skills='{"list": ["HTML", "CSS", "Javascript", "React", "Vue", "Express", "Nodejs"]}' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
+
+UPDATE users SET location='{"city": "Kolding", "area": "Syddanmark", "country": "Danmark"}', description='Jeg er en super engageret 25 årig multimediedesigner fra Kolding. Jeg vil beskrive mig selv som ambitiøs og kvalitetsbevidst med en bred grafisk og teknisk forståelse.' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
+
+UPDATE users SET description='Jeg er en super engageret 25 årig multimediedesigner fra Kolding. Jeg vil beskrive mig selv som ambitiøs og kvalitetsbevidst med en bred grafisk og teknisk forståelse.' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
+
+UPDATE users SET approvals='{"users": ["1", "2", "3", "4"]}' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
+
+
+SELECT email FROM users WHERE user_id IN ('b47d236c969c49caaded5ccda2297c8c', 'd3c834dc2a2149ad8ff98cbbd4487bbd');

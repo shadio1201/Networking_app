@@ -1,153 +1,171 @@
-import React from 'react'
-import img from '../../assets/imgs/template-pic.jpg'
-import { HandThumbUpIcon } from '@heroicons/react/24/outline'
-import { BriefcaseIcon, AcademicCapIcon } from '@heroicons/react/24/solid'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import img_default from '../../assets/imgs/DefaultPicture.jpg'
+import { HandThumbUpIcon as ThumpUpOutline } from '@heroicons/react/24/outline'
+import { AcademicCapIcon, HandThumbUpIcon as ThumpUpSolid} from '@heroicons/react/24/solid'
+import AccordionExp from '../components/AccordionExp'
+import EduAccordion from '../components/EduAccordion'
+import Lottie from 'react-lottie'
+import likeEffect from '../lotties/like-particle.json'
+import { useSpring, animated } from '@react-spring/web'
 
 export default function User() {
+
+  const [user, setUser] = useState(null)
+  const { id } = useParams();
+
+  function calcAge(date) {
+    const ageDif = new Date() - date.getTime();
+    const currentAge = new Date(ageDif);
+    return Math.abs(currentAge.getUTCFullYear() - 1970);
+  }
+
+  useEffect(() => {
+
+    async function fetchUser() {
+
+      const response = await fetch(`http://localhost:3000/api/v1/users/${id}`);
+
+      const data = await response.json();
+
+      console.log(data[0])
+      
+      setUser(() => data[0])
+
+    }
+
+    fetchUser()
+  }, [])
+
+
+  const [like, setLike] = useState(false);
+
+  const likeProfile = () => {
+    setLike((state) => state = !state);
+  }
+
+  const LikeAnimation = {
+    loop: false,
+    autoplay: false, 
+    animationData: likeEffect,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
+
   return (
     <>
+    { user &&
     <section id='profile' className=' m-4 mt-32 flex flex-col gap-4'>
       <div className='flex flex-col gap-4 bg-slate-700/80 p-4 pt-0 rounded-xl relative'>
         <div id="imgContainer" className=' w-full h-16 flex justify-center relative'>
-        <img src={img} alt="test" className=' w-32 h-32 rounded-full object-cover shadow-md shadow-black absolute -translate-y-16' />
+        <img src={user.profile_pic ? user.profile_pic : img_default} alt="test" className=' w-32 h-32 rounded-full object-cover shadow-md shadow-black absolute -translate-y-16' />
         </div>
         <div id="infoHeader" className='flex flex-col justify-center items-start'>
-          <h1 className="text-[1.5rem]">Lasse Kjellerup</h1>
-          <h2 className="text-[1rem]">Markting Ansvarlig <em>at CCTV Nordic</em></h2>
+          <h1 className="text-[1.5rem]">{user.first_name} {user.last_name}</h1>
+          <h2 className="text-[1rem]">{user.titel} <em></em></h2>
           <span className='mt-2 text-slate-200'>
-          <p className="text-[14px]">26 år</p>
-          <p className="text-[14px]">Kolding, Syddanmark, Danmark</p>
+          <p className="text-[14px]">
+            { calcAge(new Date(user.birthday))} år
+          </p>
+          {
+            Object.keys(user.location).length != 0 &&
+            <p className="text-[14px]">{user.location.city}, {user.location.area}, {user.location.country}</p>
+          }
           </span>
         </div>
-        <button className='absolute bottom-4 right-4 p-2 bg-slate-400 rounded-full cursor-pointer flex gap-1'>
-          52
-          <HandThumbUpIcon className='h-6 w-6 text-slate-50' />
+        <div className='absolute bottom-4 right-4'>
+        <div className='flex justify-center items-center z-10'>
+            <span className=' absolute -top-[56px] bottom-0'>
+              <Lottie 
+                options={LikeAnimation}
+                height={150}
+                width={150} 
+                isClickToPauseDisabled={true}
+                isStopped={!like}
+                />
+            </span>
+        <button 
+        onClick={likeProfile}
+        className={`relative z-20 p-2 bg-slate-400 rounded-full cursor-pointer flex gap-1 transition-all duration-150 ${like ? 'bg-gradient-to-r from-[#06beb6] to-[#48b1bf] shadow-xl' : ''}`}>
+          {
+          user.approvals.users &&
+          new Intl.NumberFormat('da-US', { notation: 'compact'}).format(user.approvals.users.length)
+          }
+          { like ? <ThumpUpSolid className='h-6 w-6 text-slate-50' /> : <ThumpUpOutline className='h-6 w-6 text-slate-50' />}
         </button>
+        </div>
+        </div>
       </div>
 
-      <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
+      {
+      user.description &&
+      <article className=' grid grid-cols-1 bg-slate-700/80 p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Description</h2>
         <p className='text-slate-200'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-           Asperiores, praesentium voluptatum impedit neque accusantium culpa perferendis rerum, 
-           aut consequuntur quisquam obcaecati distinctio vel cumque ex excepturi amet maxime repellat magni!
+          {user.description}
         </p>
       </article>
+      }
 
-      { /* Experience section */ }
-      <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
+      { /* Experience section */
+
+      Object.keys(user.experience).length != 0 &&
+      <article className=' grid grid-cols-1 bg-slate-700/80 p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Experience</h2>
         <ul className='text-slate-200 text-[14px]'>
-          <li className='my-2'>
-            <span className='flex items-center gap-2'>
-              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
-                <BriefcaseIcon className='h-4 w-4' />
-                Key Account Manager
-              </p>
-            </span>
-            <p className='pt-1'>
-              Salesforce a/s
-            </p>
-            <p className='pb-1 text-slate-400'>
-              2018-2020 - Kolding, Danmark
-            </p>
-          </li>
-          <li className='my-2'>
-            <span className='flex items-center gap-2'>
-              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
-                <BriefcaseIcon className='h-4 w-4' />
-                Intern salgsbackup
-              </p>
-            </span>
-            <p className='pt-1'>
-              CCTV Nordic
-            </p>
-            <p className='pb-1 text-slate-400'>
-              2016-2018 - Kolding, Danmark
-            </p>
-          </li>
-          <li className='my-2'>
-            <span className='flex items-center gap-2'>
-              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
-                <BriefcaseIcon className='h-4 w-4' />
-                Praktikant
-              </p>
-            </span>
-            <p className='pt-1'>
-              WeMarket Kolding
-            </p>
-            <p className='pb-1 text-slate-400'>
-              2020-2023 - Kolding, Danmark
-            </p>
-          </li>
+          {
+          user.experience.map((item, i)=> (
+            <AccordionExp
+            key={i} 
+            position={item.position}
+            company={item.company}
+            periode={item.periode}
+            location={item.location}
+            text={item.text}
+            recommendation={item.recom}  />
+          ))}
         </ul>
       </article>
+      }
 
+      { /* Education section */ 
 
-      { /* Education section */ }
-      <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
+      Object.keys(user.educations).length != 0 &&
+      <article className=' grid grid-cols-1 p-4 bg-slate-700/80 rounded-xl'>
         <h2 className='font-bold pb-2'>Educations</h2>
         <ul className='text-slate-200 text-[14px]'>
-          <li className='my-2'>
-            <span className='flex items-center gap-2'>
-              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
-                <AcademicCapIcon className='h-4 w-4' />
-                BA i webudvikling
-              </p>
-            </span>
-            <p className='pt-1'>
-              IBA, Erhvervsakademi Kolding
-            </p>
-            <p className='pb-1 text-slate-400'>
-              2022-2024 - Kolding, Danmark
-            </p>
-          </li>
-          <li className='my-2'>
-            <span className='flex items-center gap-2'>
-              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
-                <AcademicCapIcon className='h-4 w-4' />
-                Multimediedesigner, AP
-              </p>
-            </span>
-            <p className='pt-1'>
-                IBA, Erhvervsakademi Kolding
-            </p>
-            <p className='pb-1 text-slate-400'>
-              2020-2022 - Kolding, Danmark
-            </p>
-          </li>
-          <li className='my-2'>
-            <span className='flex items-center gap-2'>
-              <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
-                <AcademicCapIcon className='h-4 w-4' />
-                STX
-              </p>
-            </span>
-            <p className='pt-1'>
-              Thisted gymnasium og HF
-            </p>
-            <p className='pb-1 text-slate-400'>
-              2014-2017 - Thisted, Danmark
-            </p>
-          </li>
+          {
+            user.educations.map((item, i) => (
+              <EduAccordion
+              key={i} 
+              education={item.education}
+              school={item.school}
+              periode={item.periode}
+              location={item.location}
+              text={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit a cumque'}
+              recommendation={item.recom}  />
+            ))
+          }
+
         </ul>
       </article>
-
-      { /* Skills section */ }
+      }
+      { /* Skills section */ 
+      Object.keys(user.skills).length != 0 &&
+      
       <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Skills</h2>
         <ul className='text-slate-200 text-[14px] flex flex-1 flex-wrap gap-2'>
-          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>HTML</li>
-          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>CSS</li>
-          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>Javascript</li>
-          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>React</li>
-          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>Vue</li>
-          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>Express</li>
-          <li className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>Nodejs</li>
+          {
+          user.skills.list.map((item, i) => (
+            <li key={i} className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>{item}</li>
+          ))}
         </ul>
       </article>
-
+      }
     </section>
+    }
     
     </>
   )

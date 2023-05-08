@@ -1,0 +1,33 @@
+.uploadButton {
+    @apply w-32 h-32 rounded-full bg-slate-600 border-2 grid place-content-center
+    hover:bg-gradient-to-r hover:from-[#06beb6] hover:to-[#48b1bf] cursor-pointer transition-all duration-150;
+}
+
+.hide {
+    @apply hidden;
+}
+
+.imagePreview {
+    @apply w-32 h-32 rounded-full border-2 object-cover cursor-pointer;
+}
+
+.input {
+    @apply px-2 py-4 text-slate-800 mt-2 rounded-md border-2;
+}
+
+.input:focus,
+.input:valid {
+   @apply border-2 border-[#06beb6] outline-2 outline-[#06beb6];
+}
+
+.checkIfvalid:invalid {
+   @apply border-2 border-red-500 outline-2 outline-red-500;
+}
+
+label {
+    @apply text-[16px];
+}
+
+.registerBtn {
+    @apply relative flex justify-center px-4 py-4 rounded-md border-2 bg-gradient-to-r from-[#06beb6] to-[#48b1bf] w-full font-bold mt-4;
+}
