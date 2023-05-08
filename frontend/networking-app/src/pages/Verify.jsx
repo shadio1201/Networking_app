@@ -1,13 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Lottie from 'react-lottie'
 import SuccesAnimation from '../lotties/email-clean.json'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Verify() {
 
   const { state } = useLocation();
-
-  const { email } = state;
+  const navigate = useNavigate();
 
   const options = {
     loop: true,
@@ -17,6 +16,17 @@ export default function Verify() {
       preserveAspectRatio: 'xMidYMid slice'
     }
   };
+
+  useEffect(() => {
+      if(!state) {
+        navigate('/');
+      }
+      const { email, id } = state;
+      if(email === null || id === null) {
+        navigate('/');
+      }
+      console.log(email, id)
+  }, [])
 
   return (
     <div className='flex flex-col justify-center items-center px-8 cursor-default'>

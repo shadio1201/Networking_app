@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import img_default from '../../assets/imgs/DefaultPicture.jpg'
-import { HandThumbUpIcon } from '@heroicons/react/24/outline'
-import { BriefcaseIcon, AcademicCapIcon } from '@heroicons/react/24/solid'
+import { HandThumbUpIcon as ThumpUpOutline } from '@heroicons/react/24/outline'
+import { AcademicCapIcon, HandThumbUpIcon as ThumpUpSolid} from '@heroicons/react/24/solid'
+import AccordionExp from '../components/AccordionExp'
+import EduAccordion from '../components/EduAccordion'
+import Lottie from 'react-lottie'
+import likeEffect from '../lotties/like-particle.json'
+import { useSpring, animated } from '@react-spring/web'
 
 export default function User() {
 
@@ -33,8 +38,20 @@ export default function User() {
   }, [])
 
 
+  const [like, setLike] = useState(false);
 
+  const likeProfile = () => {
+    setLike((state) => state = !state);
+  }
 
+  const LikeAnimation = {
+    loop: false,
+    autoplay: false, 
+    animationData: likeEffect,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
 
   return (
     <>
@@ -57,13 +74,28 @@ export default function User() {
           }
           </span>
         </div>
-        <button className='absolute bottom-4 right-4 p-2 bg-slate-400 rounded-full cursor-pointer flex gap-1'>
+        <div className='absolute bottom-4 right-4'>
+        <div className='flex justify-center items-center z-10'>
+            <span className=' absolute -top-[56px] bottom-0'>
+              <Lottie 
+                options={LikeAnimation}
+                height={150}
+                width={150} 
+                isClickToPauseDisabled={true}
+                isStopped={!like}
+                />
+            </span>
+        <button 
+        onClick={likeProfile}
+        className={`relative z-20 p-2 bg-slate-400 rounded-full cursor-pointer flex gap-1 transition-all duration-150 ${like ? 'bg-gradient-to-r from-[#06beb6] to-[#48b1bf] shadow-xl' : ''}`}>
           {
           user.approvals.users &&
           new Intl.NumberFormat('da-US', { notation: 'compact'}).format(user.approvals.users.length)
           }
-          <HandThumbUpIcon className='h-6 w-6 text-slate-50' />
+          { like ? <ThumpUpSolid className='h-6 w-6 text-slate-50' /> : <ThumpUpOutline className='h-6 w-6 text-slate-50' />}
         </button>
+        </div>
+        </div>
       </div>
 
       {
@@ -84,20 +116,14 @@ export default function User() {
         <ul className='text-slate-200 text-[14px]'>
           {
           user.experience.map((item, i)=> (
-              <li className='my-2' key={i}>
-                  <span className='flex items-center gap-2'>
-                      <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
-                        <BriefcaseIcon className='h-4 w-4' />
-                        {item.position}
-                      </p>
-                  </span>
-                      <p className='pt-1'>
-                        {item.company}
-                      </p>
-                      <p className='pb-1 text-slate-400'>
-                        {item.periode} - {item.location}
-                      </p>
-              </li>
+            <AccordionExp
+            key={i} 
+            position={item.position}
+            company={item.company}
+            periode={item.periode}
+            location={item.location}
+            text={item.text}
+            recommendation={item.recom}  />
           ))}
         </ul>
       </article>
@@ -111,20 +137,14 @@ export default function User() {
         <ul className='text-slate-200 text-[14px]'>
           {
             user.educations.map((item, i) => (
-              <li className='my-2' key={i}>
-              <span className='flex items-center gap-2'>
-                <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
-                  <AcademicCapIcon className='h-4 w-4' />
-                  {item.education}
-                </p>
-              </span>
-              <p className='pt-1'>
-                {item.school}
-              </p>
-              <p className='pb-1 text-slate-400'>
-                {item.periode} - {item.location}
-              </p>
-            </li>
+              <EduAccordion
+              key={i} 
+              education={item.education}
+              school={item.school}
+              periode={item.periode}
+              location={item.location}
+              text={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit a cumque'}
+              recommendation={item.recom}  />
             ))
           }
 

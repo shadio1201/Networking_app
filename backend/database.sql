@@ -18,7 +18,9 @@ CREATE TABLE users(
     educations jsonb DEFAULT '{}',
     skills jsonb DEFAULT '{}',
     approvals jsonb DEFAULT '{}',
+    saved_profiles jsonb DEFAULT '{}',
     network_score DECIMAL(10,2),
+    isActive BOOLEAN DEFAULT FALSE,
     card_key VARCHAR(255) UNIQUE
     FOREIGN KEY(card_key) REFERENCES cards(key_id) ON DELETE SET NULL
 );

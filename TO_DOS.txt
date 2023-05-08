@@ -13,10 +13,14 @@ Calculate social score
 
 Make near search function with websockets and geolocation api
 
-See list of liked profiles
+See list of saved profiles
+
+ x Uptimize user component (seperation of child components see --> experience and educations)
+
+ x Make accordion with pdf downloader and text inside experience and educations
 
 Make settings page where user can update profile elements
-Make accordion with pdf downloader and text
 
 Make darktheme toggler - https://www.youtube.com/watch?v=BHQ_M8wc770
 
+Make uploading image serverside

@@ -94,7 +94,7 @@ export default function Signup() {
     }
     setIsPending(false)
 
-    navigate('/account/verify', { state: { email } });
+    navigate('/account/verify', { state: { email, id } });
 
   }
 
