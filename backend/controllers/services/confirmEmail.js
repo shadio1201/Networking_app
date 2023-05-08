@@ -18,11 +18,6 @@ module.exports = async (req, res, next) => {
 
     const url = process.env.CONFIRMATION_BASEURL + "?id=" + verification_mail;
 
-    const TOKEN = process.env.MAILTRAP_API_TOKEN
-    const ENDPOINT = process.env.MAILTRAP_API
-
-    console.log(verification_mail)
-
     console.log(url)
 
 /*     const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
@@ -32,15 +27,14 @@ module.exports = async (req, res, next) => {
         name: 'Connected - TEST'
     } */
 
-/*     let transporter = nodemailer.createTransport({
-        name: "www.net-link.dk",
-        host: "live.smtp.mailtrap.io",
-        port: 587,
-        secure: false,
+    var transport = nodemailer.createTransport({
+        host: "sandbox.smtp.mailtrap.io",
+        port: 2525,
         auth: {
-            user: 'api',
-            pass: 'a3d113187c6744ea61c5852f6ebdefbd'
-        }}) */
+          user: "743a3c2239965c",
+          pass: "4c9469d57aca59"
+        }
+      });
 
         
 
@@ -62,7 +56,7 @@ module.exports = async (req, res, next) => {
         } */
 
 
-/*         await transporter.sendMail({
+        transport.sendMail({
             from: 'Connected',
             to: req.body.email,
             subject: "Please verify your email - Connected",
@@ -74,9 +68,11 @@ module.exports = async (req, res, next) => {
             }
             console.log('Email succeesfully sent!');
             console.log(info);
-            res.json({ info })
-            transporter.close();
-        }) */
+            res.locals.info = info
+            transport.close();
+        })
+
+        
     }
     catch (err) {
         res.json({

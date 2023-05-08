@@ -12,7 +12,8 @@ router.get('/', (req, res, next) => {
 
 router.post('/email/confirmation', sentConfirmation, (req, res, next) => {
     res.json({
-        success: true
+        success: true,
+        info: res.locals.info
     })
 })
 
