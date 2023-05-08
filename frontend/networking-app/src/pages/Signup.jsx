@@ -3,8 +3,13 @@ import { PhotoIcon } from '@heroicons/react/24/solid'
 import '../signup.css';
 import Button from '../components/base/button.jsx';
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { createClient } from '@supabase/supabase-js';
+import img_default from '../../assets/imgs/DefaultPicture.jpg'
 
 export default function Signup() {
+
+  const supabase = createClient('https://isyxtgrylrryhqkxccyb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzeXh0Z3J5bHJyeWhxa3hjY3liIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODMyODkwNDYsImV4cCI6MTk5ODg2NTA0Nn0.oWSdZd23JkqCTN_eYfvlJzpfL1vxcLRZgdSW_WtTjJY');
 
   const navigate = useNavigate();
 
@@ -33,18 +38,16 @@ export default function Signup() {
     reader.onload = (readerEvent) => {
       setSelectedImage(readerEvent.target.result);
     }
-
+    toast.success('Profile picture uploaded!', {
+      iconTheme: {
+        primary: '#45afa7',
+        secondary: '#fff',
+      },
+    });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if(isPending) return;
-
-    if(!password === confirmpassword) {
-      alert('Passwords dont match')
-      return
-    }
-    setIsPending(true)
 
     const user_data = {
       email,
@@ -54,7 +57,16 @@ export default function Signup() {
       birthday,
     }
 
-/*     const res = await fetch('http://localhost:3000/api/v1/users/postUser',
+    if(username == '' || Object.values(user_data).some(x => x == '')) return toast.error('Please fill all fields');
+    if(isPending) return;
+
+    if(password != confirmpassword) {
+      toast.error('Passwords dont match');
+      return
+    }
+    setIsPending(true)
+
+    const res = await fetch('http://localhost:3000/api/v1/users/postUser',
     { method: 'POST',
       headers: { "content-type" : "application/json"},
       body: JSON.stringify(user_data)
@@ -64,23 +76,25 @@ export default function Signup() {
       alert(err)
     }
 
-    const { id } = await res.json(); */
+    const { id } = await res.json();
 
+    if(picture) {
+    const { data, error} = await supabase.storage.from('images').upload(id + '/' + 'profilePicture', picture);
 
-/*     const formData = new FormData();
-    formData.append('image', picture); */
-    
-/*     const toSent = { id, formData } */
+    const img_url = `https://isyxtgrylrryhqkxccyb.supabase.co/storage/v1/object/public/images/${data.path}`
 
-/*     if(selectedImage) {
     await fetch('http://localhost:3000/api/v1/users/picture',
     { method: 'POST',
-      body: formData
+      headers: { "content-type" : "application/json"},
+      body: JSON.stringify({
+        id,
+        image: img_url
+      })
     })
-    } */
+    }
     setIsPending(false)
 
-    navigate('/succes');
+    navigate('/account/verify', { state: { email } });
 
   }
 
@@ -113,7 +127,7 @@ export default function Signup() {
                 <label>Username</label>
                 <input 
                 onChange={(e) => setUsername(e.target.value)}
-                value={username} required placeholder='Username' className={email ? 'input checkIfvalid' : 'input'} type="text" name="Username" id="Username" />
+                value={username} required placeholder='Username' className={username ? 'input checkIfvalid' : 'input'} type="text" name="Username" id="Username" />
             </div>
             <div className='flex flex-col md:col-span-2'>
                 <label>Email</label>

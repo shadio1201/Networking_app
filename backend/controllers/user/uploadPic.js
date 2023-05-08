@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
 
         try {
 
-            console.log(req.body);
+            console.log(req.body.image);
 
             /* const buffer = Buffer.from(req.body.image, "base64");
             const img = fs.writeFileSync(`${req.body.id}.jpg`, buffer);
@@ -19,11 +19,10 @@ module.exports = async (req, res, next) => {
 
             if(error) {
                 res.status(404).json(error);
-            }
+            } */
 
-            const filepath = data.path
-
-            await pool.query('UPDATE users SET profile_pic=$1 WHERE user_id=$2', [filepath, req.body.id] ); */
+            const filepath = req.body.image;
+            await pool.query('UPDATE users SET profile_pic=$1 WHERE user_id=$2', [filepath, req.body.id] );
             next();
         }
         catch (err) {
