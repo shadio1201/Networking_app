@@ -2,6 +2,7 @@ CREATE DATABASE NetworkDatabase;
 
 CREATE TABLE users(
     user_id VARCHAR(100) PRIMARY KEY,
+    created_at DATE NOT NULL,
     username VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE,
     first_name VARCHAR(20) NOT NULL,

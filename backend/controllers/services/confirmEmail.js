@@ -62,7 +62,7 @@ module.exports = async (req, res, next) => {
         } */
 
 
-/*         let info = await transporter.sendMail({
+/*         await transporter.sendMail({
             from: 'Connected',
             to: req.body.email,
             subject: "Please verify your email - Connected",
