@@ -8,6 +8,8 @@ export default function Verify() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
+  const { email, id } = state;
+
   const options = {
     loop: true,
     autoplay: true, 
@@ -17,15 +19,31 @@ export default function Verify() {
     }
   };
 
+  async function sendConfirmation() {
+
+    const res = await fetch('http://localhost:3000/services/v1/email/confirmation',
+      { method: 'POST',
+      headers: { "content-type" : "application/json"},
+      body: JSON.stringify({
+        email, id
+      })
+    })
+
+    console.log(res);
+
+  }
+
   useEffect(() => {
-      if(!state) {
+
+    sendConfirmation();
+/*       if(!state) {
         navigate('/');
       }
       const { email, id } = state;
       if(email === null || id === null) {
         navigate('/');
-      }
-      console.log(email, id)
+      } */
+      
   }, [])
 
   return (

@@ -11,6 +11,7 @@ import './index.css'
 import { Route, Routes } from 'react-router-dom'
 import Succes from './pages/Succes'
 import Verify from './pages/Verify'
+import Confirm from './pages/Confirm'
 import { Toaster } from 'react-hot-toast'
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/user/signup" element={<Signup />} />
         <Route path="/succes" element={<Succes />} />
         <Route path="/account/verify" element={<Verify />} /> 
+        <Route path="/account/confirm" element={<Confirm />} /> 
       </Routes>
     </Wrapper>
     </>
