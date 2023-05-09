@@ -13,6 +13,9 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
+  const inputEmail = useRef();
+  const inputUsername = useRef();
+
   // Password confirmation
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmpassword] = useState('');
@@ -50,6 +53,7 @@ export default function Signup() {
     e.preventDefault()
 
     const user_data = {
+      username,
       email,
       password,
       firstname,
@@ -66,17 +70,47 @@ export default function Signup() {
     }
     setIsPending(true)
 
+    const notification = toast.loading('Signing up...', {
+      iconTheme: {
+          primary: '#45afa7',
+          secondary: '#fff',
+        },
+  })
+
     const res = await fetch('http://localhost:3000/api/v1/users/postUser',
     { method: 'POST',
       headers: { "content-type" : "application/json"},
       body: JSON.stringify(user_data)
     })
 
-    if(res.err) {
-      alert(err)
-    }
+    const { id, error, error_type } = await res.json();
 
-    const { id } = await res.json();
+    if(error) {
+
+      switch(error_type) {
+        case 'email':
+          setEmail('');
+          inputEmail.current.focus();
+          break;
+        case 'username':
+          setUsername('');
+          inputUsername.current.focus();
+          break;
+        default:
+          break;
+      }
+
+      setIsPending(false)
+      toast.error(error, {
+        id: notification,
+        iconTheme: {
+          primary: "#FF4B4B",
+          secondary: '#ffffff'
+        }
+      })
+
+      return
+    }
 
     if(picture) {
     const { data, error} = await supabase.storage.from('images').upload(id + '/' + 'profilePicture', picture);
@@ -92,6 +126,11 @@ export default function Signup() {
       })
     })
     }
+
+    toast.success('Success', {
+      id: notification
+    })
+
     setIsPending(false)
 
     navigate('/account/verify', { state: { email, id } });
@@ -127,13 +166,13 @@ export default function Signup() {
                 <label>Username</label>
                 <input 
                 onChange={(e) => setUsername(e.target.value)}
-                value={username} required placeholder='Username' className={username ? 'input checkIfvalid' : 'input'} type="text" name="Username" id="Username" />
+                value={username} ref={inputUsername} required placeholder='Username' className={username ? 'input checkIfvalid' : 'input'} type="text" name="Username" id="Username" />
             </div>
             <div className='flex flex-col md:col-span-2'>
                 <label>Email</label>
                 <input 
                 onChange={(e) => setEmail(e.target.value)}
-                value={email} required placeholder='Email' className={email ? 'input checkIfvalid' : 'input'} type="email" name="email" id="email" />
+                value={email} ref={inputEmail} required placeholder='Email' className={email ? 'input checkIfvalid' : 'input'} type="email" name="email" id="email" />
             </div>
             <div className='flex flex-col'>
                 <label>Password</label>

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const pool = require('../../utilities/database');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
@@ -7,20 +8,47 @@ module.exports = async (req, res, next) => {
     const { username, password } = req.body;
 
      // If credentials are missing from request, return an error
-    if (!email || !password) {
+    if(!username || !password) {
     return res.json({
-        message: "Missing credentials",
+        error: "Missing credentials",
         });
     }
-    try {
-        const user = await pool.query(`SELECT username, password FROM users WHERE username=$1`, [username]);
 
-        console.log(user);
+    const user = await pool.query(`SELECT user_id, isActive, password FROM users WHERE username=$1`, [username]);
+
+    if(user.rowCount === 0) {
+        return res.json({
+            error: "Wrong username or password",
+            });
+    } else {
+
+        if(!(await bcrypt.compare(password, user.rows[0].password))) {
+            return res.json({
+                error: "Wrong username or password",
+            });
+        }
+
+
+        if(!user.rows[0].isactive) {
+            return res.json({
+                error: "Account not verified",
+                isNotVerified: true
+            });
+        }
+
+        const accessToken = jwt.sign(
+        {
+            type: 'access',
+            user_id: user.rows.user_id
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: '3d'
+        }
+        );
+
+        res.locals.token = accessToken;
+
+        next();
     }
-    catch (err) {
-        res.json({
-        error: err.message
-        })
-    }
-    next();
 }

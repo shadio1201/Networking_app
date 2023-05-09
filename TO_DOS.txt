@@ -1,7 +1,7 @@
 
 To do list:
 
-Make email confirmation flow
+x Make email confirmation flow
 
 Make login flow with jwt
 
@@ -24,3 +24,5 @@ Make settings page where user can update profile elements
 Make darktheme toggler - https://www.youtube.com/watch?v=BHQ_M8wc770
 
 Make uploading image serverside
+
+Customize home page

@@ -12,9 +12,15 @@ import { Route, Routes } from 'react-router-dom'
 import Succes from './pages/Succes'
 import Verify from './pages/Verify'
 import Confirm from './pages/Confirm'
+import Verification from './pages/SentVerification'
 import { Toaster } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
+import { selectUser } from './redux/user'
 
 function App() {
+
+  const user = useSelector(selectUser);
+
   return (
     <>
     <Toaster position='bottom-center' />
@@ -29,7 +35,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/user/signup" element={<Signup />} />
         <Route path="/succes" element={<Succes />} />
-        <Route path="/account/verify" element={<Verify />} /> 
+        <Route path="/verify" element={<Verify />} />
+        <Route path="/account/verify" element={<Verification />} /> 
         <Route path="/account/confirm" element={<Confirm />} /> 
       </Routes>
     </Wrapper>

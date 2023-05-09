@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import Spinner from '../lotties/spinner.json'
 import toast from 'react-hot-toast'
 import '../login.css';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
+
+    const [isNotVerified, setIsNotVerified] = useState(false);
 
     const [password, setPassword] = useState('');
   
@@ -11,8 +14,9 @@ export default function Login() {
 
     const [isPending, setIsPending] = useState(false);
 
-      const toggle = (e)=> {
+      const toggle = async (e)=> {
         e.preventDefault();
+        if(username == '' || password == '') return toast.error('Please fill out all fields!');
         setIsPending(true);
         const notification = toast.loading('Authenticating...', {
             iconTheme: {
@@ -20,25 +24,54 @@ export default function Login() {
                 secondary: '#fff',
               },
         })
-        
-        setTimeout(()=> {
-            setIsPending(false);
-            toast.success('Successfully authenticated', {
+
+        const user_data = {
+            username,
+            password
+        };
+
+        setIsNotVerified(false);
+
+        const res = await fetch('http://localhost:3000/auth/v1/login',
+        { method: 'POST',
+          headers: { "content-type" : "application/json"},
+          body: JSON.stringify(user_data)
+        });
+
+        const { message, error, token, isNotVerified } = await res.json();
+
+        if(error) {
+
+            setPassword('');
+            setIsPending(false)
+            toast.error(error, {
+                id: notification,
+                iconTheme: {
+                    primary: "#FF4B4B",
+                    secondary: '#ffffff'
+                  }
+            })
+            if(isNotVerified) {
+                setIsNotVerified(isNotVerified);
+            } 
+        } else {
+            window.localStorage.setItem('accessToken', token);
+            setIsPending(false)
+            toast.success(message, {
                 id: notification
             })
-        }, 5000)
-        /* if(error) {
-            toast.error('Something went wrong!')
-        } */
+        }
+
+        
       }
 
   return (
-    <section>
+    <section className='flex flex-col justify-center items-center'>
         <h2 className='text-center text-2xl font-bold'>Login</h2>
         <form
-        className='grid grid-cols-1 md:grid-cols-2 mt-4 mb-8 px-8 gap-4'>
+        className='grid grid-cols-1 mt-4 w-full sm:w-[500px] mb-8 px-8 gap-4'>
 
-            <div className='flex flex-col md:col-span-2'>
+            <div className='flex flex-col'>
                 <label>Username</label>
                 <input 
                 onChange={(e) => setUsername(e.target.value)}
@@ -53,6 +86,8 @@ export default function Login() {
             
             {!isPending && <button onClick={toggle} className='registerBtn'>Login</button>}
             {isPending && <button disabled className='registerBtn'><span className='btn-loading'></span></button>}
+            {isNotVerified && <p className='text-center'>Please check your email for a verification link</p>}
+            {isNotVerified && <p className='text-center'>Or <Link to="/" className='px-2 py-1 rounded-md bg-gradient-to-r from-[#06beb6] to-[#48b1bf]' href="#">click here</Link> to get a new link</p>}
         </form>
     </section>
   )
