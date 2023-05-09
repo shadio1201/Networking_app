@@ -133,7 +133,7 @@ export default function Signup() {
 
     setIsPending(false)
 
-    navigate('/account/verify', { state: { email, id } });
+    navigate('/account/verify', { state: { email, id }, replace: true });
 
   }
 

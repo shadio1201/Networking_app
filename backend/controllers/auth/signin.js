@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
         });
     }
 
-    const user = await pool.query(`SELECT email, user_id, isActive, password FROM users WHERE username=$1`, [username]);
+    const user = await pool.query(`SELECT email, first_name, profile_pic, user_id, isActive, password FROM users WHERE username=$1`, [username]);
 
     if(user.rowCount === 0) {
         return res.json({
@@ -49,7 +49,7 @@ module.exports = async (req, res, next) => {
         }
         );
 
-        res.locals.token = accessToken;
+        res.locals.details = { token: accessToken, id: user.rows[0].user_id, email: user.rows[0].email, first_name: user.rows[0].first_name, profile_pic: user.rows[0].profile_pic };
 
         next();
     }

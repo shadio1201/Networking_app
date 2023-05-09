@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
 router.post('/login', signin, (req, res, next) => {
     res.json({
         message: 'Authenticated!',
-        token: res.locals.token
+        ...res.locals.details
     })
 })
 

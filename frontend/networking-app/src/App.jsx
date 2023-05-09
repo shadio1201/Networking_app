@@ -16,6 +16,8 @@ import Verification from './pages/SentVerification'
 import { Toaster } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { selectUser } from './redux/user'
+import ProtectedPrivate from './utils/ProtectedPrivate'
+import ProtectedPublic from './utils/ProtectedPublic'
 
 function App() {
 
@@ -30,12 +32,43 @@ function App() {
     </SidebarProvider>
     <Wrapper>
       <Routes>
-        <Route path="/" element={<Home />} />
+
+        // Public routes
+        <Route exact path="/" element={
+          <ProtectedPublic>
+            <Home />
+          </ProtectedPublic>
+        } />
+        <Route path="/login" element={
+          <ProtectedPublic>
+            <Login />
+          </ProtectedPublic>
+        } />
+        <Route path="/user/signup" element={
+          <ProtectedPublic>
+            <Signup />
+          </ProtectedPublic>
+        } />
+        <Route path="/succes" element={
+          <ProtectedPublic>
+            <Succes />
+          </ProtectedPublic>
+        } />
+        <Route path="/verify" element={
+          <ProtectedPublic>
+            <Verify />
+          </ProtectedPublic>
+        } />        
         <Route path="/user/:id" element={<User />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/user/signup" element={<Signup />} />
-        <Route path="/succes" element={<Succes />} />
-        <Route path="/verify" element={<Verify />} />
+
+        // Private routes
+        <Route path="/test" element={
+          <ProtectedPrivate>
+            <Home />
+          </ProtectedPrivate>
+        } />  
+        // Util routes
+        // is already protected by code in component
         <Route path="/account/verify" element={<Verification />} /> 
         <Route path="/account/confirm" element={<Confirm />} /> 
       </Routes>

@@ -2,11 +2,17 @@ import React, { useState } from 'react'
 import Spinner from '../lotties/spinner.json'
 import toast from 'react-hot-toast'
 import '../login.css';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import { login } from '../redux/user';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../redux/user';
 
 export default function Login() {
 
+    const user = useSelector(selectUser);
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const [isNotVerified, setIsNotVerified] = useState(false);
 
@@ -43,7 +49,7 @@ export default function Login() {
           body: JSON.stringify(user_data)
         });
 
-        const { message, error, token, isNotVerified, id, email } = await res.json();
+        const { message, error, token, isNotVerified, id, email, first_name, profile_pic } = await res.json();
 
         if(error) {
 
@@ -62,11 +68,25 @@ export default function Login() {
                 setId(id);
             } 
         } else {
+            setPassword('');
+            setUsername('');
+            dispatch(
+              login({
+                  id,
+                  email,
+                  first_name,
+                  profile_pic
+              }))
+            
             window.localStorage.setItem('accessToken', token);
             setIsPending(false)
             toast.success(message, {
                 id: notification
             })
+
+            // redirect after login
+
+            /* navigate(`/user/${user.id}`); */
         }
 
         

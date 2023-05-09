@@ -26,7 +26,7 @@ export default function Verify() {
     const { email, id } = state;
 
     sendConfirmation(email, id);
-    navigate('/verify', { state: { email } });
+    navigate('/verify', { state: { email }, replace: true });
 
 
   }, [])

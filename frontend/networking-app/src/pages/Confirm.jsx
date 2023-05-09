@@ -26,15 +26,8 @@ export default function Confirm() {
 
         verifyToken();
 
-        navigate('/succes');
-    /*       if(!state) {
-            navigate('/');
-          }
-          const { email, id } = state;
-          if(email === null || id === null) {
-            navigate('/');
-          } */
-          
+        navigate('/succes', { replace: true });
+  
       }, [])
 
 

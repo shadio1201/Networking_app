@@ -11,7 +11,7 @@ import { useSpring, animated } from '@react-spring/web'
 
 export default function User() {
 
-  const [user, setUser] = useState(null)
+  const [profile, setProfile] = useState(null)
   const { id } = useParams();
 
   function calcAge(date) {
@@ -30,7 +30,7 @@ export default function User() {
 
       console.log(data[0])
       
-      setUser(() => data[0])
+      setProfile(() => data[0])
 
     }
 
@@ -55,22 +55,22 @@ export default function User() {
 
   return (
     <>
-    { user &&
+    { profile &&
     <section id='profile' className=' m-4 mt-32 flex flex-col gap-4'>
       <div className='flex flex-col gap-4 bg-slate-700/80 p-4 pt-0 rounded-xl relative'>
         <div id="imgContainer" className=' w-full h-16 flex justify-center relative'>
-        <img src={user.profile_pic ? user.profile_pic : img_default} alt="test" className=' w-32 h-32 rounded-full object-cover shadow-md shadow-black absolute -translate-y-16' />
+        <img src={profile.profile_pic ? profile.profile_pic : img_default} alt="test" className=' w-32 h-32 rounded-full object-cover shadow-md shadow-black absolute -translate-y-16' />
         </div>
         <div id="infoHeader" className='flex flex-col justify-center items-start'>
-          <h1 className="text-[1.5rem]">{user.first_name} {user.last_name}</h1>
-          <h2 className="text-[1rem]">{user.titel} <em></em></h2>
+          <h1 className="text-[1.5rem]">{profile.first_name} {profile.last_name}</h1>
+          <h2 className="text-[1rem]">{profile.titel} <em></em></h2>
           <span className='mt-2 text-slate-200'>
           <p className="text-[14px]">
-            { calcAge(new Date(user.birthday))} år
+            { calcAge(new Date(profile.birthday))} år
           </p>
           {
-            Object.keys(user.location).length != 0 &&
-            <p className="text-[14px]">{user.location.city}, {user.location.area}, {user.location.country}</p>
+            Object.keys(profile.location).length != 0 &&
+            <p className="text-[14px]">{profile.location.city}, {profile.location.area}, {profile.location.country}</p>
           }
           </span>
         </div>
@@ -89,8 +89,8 @@ export default function User() {
         onClick={likeProfile}
         className={`relative z-20 p-2 bg-slate-400 rounded-full cursor-pointer flex gap-1 transition-all duration-150 ${like ? 'bg-gradient-to-r from-[#06beb6] to-[#48b1bf] shadow-xl' : ''}`}>
           {
-          user.approvals.users &&
-          new Intl.NumberFormat('da-US', { notation: 'compact'}).format(user.approvals.users.length)
+          profile.approvals.users &&
+          new Intl.NumberFormat('da-US', { notation: 'compact'}).format(profile.approvals.users.length)
           }
           { like ? <ThumpUpSolid className='h-6 w-6 text-slate-50' /> : <ThumpUpOutline className='h-6 w-6 text-slate-50' />}
         </button>
@@ -99,23 +99,23 @@ export default function User() {
       </div>
 
       {
-      user.description &&
+      profile.description &&
       <article className=' grid grid-cols-1 bg-slate-700/80 p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Description</h2>
         <p className='text-slate-200'>
-          {user.description}
+          {profile.description}
         </p>
       </article>
       }
 
       { /* Experience section */
 
-      Object.keys(user.experience).length != 0 &&
+      Object.keys(profile.experience).length != 0 &&
       <article className=' grid grid-cols-1 bg-slate-700/80 p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Experience</h2>
         <ul className='text-slate-200 text-[14px]'>
           {
-          user.experience.map((item, i)=> (
+          profile.experience.map((item, i)=> (
             <AccordionExp
             key={i} 
             position={item.position}
@@ -131,12 +131,12 @@ export default function User() {
 
       { /* Education section */ 
 
-      Object.keys(user.educations).length != 0 &&
+      Object.keys(profile.educations).length != 0 &&
       <article className=' grid grid-cols-1 p-4 bg-slate-700/80 rounded-xl'>
         <h2 className='font-bold pb-2'>Educations</h2>
         <ul className='text-slate-200 text-[14px]'>
           {
-            user.educations.map((item, i) => (
+            profile.educations.map((item, i) => (
               <EduAccordion
               key={i} 
               education={item.education}
@@ -152,13 +152,13 @@ export default function User() {
       </article>
       }
       { /* Skills section */ 
-      Object.keys(user.skills).length != 0 &&
+      Object.keys(profile.skills).length != 0 &&
       
       <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Skills</h2>
         <ul className='text-slate-200 text-[14px] flex flex-1 flex-wrap gap-2'>
           {
-          user.skills.list.map((item, i) => (
+          profile.skills.list.map((item, i) => (
             <li key={i} className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>{item}</li>
           ))}
         </ul>
