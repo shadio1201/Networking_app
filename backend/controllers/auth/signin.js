@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
         });
     }
 
-    const user = await pool.query(`SELECT user_id, isActive, password FROM users WHERE username=$1`, [username]);
+    const user = await pool.query(`SELECT email, user_id, isActive, password FROM users WHERE username=$1`, [username]);
 
     if(user.rowCount === 0) {
         return res.json({
@@ -32,7 +32,9 @@ module.exports = async (req, res, next) => {
         if(!user.rows[0].isactive) {
             return res.json({
                 error: "Account not verified",
-                isNotVerified: true
+                isNotVerified: true,
+                id: user.rows[0].user_id,
+                email: user.rows[0].email
             });
         }
 

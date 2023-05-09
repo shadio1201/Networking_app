@@ -2,11 +2,16 @@ import React, { useState } from 'react'
 import Spinner from '../lotties/spinner.json'
 import toast from 'react-hot-toast'
 import '../login.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
+    const navigate = useNavigate();
+
     const [isNotVerified, setIsNotVerified] = useState(false);
+
+    const [id, setId] = useState(null);
+    const [email, setEmail] = useState(null);
 
     const [password, setPassword] = useState('');
   
@@ -38,7 +43,7 @@ export default function Login() {
           body: JSON.stringify(user_data)
         });
 
-        const { message, error, token, isNotVerified } = await res.json();
+        const { message, error, token, isNotVerified, id, email } = await res.json();
 
         if(error) {
 
@@ -53,6 +58,8 @@ export default function Login() {
             })
             if(isNotVerified) {
                 setIsNotVerified(isNotVerified);
+                setEmail(email);
+                setId(id);
             } 
         } else {
             window.localStorage.setItem('accessToken', token);
@@ -63,6 +70,11 @@ export default function Login() {
         }
 
         
+      }
+
+
+      const sentVerification = () => {
+        navigate('/account/verify', { state: { email, id } });
       }
 
   return (
@@ -87,7 +99,7 @@ export default function Login() {
             {!isPending && <button onClick={toggle} className='registerBtn'>Login</button>}
             {isPending && <button disabled className='registerBtn'><span className='btn-loading'></span></button>}
             {isNotVerified && <p className='text-center'>Please check your email for a verification link</p>}
-            {isNotVerified && <p className='text-center'>Or <Link to="/" className='px-2 py-1 rounded-md bg-gradient-to-r from-[#06beb6] to-[#48b1bf]' href="#">click here</Link> to get a new link</p>}
+            {isNotVerified && <p className='text-center'>Or <button onClick={sentVerification} className='px-2 py-1 rounded-md bg-gradient-to-r from-[#06beb6] to-[#48b1bf]'>click here</button> to get a new link</p>}
         </form>
     </section>
   )
