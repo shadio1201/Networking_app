@@ -1,10 +1,14 @@
 import React, { useState} from 'react'
 import Lottie from 'react-lottie'
 import likeEffect from '../lotties/like-particle.json'
+import { HandThumbUpIcon as ThumpUpOutline } from '@heroicons/react/24/outline'
+import { HandThumbUpIcon as ThumpUpSolid} from '@heroicons/react/24/solid'
 
 
 
 export default function LikeComponent({list, user, id}) {
+
+    // function to fetch api and like post 
 
     const [like, setLike] = useState(false);
 
