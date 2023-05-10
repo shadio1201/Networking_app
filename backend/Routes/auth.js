@@ -3,6 +3,7 @@ const router = express.Router();
 
 
 const signin = require('../controllers/auth/signin');
+const refreshCheck = require('../controllers/auth/refreshCheck');
 
 router.get('/', (req, res, next) => {
     res.json({
@@ -15,6 +16,10 @@ router.post('/login', signin, (req, res, next) => {
         message: 'Authenticated!',
         ...res.locals.details
     })
+})
+
+router.post('/refreshCheck', refreshCheck, (req, res, next) => {
+    res.json({...res.locals.currentUser})
 })
 
 module.exports = router;

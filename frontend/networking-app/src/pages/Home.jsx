@@ -34,9 +34,9 @@ export default function Home() {
         </Trail>
         <Test />
 
-        <div id="buttons" className='px-8 flex flex-col gap-4 w-full'>
+        <div id="buttons" className='px-8 flex flex-col gap-4 w-full text-slate-50'>
         <Link to="/login" className='flex justify-center px-4 py-4 rounded-md border-2 bg-gradient-to-r from-[#06beb6] to-[#48b1bf] w-full font-bold mt-4;'>Login</Link>
-        <Link to="/user/signup" className='flex justify-center px-4 py-4 rounded-md bg-slate-600 w-full font-bold mt-4;'>Register</Link>
+        <Link to="/user/signup" className='flex justify-center px-4 py-4 rounded-md bg-slate-800 dark:bg-slate-600 w-full font-bold mt-4;'>Register</Link>
         </div>
     </section>
     </>

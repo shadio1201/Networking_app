@@ -3,26 +3,35 @@ To do list:
 
 x Make email confirmation flow
 
-Make login flow with jwt
+x Make login flow with jwt
 
-Set user in redux and save token in localstorage
+x Set sidebar menu to differet list when logged in (react router)
 
-Set sidebar menu to differet list when logged in (react router)
+x Uptimize user component (seperation of child components see --> experience and educations)
 
-Calculate social score
+x Make accordion with pdf downloader and text inside experience and educations
+
+x Set user in redux and save token in localstorage
+
+x Logout user when token is missing in localstorage
+
+x Make darktheme toggler - https://www.youtube.com/watch?v=BHQ_M8wc770
+
+Secure tokens with table in database and with refresh token
+
+Make like button to component
+
+Make like function - se noter på mobil
 
 Make near search function with websockets and geolocation api
 
 See list of saved profiles
 
- x Uptimize user component (seperation of child components see --> experience and educations)
-
- x Make accordion with pdf downloader and text inside experience and educations
-
 Make settings page where user can update profile elements
 
-Make darktheme toggler - https://www.youtube.com/watch?v=BHQ_M8wc770
+Make uploading image serverside -> formData
 
-Make uploading image serverside
+Customize home page -> add about section step by step lotte animation guide.
 
-Customize home page
+Calculate social score
+

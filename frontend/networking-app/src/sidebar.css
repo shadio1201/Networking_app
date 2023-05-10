@@ -1,5 +1,5 @@
 .sidebar-container {
-    @apply bg-slate-900 h-screen w-3/4 sm:w-2/4 xl:w-1/4 fixed top-0 right-0 bottom-0 transition-transform duration-150 z-50 flex flex-col;
+    @apply bg-white dark:bg-slate-900 h-screen w-3/4 sm:w-2/4 xl:w-1/4 fixed top-0 right-0 bottom-0 transition-transform duration-150 z-50 flex flex-col;
 }
 
 .sidebar-backdrop {
@@ -7,8 +7,8 @@
 }
 
 #themeToggler {
-    @apply flex gap-4 p-2 bg-slate-600 rounded-md relative;
-    @apply before:bg-slate-900 before:absolute before:w-1/2 before:transition-all before:duration-75 before:h-auto before:m-[2px] before:rounded-md before:top-0 before:bottom-0;
+    @apply flex gap-4 p-2 bg-slate-200 dark:bg-slate-600 rounded-md relative;
+    @apply before:bg-slate-50 before:dark:bg-slate-900 before:absolute before:w-1/2 before:transition-all before:duration-75 before:h-auto before:m-[2px] before:rounded-md before:top-0 before:bottom-0;
 }
 
 #sidebarHeader {
@@ -16,13 +16,13 @@
 }
 
 #sidebarMenuItem {
-    @apply flex gap-2 px-4 py-4 my-2 rounded-md;
+    @apply flex gap-2 px-4 py-4 my-2 rounded-md text-slate-800 dark:text-slate-50;
 }
 
 #nearbySearchItem {
     @apply mt-auto;
 }
 
-.sidebar-container li:has(a.active) {
-    @apply bg-gradient-to-r from-[#06beb6] to-[#48b1bf];
+.sidebar-container #sidebarMenuItem:has(a.active) {
+    @apply bg-gradient-to-r from-[#06beb6] to-[#48b1bf] text-slate-50;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Home  from './pages/Home'
 import User from './pages/User'
 import Signup from './pages/Signup'
@@ -14,14 +14,25 @@ import Verify from './pages/Verify'
 import Confirm from './pages/Confirm'
 import Verification from './pages/SentVerification'
 import { Toaster } from 'react-hot-toast'
-import { useSelector } from 'react-redux'
-import { selectUser } from './redux/user'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectToken, selectUser } from './redux/user'
+import { selectColormode, setColormode } from './redux/colormode'
 import ProtectedPrivate from './utils/ProtectedPrivate'
 import ProtectedPublic from './utils/ProtectedPublic'
 
 function App() {
 
+  const darkmode = useSelector(selectColormode);
   const user = useSelector(selectUser);
+  const dispatch = useDispatch()
+  
+
+  useEffect(() => {
+    dispatch(setColormode());
+    const className = 'dark';
+    const bodyClasses = window.document.body.parentNode.classList;
+    darkmode ? bodyClasses.add(className) : bodyClasses.remove(className);
+  }, [darkmode])
 
   return (
     <>

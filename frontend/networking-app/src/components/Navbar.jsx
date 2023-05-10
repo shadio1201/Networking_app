@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/user'
 import img_default from '../../assets/imgs/DefaultPicture.jpg'
+import SiteLogo from './svgs/siteLogo'
 
 export default function Navbar() {
 
@@ -14,10 +15,10 @@ export default function Navbar() {
   const toggleSidebar = useUpdateSidebar()
 
   return (
-    <header className='w-full py-4 flex items-center bg-slate-800/50 fixed top-0 z-40 backdrop-blur-sm'>
+    <header className='w-full py-4 flex items-center bg-white/50 dark:bg-slate-800/50 fixed top-0 z-40 backdrop-blur-sm'>
       <nav className='w-full flex justify-between items-center px-8 h-8'>
         <Link to="/">
-          <img src={Logo} className='w-12' alt="Linked logo" />
+          <SiteLogo />
         </Link>
         <div className='flex justify-center items-center gap-4'>
           {
@@ -27,7 +28,7 @@ export default function Navbar() {
             <p>{user.first_name}</p>
           </span>}
         <button onClick={toggleSidebar}>
-          <Bars3BottomRightIcon className='w-8 h-8 text-slate-50' />
+          <Bars3BottomRightIcon className='w-8 h-8' />
         </button>
         </div>
       </nav>

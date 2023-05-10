@@ -1,5 +1,5 @@
 .uploadButton {
-    @apply w-32 h-32 rounded-full bg-slate-600 border-2 grid place-content-center
+    @apply w-32 h-32 rounded-full bg-slate-200 dark:bg-slate-600 border-2 border-slate-800 dark:border-slate-50 grid place-content-center
     hover:bg-gradient-to-r hover:from-[#06beb6] hover:to-[#48b1bf] cursor-pointer transition-all duration-150;
 }
 
@@ -8,7 +8,7 @@
 }
 
 .imagePreview {
-    @apply w-32 h-32 rounded-full border-2 object-cover cursor-pointer;
+    @apply w-32 h-32 rounded-full border-2 border-slate-800 dark:border-slate-50 object-cover cursor-pointer;
 }
 
 .input {
@@ -29,5 +29,5 @@ label {
 }
 
 .registerBtn {
-    @apply relative flex justify-center px-4 py-4 rounded-md border-2 bg-gradient-to-r from-[#06beb6] to-[#48b1bf] w-full font-bold mt-4;
+    @apply relative flex justify-center px-4 py-4 rounded-md border-2 text-slate-50 bg-gradient-to-r from-[#06beb6] to-[#48b1bf] w-full font-bold mt-4;
 }

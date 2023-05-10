@@ -4,13 +4,15 @@ import toast from 'react-hot-toast'
 import '../login.css';
 import { redirect, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
-import { login } from '../redux/user';
+import { login, selectToken, setToken } from '../redux/user';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../redux/user';
 
 export default function Login() {
 
     const user = useSelector(selectUser);
+    const token = useSelector(selectToken);
+
     const navigate = useNavigate();
     const dispatch = useDispatch()
 
@@ -77,19 +79,16 @@ export default function Login() {
                   first_name,
                   profile_pic
               }))
-            
             window.localStorage.setItem('accessToken', token);
+            dispatch(setToken())
             setIsPending(false)
             toast.success(message, {
                 id: notification
             })
 
             // redirect after login
-
-            /* navigate(`/user/${user.id}`); */
-        }
-
-        
+            navigate(`/user/${id}`, { replace: true });
+        }  
       }
 
 
@@ -119,7 +118,7 @@ export default function Login() {
             {!isPending && <button onClick={toggle} className='registerBtn'>Login</button>}
             {isPending && <button disabled className='registerBtn'><span className='btn-loading'></span></button>}
             {isNotVerified && <p className='text-center'>Please check your email for a verification link</p>}
-            {isNotVerified && <p className='text-center'>Or <button onClick={sentVerification} className='px-2 py-1 rounded-md bg-gradient-to-r from-[#06beb6] to-[#48b1bf]'>click here</button> to get a new link</p>}
+            {isNotVerified && <p className='text-center'>Or <button onClick={sentVerification} className='px-2 py-1 text-slate-50 rounded-md bg-gradient-to-r from-[#06beb6] to-[#48b1bf]'>click here</button> to get a new link</p>}
         </form>
     </section>
   )

@@ -19,7 +19,7 @@ export default function AccordionExp({ position, company, periode, location, tex
         }
 
         <span className='flex items-center gap-2'>
-            <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
+            <p className='bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
                 <BriefcaseIcon className='h-4 w-4' />
                 {position}
             </p>

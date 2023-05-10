@@ -14,12 +14,12 @@ export default function EduAccordion({ education, school, periode, location, tex
         {
             (text || recommendation) &&
             <button onClick={openAccordion} className='absolute right-2 top-2'>
-                { isOpen ? <MinusIcon className='h-6 w-6 text-slate-50' /> :  <PlusIcon className='h-6 w-6 text-slate-50' /> }
+                { isOpen ? <MinusIcon className='h-6 w-6 text-slate-800 dark:text-slate-50' /> :  <PlusIcon className='h-6 w-6 text-slate-50' /> }
             </button>
         }
 
         <span className='flex items-center gap-2'>
-            <p className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
+            <p className='bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-50 px-2 py-1 rounded-md flex gap-2 items-center'>
                 <AcademicCapIcon className='h-4 w-4' />
                 {education}
             </p>
@@ -32,7 +32,7 @@ export default function EduAccordion({ education, school, periode, location, tex
         </p>
         {
         (text || recommendation) &&
-        <div className={`pb-1 text-slate-400 overflow-hidden transition-all duration-150 ease-in-out ${isOpen ? 'h-fit' : 'h-0'}`}>
+        <div className={`pb-1 text-slate-600 dark:text-slate-200 overflow-hidden transition-all duration-150 ease-in-out ${isOpen ? 'h-fit' : 'h-0'}`}>
             {
                 text &&
             <p>
@@ -40,8 +40,9 @@ export default function EduAccordion({ education, school, periode, location, tex
             </p>
             }
             {
-                recommendation &&
-                <button>
+                !recommendation &&
+                <button className='bg-slate-800 text-slate-50 dark:bg-slate-50 dark:text-slate-800 px-4 py-2 rounded-md mt-4 '>
+                    Something
                 { recommendation }
                 </button>
             }

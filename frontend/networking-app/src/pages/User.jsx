@@ -8,11 +8,16 @@ import EduAccordion from '../components/EduAccordion'
 import Lottie from 'react-lottie'
 import likeEffect from '../lotties/like-particle.json'
 import { useSpring, animated } from '@react-spring/web'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../redux/user'
 
 export default function User() {
 
-  const [profile, setProfile] = useState(null)
+  const user = useSelector(selectUser);
+  
   const { id } = useParams();
+  const [profile, setProfile] = useState(null)
+
 
   function calcAge(date) {
     const ageDif = new Date() - date.getTime();
@@ -57,14 +62,14 @@ export default function User() {
     <>
     { profile &&
     <section id='profile' className=' m-4 mt-32 flex flex-col gap-4'>
-      <div className='flex flex-col gap-4 bg-slate-700/80 p-4 pt-0 rounded-xl relative'>
+      <div className='flex flex-col gap-4 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md p-4 pt-0 rounded-xl relative'>
         <div id="imgContainer" className=' w-full h-16 flex justify-center relative'>
         <img src={profile.profile_pic ? profile.profile_pic : img_default} alt="test" className=' w-32 h-32 rounded-full object-cover shadow-md shadow-black absolute -translate-y-16' />
         </div>
         <div id="infoHeader" className='flex flex-col justify-center items-start'>
           <h1 className="text-[1.5rem]">{profile.first_name} {profile.last_name}</h1>
           <h2 className="text-[1rem]">{profile.titel} <em></em></h2>
-          <span className='mt-2 text-slate-200'>
+          <span className='mt-2 text-slate-600 dark:text-slate-200'>
           <p className="text-[14px]">
             { calcAge(new Date(profile.birthday))} år
           </p>
@@ -76,33 +81,47 @@ export default function User() {
         </div>
         <div className='absolute bottom-4 right-4'>
         <div className='flex justify-center items-center z-10'>
-            <span className=' absolute -top-[56px] bottom-0'>
-              <Lottie 
-                options={LikeAnimation}
-                height={150}
-                width={150} 
-                isClickToPauseDisabled={true}
-                isStopped={!like}
-                />
-            </span>
+          <span className=' absolute -top-[56px] bottom-0 pointer-events-none'>
+            <Lottie 
+              options={LikeAnimation}
+              height={150}
+              width={150} 
+              isClickToPauseDisabled={true}
+              isStopped={!like}
+              />
+          </span>
+        {
+        (user && user.id === id) ?
+        <div 
+        className={`relative z-20 p-2 text-[#06beb6] bg-slate-50 dark:bg-slate-800 rounded-full flex gap-1`}>
+          {
+          profile.approvals.users ?
+          new Intl.NumberFormat('da-US', { notation: 'compact'}).format(profile.approvals.users.length)
+          :
+          0
+          }
+          <ThumpUpSolid className='h-6 w-6' />
+        </div>
+        :
         <button 
         onClick={likeProfile}
-        className={`relative z-20 p-2 bg-slate-400 rounded-full cursor-pointer flex gap-1 transition-all duration-150 ${like ? 'bg-gradient-to-r from-[#06beb6] to-[#48b1bf] shadow-xl' : ''}`}>
+        className={`relative z-20 p-2 bg-slate-50 dark:bg-slate-800 rounded-full cursor-pointer flex gap-1 transition-all duration-150 ${like ? 'bg-gradient-to-r from-[#06beb6] to-[#48b1bf] shadow-xl text-slate-50' : 'text-slate-800 dark:text-slate-50'}`}>
           {
           profile.approvals.users &&
           new Intl.NumberFormat('da-US', { notation: 'compact'}).format(profile.approvals.users.length)
           }
-          { like ? <ThumpUpSolid className='h-6 w-6 text-slate-50' /> : <ThumpUpOutline className='h-6 w-6 text-slate-50' />}
+          { like ? <ThumpUpSolid className='h-6 w-6' /> : <ThumpUpOutline className='h-6 w-6' />}
         </button>
-        </div>
+        }
+        </div>  
         </div>
       </div>
 
       {
       profile.description &&
-      <article className=' grid grid-cols-1 bg-slate-700/80 p-4 rounded-xl'>
+      <article className=' grid grid-cols-1 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Description</h2>
-        <p className='text-slate-200'>
+        <p className='text-slate-600 dark:text-slate-200'>
           {profile.description}
         </p>
       </article>
@@ -111,9 +130,9 @@ export default function User() {
       { /* Experience section */
 
       Object.keys(profile.experience).length != 0 &&
-      <article className=' grid grid-cols-1 bg-slate-700/80 p-4 rounded-xl'>
+      <article className=' grid grid-cols-1 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md p-4 rounded-xl'>
         <h2 className='font-bold pb-2'>Experience</h2>
-        <ul className='text-slate-200 text-[14px]'>
+        <ul className='text-slate-600 dark:text-slate-200 text-[14px]'>
           {
           profile.experience.map((item, i)=> (
             <AccordionExp
@@ -132,9 +151,9 @@ export default function User() {
       { /* Education section */ 
 
       Object.keys(profile.educations).length != 0 &&
-      <article className=' grid grid-cols-1 p-4 bg-slate-700/80 rounded-xl'>
+      <article className=' grid grid-cols-1 p-4 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md rounded-xl'>
         <h2 className='font-bold pb-2'>Educations</h2>
-        <ul className='text-slate-200 text-[14px]'>
+        <ul className='text-slate-600 dark:text-slate-200 text-[14px]'>
           {
             profile.educations.map((item, i) => (
               <EduAccordion
@@ -154,12 +173,12 @@ export default function User() {
       { /* Skills section */ 
       Object.keys(profile.skills).length != 0 &&
       
-      <article className=' grid grid-cols-1 p-4 bg-slate-700/80 p-4 rounded-xl'>
+      <article className=' grid grid-cols-1 p-4 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md rounded-xl'>
         <h2 className='font-bold pb-2'>Skills</h2>
-        <ul className='text-slate-200 text-[14px] flex flex-1 flex-wrap gap-2'>
+        <ul className='text-[14px] flex flex-1 flex-wrap gap-2'>
           {
           profile.skills.list.map((item, i) => (
-            <li key={i} className='bg-slate-600 text-slate-50 px-2 py-1 rounded-md'>{item}</li>
+            <li key={i} className='bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-50 px-2 py-1 rounded-md'>{item}</li>
           ))}
         </ul>
       </article>

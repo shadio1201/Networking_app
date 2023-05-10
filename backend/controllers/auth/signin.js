@@ -41,7 +41,7 @@ module.exports = async (req, res, next) => {
         const accessToken = jwt.sign(
         {
             type: 'access',
-            user_id: user.rows.user_id
+            user_id: user.rows[0].user_id
         },
         process.env.JWT_SECRET,
         {
