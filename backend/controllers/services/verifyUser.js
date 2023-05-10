@@ -16,7 +16,9 @@ module.exports = async (req, res, next) => {
         jwt.verify(token, process.env.JWT_SECRET, (e, decoded) => {
             if(e) {
                 console.log(e);
-                return res.status(403)
+                return res.status(403).json({
+                    error: 'This confirmation link has expired'
+                })
             } else {
                 id = decoded.id;
             }

@@ -10,6 +10,7 @@ import likeEffect from '../lotties/like-particle.json'
 import { useSpring, animated } from '@react-spring/web'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/user'
+import LikeComponent from '../components/LikeComponent'
 
 export default function User() {
 
@@ -79,7 +80,7 @@ export default function User() {
           }
           </span>
         </div>
-        <div className='absolute bottom-4 right-4'>
+{/*         <div className='absolute bottom-4 right-4'>
         <div className='flex justify-center items-center z-10'>
           <span className=' absolute -top-[56px] bottom-0 pointer-events-none'>
             <Lottie 
@@ -91,7 +92,7 @@ export default function User() {
               />
           </span>
         {
-        (user && user.id === id) ?
+        (user?.id === id || !user) ?
         <div 
         className={`relative z-20 p-2 text-[#06beb6] bg-slate-50 dark:bg-slate-800 rounded-full flex gap-1`}>
           {
@@ -107,14 +108,17 @@ export default function User() {
         onClick={likeProfile}
         className={`relative z-20 p-2 bg-slate-50 dark:bg-slate-800 rounded-full cursor-pointer flex gap-1 transition-all duration-150 ${like ? 'bg-gradient-to-r from-[#06beb6] to-[#48b1bf] shadow-xl text-slate-50' : 'text-slate-800 dark:text-slate-50'}`}>
           {
-          profile.approvals.users &&
+          profile.approvals.users ?
           new Intl.NumberFormat('da-US', { notation: 'compact'}).format(profile.approvals.users.length)
+          :
+          0
           }
           { like ? <ThumpUpSolid className='h-6 w-6' /> : <ThumpUpOutline className='h-6 w-6' />}
         </button>
         }
         </div>  
-        </div>
+        </div> */}
+        <LikeComponent list={profile.approvals.users} user={user} id={id} />
       </div>
 
       {

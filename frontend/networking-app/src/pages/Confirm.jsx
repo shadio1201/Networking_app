@@ -18,7 +18,11 @@ export default function Confirm() {
           })
         })
     
-        console.log(res);
+        const { error } = await res.json()
+
+        if(error) {
+           return navigate('/failure', { state: { error }, replace: true });
+        }
     
       }
 

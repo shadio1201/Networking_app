@@ -5,6 +5,7 @@ import Signup from './pages/Signup'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import Login from './pages/Login'
+import Failure from './pages/Failure'
 import Wrapper from './components/wrappers/AppWrapper'
 import { SidebarProvider } from './contexts/SidebarContext'
 import './index.css'
@@ -63,6 +64,11 @@ function App() {
         <Route path="/succes" element={
           <ProtectedPublic>
             <Succes />
+          </ProtectedPublic>
+        } />
+         <Route path="/failure" element={
+          <ProtectedPublic>
+            <Failure />
           </ProtectedPublic>
         } />
         <Route path="/verify" element={

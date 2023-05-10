@@ -6,7 +6,7 @@ const pool = new Pool({
     password: process.env.DATABASE_PASSWORD,
     host: 'localhost',
     port: 5432,
-    database: 'networkingdatabase'
+    database: 'networkingdatabase2'
 })
 
 
