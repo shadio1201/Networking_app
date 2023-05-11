@@ -29,10 +29,10 @@ function App() {
   
 
   useEffect(() => {
-    dispatch(setColormode());
     const className = 'dark';
     const bodyClasses = window.document.body.parentNode.classList;
     darkmode ? bodyClasses.add(className) : bodyClasses.remove(className);
+    dispatch(setColormode());
   }, [darkmode])
 
   return (

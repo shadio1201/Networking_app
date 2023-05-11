@@ -47,6 +47,7 @@ export default function Login() {
 
         const res = await fetch('http://localhost:3000/auth/v1/login',
         { method: 'POST',
+          credentials: 'include',
           headers: { "content-type" : "application/json"},
           body: JSON.stringify(user_data)
         });
@@ -79,8 +80,7 @@ export default function Login() {
                   first_name,
                   profile_pic
               }))
-            window.localStorage.setItem('accessToken', token);
-            dispatch(setToken())
+            dispatch(setToken({ token }))
             setIsPending(false)
             toast.success(message, {
                 id: notification

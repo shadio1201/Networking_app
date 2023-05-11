@@ -1,32 +1,29 @@
 import { UserCircleIcon, HomeIcon, PlusCircleIcon ,Cog8ToothIcon, BookmarkIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
 
-
 const routeLinks = {
 
     Private: [
     {
-        Name: 'Home',
-        Path: '/',
+        Name: 'Dashboard',
+        Path: '/dashboard',
         Icon: HomeIcon,
-        Button: false
     },
     {
         Name: 'Profile',
         Path: `/user/`,
         Icon: UserCircleIcon,
-        Button: false
+        isProfile: true
     },
     {
         Name: 'Saved',
-        Path: '/test',
+        Path: '/saved',
         Icon: BookmarkIcon,
-        Button: false
     },
     {
         Name: 'Settings',
-        Path: '/user/signup',
+        Path: '/edit/',
         Icon: Cog8ToothIcon,
-        Button: false
+        isProfile: true
     },
     {
         Name: 'Logout',

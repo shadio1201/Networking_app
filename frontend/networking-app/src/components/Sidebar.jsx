@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSidebar, useUpdateSidebar } from '../contexts/SidebarContext'
 import '../sidebar.css'
 import { XMarkIcon, SunIcon, MoonIcon, UserCircleIcon, HomeIcon, Cog8ToothIcon, BookmarkIcon, ViewfinderCircleIcon } from '@heroicons/react/24/outline'
@@ -34,11 +34,14 @@ export default function Sidebar() {
     }
 
     const signout = () => {
+        fetch('http://localhost:3000/auth/v1/logout',
+        { method: 'POST',
+        credentials: 'include',
+        });
         dispatch(removeToken());
         dispatch(logout())
         toggleSidebar();
         navigate('/');
-        localStorage.removeItem('accessToken');
     }
 
   return (
@@ -66,7 +69,7 @@ export default function Sidebar() {
                         {item.Name}
                     </button>   
                     :
-                    <NavLink to={item.Path} onClick={toggleSidebar}>
+                    <NavLink to={item.isProfile ? item.Path + user.id : item.Path} onClick={toggleSidebar}>
                         {item.Name}
                     </NavLink>
                     }

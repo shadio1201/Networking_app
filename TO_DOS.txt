@@ -17,21 +17,23 @@ x Logout user when token is missing in localstorage
 
 x Make darktheme toggler - https://www.youtube.com/watch?v=BHQ_M8wc770
 
-Secure tokens with table in database and with refresh token
+x Secure tokens with table in database and with refresh token
 
-Make like button to component
+x Make like button to component
 
-Make like function - se noter på mobil
+x Make like function - se noter på mobil
 
-Make near search function with websockets and geolocation api
+Make new access token when old access token has expired
+
+Make settings page where user can update profile elements
 
 See list of saved profiles
 
-Make settings page where user can update profile elements
+Make near search function with websockets and geolocation api
 
 Make uploading image serverside -> formData
 
 Customize home page -> add about section step by step lotte animation guide.
 
-Calculate social score
+Calculate social score - not gonna do
 

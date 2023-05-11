@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
             "created": date.toString()
             }
     
-    const verification_mail = jwt.sign(mail, process.env.JWT_SECRET, { expiresIn: '30<m' });
+    const verification_mail = jwt.sign(mail, process.env.JWT_SECRET, { expiresIn: '30m' });
 
     const url = process.env.CONFIRMATION_BASEURL + "?id=" + verification_mail;
 

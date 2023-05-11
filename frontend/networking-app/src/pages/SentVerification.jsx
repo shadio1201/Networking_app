@@ -8,7 +8,7 @@ export default function Verify() {
 
   async function sendConfirmation(user_email, user_id) {
 
-    const res = await fetch('http://localhost:3000/services/v1/email/confirmation',
+    await fetch('http://localhost:3000/services/v1/email/confirmation',
       { method: 'POST',
       headers: { "content-type" : "application/json"},
       body: JSON.stringify({

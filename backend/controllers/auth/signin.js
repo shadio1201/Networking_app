@@ -1,7 +1,8 @@
 require('dotenv').config();
 const pool = require('../../utilities/database');
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = async (req, res, next) => {
 
@@ -38,6 +39,35 @@ module.exports = async (req, res, next) => {
             });
         }
 
+        const sessionId = uuidv4();
+
+        const refresh = jwt.sign(
+            {
+                type: 'refresh',
+                sessionId
+            },
+            process.env.JWT_REFRESH,
+            {
+                expiresIn: '30d'
+            }
+            );
+
+        const hasAccess = await pool.query('SELECT user_id FROM tokens WHERE user_id=$1', [user.rows[0].user_id]);
+        
+        if(hasAccess.rowCount > 0) {
+            await pool.query('UPDATE tokens SET session_id=$1, refreshToken=$2 WHERE user_id=$3', [sessionId, refresh, user.rows[0].user_id]);
+        } else {
+
+            const storeRefresh = await pool.query('INSERT INTO tokens (session_id, user_id, refreshToken) VALUES($1,$2,$3) RETURNING session_id', [sessionId, user.rows[0].user_id, refresh]);
+
+            if(!storeRefresh.rows[0]) {
+                res.json({
+                    error: `Ops.. Server error. Please try again`
+                })
+            } 
+
+        }
+        
         const accessToken = jwt.sign(
         {
             type: 'access',
@@ -45,9 +75,11 @@ module.exports = async (req, res, next) => {
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: '3d'
+            expiresIn: '30m'
         }
         );
+
+        res.cookie('0_0', refresh, { httpOnly: true })
 
         res.locals.details = { token: accessToken, id: user.rows[0].user_id, email: user.rows[0].email, first_name: user.rows[0].first_name, profile_pic: user.rows[0].profile_pic };
 

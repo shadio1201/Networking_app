@@ -19,6 +19,9 @@ export default function User() {
   const { id } = useParams();
   const [profile, setProfile] = useState(null)
 
+  const [loading, setLoading] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
+  
 
   function calcAge(date) {
     const ageDif = new Date() - date.getTime();
@@ -28,36 +31,23 @@ export default function User() {
 
   useEffect(() => {
 
+    setLoading(true);
+
     async function fetchUser() {
 
       const response = await fetch(`http://localhost:3000/api/v1/users/${id}`);
 
       const data = await response.json();
 
-      console.log(data[0])
+      console.log(data[0]);
       
       setProfile(() => data[0])
 
     }
-
     fetchUser()
+
+    setLoading(false);
   }, [])
-
-
-  const [like, setLike] = useState(false);
-
-  const likeProfile = () => {
-    setLike((state) => state = !state);
-  }
-
-  const LikeAnimation = {
-    loop: false,
-    autoplay: false, 
-    animationData: likeEffect,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
 
   return (
     <>
@@ -80,45 +70,10 @@ export default function User() {
           }
           </span>
         </div>
-{/*         <div className='absolute bottom-4 right-4'>
-        <div className='flex justify-center items-center z-10'>
-          <span className=' absolute -top-[56px] bottom-0 pointer-events-none'>
-            <Lottie 
-              options={LikeAnimation}
-              height={150}
-              width={150} 
-              isClickToPauseDisabled={true}
-              isStopped={!like}
-              />
-          </span>
         {
-        (user?.id === id || !user) ?
-        <div 
-        className={`relative z-20 p-2 text-[#06beb6] bg-slate-50 dark:bg-slate-800 rounded-full flex gap-1`}>
-          {
-          profile.approvals.users ?
-          new Intl.NumberFormat('da-US', { notation: 'compact'}).format(profile.approvals.users.length)
-          :
-          0
-          }
-          <ThumpUpSolid className='h-6 w-6' />
-        </div>
-        :
-        <button 
-        onClick={likeProfile}
-        className={`relative z-20 p-2 bg-slate-50 dark:bg-slate-800 rounded-full cursor-pointer flex gap-1 transition-all duration-150 ${like ? 'bg-gradient-to-r from-[#06beb6] to-[#48b1bf] shadow-xl text-slate-50' : 'text-slate-800 dark:text-slate-50'}`}>
-          {
-          profile.approvals.users ?
-          new Intl.NumberFormat('da-US', { notation: 'compact'}).format(profile.approvals.users.length)
-          :
-          0
-          }
-          { like ? <ThumpUpSolid className='h-6 w-6' /> : <ThumpUpOutline className='h-6 w-6' />}
-        </button>
+          profile.approvals &&
+        <LikeComponent hasLiked={hasLiked} list={profile.approvals.users} user={user} id={id} />
         }
-        </div>  
-        </div> */}
-        <LikeComponent list={profile.approvals.users} user={user} id={id} />
       </div>
 
       {
@@ -166,7 +121,7 @@ export default function User() {
               school={item.school}
               periode={item.periode}
               location={item.location}
-              text={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit a cumque'}
+              text={item.text}
               recommendation={item.recom}  />
             ))
           }

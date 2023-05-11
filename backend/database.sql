@@ -34,6 +34,12 @@ CREATE TABLE cards(
     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
+CREATE TABLE tokens(
+    session_id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR NOT NULL,
+    refreshToken VARCHAR NOT NULL
+);
+
 ALTER TABLE users ADD FOREIGN KEY(card_key) REFERENCES cards(card_id) ON DELETE SET NULL;
 
 
@@ -109,3 +115,5 @@ UPDATE users SET approvals='{"users": ["1", "2", "3", "4"]}' WHERE user_id='d3c8
 
 
 SELECT email FROM users WHERE user_id IN ('b47d236c969c49caaded5ccda2297c8c', 'd3c834dc2a2149ad8ff98cbbd4487bbd');
+
+SELECT approvals FROM users WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';

@@ -15,8 +15,8 @@ export const userSlice = createSlice({
         logout: (state) => {
             state.user = null;
         },
-        setToken: (state) => {
-            state.token = localStorage.getItem('accessToken');
+        setToken: (state, action) => {
+            state.token = action.payload;
         },
         removeToken: (state) => {
             state.token = null;

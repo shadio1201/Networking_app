@@ -13,8 +13,8 @@ export default function AccordionExp({ position, company, periode, location, tex
     <li className='my-2 relative'>
         {
             (text || recommendation) &&
-            <button onClick={openAccordion} className='absolute right-2 top-2'>
-                { isOpen ? <MinusIcon className='h-6 w-6 text-slate-50' /> :  <PlusIcon className='h-6 w-6 text-slate-50' /> }
+            <button onClick={openAccordion} className='absolute right-2 top-2 text-slate-800 dark:text-slate-50'>
+                { isOpen ? <MinusIcon className='h-6 w-6' /> :  <PlusIcon className='h-6 w-6' /> }
             </button>
         }
 

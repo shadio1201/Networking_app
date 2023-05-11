@@ -1,66 +1,53 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { login, logout, removeToken, setToken } from '../../redux/user'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-hot-toast';
+import Loading from '../Loading'
 
 export default function AppWrapper(props) {
 
-  const token = localStorage.getItem('accessToken');
-
   const dispatch = useDispatch();
 
-
-  const checkAuth = async () => {
-    const auth = await fetch('http://localhost:3000/auth/v1/refreshCheck',
-    { method: 'POST',
-      headers: { "content-type" : "application/json"},
-      body: JSON.stringify({token})
-    });
-
-    
-
-    const { id, email, first_name, profile_pic, error, expired } = await auth.json();
-
-    if(expired) {
-      throw expired
-    }
-
-    if(error) {
-      throw error
-    }
-
-    return { id, email, first_name, profile_pic }
-  }
+  const [wait, setWaiting] = useState(true);
 
   useEffect(() => {
 
-    if(!token) {
-      dispatch(removeToken())
-      dispatch(logout());
-      return
-    } else {
+      fetch('http://localhost:3000/auth/v1/refreshCheck',
+        { method: 'POST',
+        credentials: 'include',
+        }).then(async data => {
+          const { token, id, email, first_name, profile_pic, error, noToken } = await data.json();
 
-      checkAuth()
-      .then((data) => {
-        dispatch(setToken());
-        dispatch(
-          login({
-              id: data.id,
-              email: data.email,
-              first_name: data.first_name,
-              profile_pic: data.profile_pic
-          }))
-      }).catch((error) => {
-        toast.error(error, {
-          style: {
-            textAlign: 'center'
+
+          if(error) {
+            dispatch(removeToken());
+            dispatch(logout())
+            if(!noToken) {
+            toast.error(error, {
+              style: {
+                textAlign: 'center'
+              }
+            })
           }
+            return
+          }
+          dispatch(
+            login({
+                id: id,
+                email: email,
+                first_name: first_name,
+                profile_pic: profile_pic
+            }))
+
+            dispatch(setToken({ token }));
+            setTimeout(()=> {
+              setWaiting(false)
+            }, 200)
         })
-      })  
-    }
+        
   }, []);
 
+  if(wait) return ( <Loading /> )
 
   return (
     <main className='mt-24'>
