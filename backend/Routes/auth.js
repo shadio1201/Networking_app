@@ -4,7 +4,7 @@ const router = express.Router();
 
 const signin = require('../controllers/auth/signin');
 const signout = require('../controllers/auth/signout');
-const refreshCheck = require('../controllers/auth/refreshCheck');
+const refresh = require('../controllers/auth/refresh');
 
 router.get('/', (req, res, next) => {
     res.json({
@@ -25,7 +25,7 @@ router.post('/logout', signout, (req, res, next) => {
     })
 })
 
-router.post('/refreshCheck', refreshCheck, (req, res, next) => {
+router.post('/refresh', refresh, (req, res, next) => {
     res.json({...res.locals.currentUser})
 })
 

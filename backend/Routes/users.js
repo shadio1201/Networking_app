@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 // Controllers
-const allUsers = require('../controllers/user/allUsers');
+const selectedUsers = require('../controllers/user/selectedUsers');
 const getUser = require('../controllers/user/getUser');
 const postUser = require('../controllers/user/createUser');
 const updateUser = require('../controllers/user/updateUser');
 const uploadPic = require('../controllers/user/uploadPic');
+const checkAuth = require('../controllers/auth/check')
 
-router.get('/', allUsers, (req, res) => {
+router.get('/selected', selectedUsers, (req, res) => {
 
     // send data to request
     const data = res.locals.users
@@ -41,11 +42,12 @@ router.get('/:id', getUser, (req, res) => {
 } )
 
 
-router.put('/update/:id', updateUser, (req, res) => {
+router.put('/update/:id', checkAuth, updateUser, (req, res) => {
         
     // send data to request
     res.json({
-        message: 'User succesfully updated!'
+        message: 'User succesfully updated!',
+        ...res.locals.auth
     })
 } )
 

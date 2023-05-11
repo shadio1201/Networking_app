@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
     if(!userLikes.rows[0].approvals || !userLikes.rows[0].approvals.users) {
         likes = { users: [req.body.logged_in_user] }
     } else {
-        likes = { users: [...userLikes.rows[0].approvals.users, req.body.logged_in_user] };
+        likes = { users: [req.body.logged_in_user, ...userLikes.rows[0].approvals.users] };
     }
 
     await pool.query('UPDATE users SET approvals=$1 WHERE user_id=$2', [likes, req.body.user_id])

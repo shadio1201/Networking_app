@@ -42,6 +42,8 @@ CREATE TABLE tokens(
 
 ALTER TABLE users ADD FOREIGN KEY(card_key) REFERENCES cards(card_id) ON DELETE SET NULL;
 
+ALTER TABLE users ADD COLUMN saved_profiles jsonb DEFAULT '{}';
+
 
 
 /* TRIGGERS */
@@ -111,7 +113,7 @@ UPDATE users SET location='{"city": "Kolding", "area": "Syddanmark", "country": 
 
 UPDATE users SET description='Jeg er en super engageret 25 årig multimediedesigner fra Kolding. Jeg vil beskrive mig selv som ambitiøs og kvalitetsbevidst med en bred grafisk og teknisk forståelse.' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
 
-UPDATE users SET approvals='{"users": ["1", "2", "3", "4"]}' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
+UPDATE users SET saved_profiles='{"users": ["6be8c4cf3e8f40169c0b48026dcebf12", "9586f6c308e54350a3954912203ca64c"]}' WHERE user_id='d3c834dc2a2149ad8ff98cbbd4487bbd';
 
 
 SELECT email FROM users WHERE user_id IN ('b47d236c969c49caaded5ccda2297c8c', 'd3c834dc2a2149ad8ff98cbbd4487bbd');

@@ -12,7 +12,7 @@ export default function AppWrapper(props) {
 
   useEffect(() => {
 
-      fetch('http://localhost:3000/auth/v1/refreshCheck',
+      fetch('http://localhost:3000/auth/v1/refresh',
         { method: 'POST',
         credentials: 'include',
         }).then(async data => {

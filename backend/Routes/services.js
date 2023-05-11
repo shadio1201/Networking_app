@@ -5,6 +5,8 @@ const sentConfirmation = require('../controllers/services/confirmEmail')
 const verifyUser = require('../controllers/services/verifyUser')
 const likeUser = require('../controllers/services/likeService')
 const dislikeUser = require('../controllers/services/dislikeService')
+const saveService = require('../controllers/services/saveService')
+const checkAuth = require('../controllers/auth/check')
 
 router.get('/', (req, res, next) => {
     res.json({
@@ -27,11 +29,23 @@ router.post('/email/verify', verifyUser, (req, res, next) => {
 
 router.post('/like', likeUser, (req, res, next) => {
     res.json({
+        success: true,
+    })
+})
+
+router.post('/dislike', checkAuth, dislikeUser, (req, res, next) => {
+    res.json({
         success: true
     })
 })
 
-router.post('/dislike', dislikeUser, (req, res, next) => {
+router.post('/saveUser', checkAuth, saveService.save, (req, res, next) => {
+    res.json({
+        success: true
+    })
+})
+
+router.post('/unsaveUser', checkAuth, saveService.unsave, (req, res, next) => {
     res.json({
         success: true
     })

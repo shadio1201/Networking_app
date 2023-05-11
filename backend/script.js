@@ -12,6 +12,10 @@ async function generateSecret() {
     
 }
 
+const time = Date.now().toFixed()
+
+console.log(time.getTime())
+
 generateSecret();
 
 /* const formatted = password.replace(/-/g, '');
