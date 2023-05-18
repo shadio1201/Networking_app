@@ -11,6 +11,7 @@ import { useSpring, animated } from '@react-spring/web'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/user'
 import LikeComponent from '../components/LikeComponent'
+import SaveComponent from '../components/SaveComponent'
 
 export default function User() {
 
@@ -70,6 +71,7 @@ export default function User() {
           }
           </span>
         </div>
+        <SaveComponent />
         {
           profile.approvals &&
         <LikeComponent hasLiked={hasLiked} list={profile.approvals.users} user={user} id={id} />
@@ -121,7 +123,7 @@ export default function User() {
               school={item.school}
               periode={item.periode}
               location={item.location}
-              text={item.text}
+              text={'Hej med dig 123'}
               recommendation={item.recom}  />
             ))
           }

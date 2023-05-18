@@ -33,19 +33,19 @@ router.post('/like', likeUser, (req, res, next) => {
     })
 })
 
-router.post('/dislike', checkAuth, dislikeUser, (req, res, next) => {
+router.post('/dislike', dislikeUser, (req, res, next) => {
     res.json({
         success: true
     })
 })
 
-router.post('/saveUser', checkAuth, saveService.save, (req, res, next) => {
+router.post('/saveUser', saveService.save, (req, res, next) => {
     res.json({
         success: true
     })
 })
 
-router.post('/unsaveUser', checkAuth, saveService.unsave, (req, res, next) => {
+router.post('/unsaveUser', saveService.unsave, (req, res, next) => {
     res.json({
         success: true
     })

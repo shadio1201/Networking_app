@@ -42,7 +42,7 @@ router.get('/:id', getUser, (req, res) => {
 } )
 
 
-router.put('/update/:id', checkAuth, updateUser, (req, res) => {
+router.put('/update/:id', updateUser, (req, res) => {
         
     // send data to request
     res.json({

@@ -8,7 +8,7 @@ export default function AppWrapper(props) {
 
   const dispatch = useDispatch();
 
-  const [wait, setWaiting] = useState(true);
+  const [wait, setWaiting] = useState(false);
 
   useEffect(() => {
 
@@ -40,9 +40,6 @@ export default function AppWrapper(props) {
             }))
 
             dispatch(setToken({ token }));
-            setTimeout(()=> {
-              setWaiting(false)
-            }, 200)
         })
         
   }, []);
