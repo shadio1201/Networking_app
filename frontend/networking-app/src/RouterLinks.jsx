@@ -21,9 +21,9 @@ const routeLinks = {
     },
     {
         Name: 'Settings',
-        Path: '/edit/',
+        Path: '/edit/profile',
         Icon: Cog8ToothIcon,
-        isProfile: true
+        isProfile: false
     },
     {
         Name: 'Logout',

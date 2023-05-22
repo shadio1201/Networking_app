@@ -20,6 +20,8 @@ import { selectToken, selectUser } from './redux/user'
 import { selectColormode, setColormode } from './redux/colormode'
 import ProtectedPrivate from './utils/ProtectedPrivate'
 import ProtectedPublic from './utils/ProtectedPublic'
+import Saved from './pages/Saved'
+import EditUser from './pages/EditUser'
 
 function App() {
 
@@ -82,6 +84,16 @@ function App() {
         <Route path="/test" element={
           <ProtectedPrivate>
             <Home />
+          </ProtectedPrivate>
+        } />  
+        <Route path="/saved" element={
+          <ProtectedPrivate>
+            <Saved />
+          </ProtectedPrivate>
+        } />
+        <Route path="/edit/profile" element={
+          <ProtectedPrivate>
+            <EditUser />
           </ProtectedPrivate>
         } />  
         // Util routes

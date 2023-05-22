@@ -55,11 +55,16 @@ export default function SaveComponent({ user,  }) {
       toast.success('Profile saved!')
     }
 
+    function testUnSaveFunction() {
+      setHasSaved(state => state = !state)
+      toast.success('Profile removed!')
+    }
+
 
   return (
     <button
     className={` absolute right-4 top-4 cursor-pointer flex gap-1 transition-all duration-150 text-slate-800 dark:text-slate-50`}
-    onClick={testSaveFunction}
+    onClick={hasSaved ? testSaveFunction : testUnSaveFunction}
     >
       {
         hasSaved ?
