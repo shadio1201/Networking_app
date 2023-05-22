@@ -39,7 +39,7 @@ function App() {
 
   return (
     <>
-    <Toaster position='bottom-center' />
+    <Toaster position='bottom-center' containerClassName='ToasterContainer' />
     <SidebarProvider>
       <Navbar />
       <Sidebar />

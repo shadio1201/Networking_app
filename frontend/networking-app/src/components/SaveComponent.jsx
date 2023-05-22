@@ -3,7 +3,7 @@ import { BookmarkIcon as BookmarkUnsaved } from '@heroicons/react/24/outline'
 import { BookmarkIcon as BookmarkSaved } from '@heroicons/react/24/solid'
 import toast from 'react-hot-toast'
 
-export default function SaveComponent({ user,  }) {
+export default function SaveComponent({ user, id }) {
 
     const [hasSaved, setHasSaved] = useState(false);
 
@@ -52,26 +52,41 @@ export default function SaveComponent({ user,  }) {
 
     function testSaveFunction() {
       setHasSaved(state => state = !state)
-      toast.success('Profile saved!')
+      toast.success('Saved', {
+        iconTheme: {
+            primary: '#45afa7',
+            secondary: '#fff',
+          },
+    })
     }
 
     function testUnSaveFunction() {
       setHasSaved(state => state = !state)
-      toast.success('Profile removed!')
+      toast.success('Unsaved', {
+        iconTheme: {
+            primary: '#45afa7',
+            secondary: '#fff',
+          },
+    })
     }
 
 
   return (
-    <button
-    className={` absolute right-4 top-4 cursor-pointer flex gap-1 transition-all duration-150 text-slate-800 dark:text-slate-50`}
-    onClick={hasSaved ? testSaveFunction : testUnSaveFunction}
-    >
-      {
-        hasSaved ?
-        <BookmarkSaved className="h-6 w-6"></BookmarkSaved>
-        :
-        <BookmarkUnsaved className="h-6 w-6"></BookmarkUnsaved>
-      } 
-    </button>
+    <>
+    {
+      user?.id != id && 
+      <button
+      className={` absolute right-4 top-4 cursor-pointer flex gap-1 transition-all duration-150 text-slate-800 dark:text-slate-50`}
+      onClick={hasSaved ? testUnSaveFunction : testSaveFunction}
+      >
+        {
+          hasSaved ?
+          <BookmarkSaved className="h-6 w-6"></BookmarkSaved>
+          :
+          <BookmarkUnsaved className="h-6 w-6"></BookmarkUnsaved>
+        } 
+      </button>
+    }
+    </>
   )
 }

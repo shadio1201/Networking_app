@@ -67,7 +67,7 @@ export default function LikeComponent({list, user, id}) {
       };
 
   return (
-    <div className='absolute bottom-4 right-4'>
+    <div className='absolute bottom-4 right-4 overflow-hidden'>
     <div className='flex justify-center items-center z-10'>
       <span className=' absolute -top-[56px] bottom-0 pointer-events-none'>
         <Lottie 

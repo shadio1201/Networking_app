@@ -15,8 +15,8 @@ export default function Navbar() {
   const toggleSidebar = useUpdateSidebar()
 
   return (
-    <header className='w-full py-4 flex items-center bg-slate-50/50 dark:bg-slate-800/50 fixed top-0 z-40 backdrop-blur-sm'>
-      <nav className='w-full flex justify-between items-center px-8 h-8'>
+    <header className='fixed w-full py-4 flex items-center bg-slate-50/50 dark:bg-slate-800/50 top-0 z-40 backdrop-blur-sm'>
+      <nav className='w-full flex justify-between items-center px-4 h-8'>
         <Link to="/">
           <SiteLogo />
         </Link>

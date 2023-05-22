@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/user'
 import img_default from '../../assets/imgs/DefaultPicture.jpg'
 import { NavLink } from 'react-router-dom'
-import { ArrowUturnRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { ArrowUturnRightIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Lottie from 'react-lottie'
 import LoadingAnimation from '../lotties/search-clean.json'
 
@@ -19,6 +19,12 @@ export default function Saved() {
   };
 
     const arrayTest = [{name: 'Lasse', title: 'Mekaniker'}, {name: 'Kim', title: 'Musiker'}, {name: 'Michela', title: 'Eliteløber'}]
+
+    const [query, setQuery] = useState("");
+
+    const filteredList = arrayTest.filter(item => {
+      return item.name.toLowerCase().includes(query.toLowerCase()) || item.title.toLowerCase().includes(query.toLowerCase());
+    })
 
     const [loading, setLoading] = useState(false);
 
@@ -65,14 +71,23 @@ export default function Saved() {
   return (
     <>
       { /* Search field */ }
-      <div className='flex relative justify-between items-center w-full p-4 '>
-        <input type="text" spellCheck="false" placeholder='Search profiles..' className='w-full h-full p-4 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md focus-within:outline-slate-700/80 dark:focus-within:outline-white' />
-        <MagnifyingGlassIcon className='h-6 w-6 absolute right-8'  />
+      <div className='flex relative justify-between items-center w-full p-4'>
+        <input value={query} onChange={ e => setQuery(e.target.value)}
+        type="text" spellCheck="false" placeholder='Search profiles..' className='w-full h-full p-4 rounded-md bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md focus-within:outline-slate-700/80 dark:focus-within:outline-white' />
+        {
+          query.length ?
+          <XMarkIcon onClick={() => {
+            setQuery("")
+          }} className='h-6 w-6 absolute right-8' />
+          :
+          <MagnifyingGlassIcon className='h-6 w-6 absolute right-8'  />
+        }
+        
       </div>
       { /* Userlist from saved profiles */}
       <ul id="savedProfiles" className="w-full h-fit flex flex-col items-center justify-center px-4 gap-4">
       {
-        arrayTest.map((profile, id) => (
+        filteredList.map((profile, id) => (
           <li className='w-full'>
           <NavLink to={`/user/${profile.name}`} className='flex p-4 rounded-md justify-start items-center bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md '>
             <img src={img_default} className='h-12 w-12 rounded-full mr-4'/>
