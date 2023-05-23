@@ -28,3 +28,13 @@ body {
 input[type="search"]::-webkit-search-cancel-button {
     @apply text-slate-50
 }
+
+@layer utilities {
+    .darkScheme {
+    color-scheme: dark;
+    }
+
+    .lightScheme {
+        color-scheme: light;
+    }
+}

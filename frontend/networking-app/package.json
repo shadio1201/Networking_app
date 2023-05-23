@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
-    "@react-spring/web": "^9.7.2",
     "@react-three/drei": "^9.66.4",
     "@react-three/fiber": "^8.13.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/supabase-js": "^2.21.0",
+    "framer-motion": "^10.12.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",

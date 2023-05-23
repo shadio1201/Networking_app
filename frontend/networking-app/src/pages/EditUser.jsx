@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import img_default from '../../assets/imgs/DefaultPicture.jpg'
-import { PlusIcon, PencilIcon} from '@heroicons/react/24/solid'
+import { PlusIcon, PencilIcon, PhoneIcon} from '@heroicons/react/24/solid'
 import AccordionExp from '../components/AccordionExp'
 import EduAccordion from '../components/EduAccordion'
-import { useSpring, animated } from '@react-spring/web'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/user'
+import Modal from '../components/Modals/EditingModal'
+import { AnimatePresence } from 'framer-motion'
 
 export default function EditUser() {
 
@@ -13,6 +14,10 @@ export default function EditUser() {
     const [loading, setLoading] = useState(false);
     const user = useSelector(selectUser);
     const [profile, setProfile] = useState(null)
+
+    const [modalOpen, setModalOpen] = useState(false)
+
+    const close = () => setModalOpen(false);
 
     function calcAge(date) {
         const ageDif = new Date() - date.getTime();
@@ -49,8 +54,8 @@ export default function EditUser() {
       <div className='flex flex-col gap-4 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md p-4 pt-0 rounded-xl relative'>
         <div id="imgContainer" className=' w-full h-16 flex justify-center'>
           <div className='rounded-full overflow-hidden w-32 h-32 shadow-md shadow-black -translate-y-16 relative border-[#06beb6] border-2 flex justify-center'>
-            <span className='absolute text-sm bottom-2 font-bold text-slate-50 bg-[#06beb6] w-full text-center h-4'>Change</span>
-            <img src={!profile.profile_pic ? profile.profile_pic : img_default} className='object-cover' />
+            <span className='absolute text-sm bottom-0 font-bold text-slate-50 bg-[#06beb6] w-full text-center h-8'>Change</span>
+            <img src={profile.profile_pic ? profile.profile_pic : img_default} className='object-cover w-full' />
           </div>
         </div>
         <div id="infoHeader" className='flex flex-col justify-center items-start'>
@@ -73,6 +78,7 @@ export default function EditUser() {
           </span>
         </div>
         <button
+        onClick={() => setModalOpen(true)}
         className={` absolute right-4 top-4 cursor-pointer flex gap-1 transition-all duration-150 text-slate-800 dark:text-slate-50`}
         >
             <PencilIcon className='h-6 w-6' />
@@ -193,7 +199,11 @@ export default function EditUser() {
     </article>
     </section>
     }
-    
+    <AnimatePresence>
+    { modalOpen && 
+      <Modal closeModal={close} />
+    }
+    </AnimatePresence>
     </>
   )
 }

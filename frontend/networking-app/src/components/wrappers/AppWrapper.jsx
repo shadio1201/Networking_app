@@ -47,7 +47,7 @@ export default function AppWrapper(props) {
   if(wait) return ( <Loading /> )
 
   return (
-    <main className='mt-24'>
+    <main className='mt-24 overflow-x-clip'>
         {props.children}
     </main>
   )

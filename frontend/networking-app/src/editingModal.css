@@ -1,0 +1,11 @@
+.input-edit {
+    @apply py-2 border-b-2 outline-none bg-transparent dark:border-slate-600;
+}
+.input-edit:focus,
+.input-edit:not(:empty) {
+    @apply  border-[#06beb6];
+ }
+
+ .updateBtn {
+    @apply relative flex justify-center px-4 py-4 rounded-md border-2 text-slate-50 bg-gradient-to-r from-[#06beb6] to-[#48b1bf] w-full font-bold mt-4;
+ }

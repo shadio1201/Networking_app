@@ -6,8 +6,11 @@ import { NavLink } from 'react-router-dom'
 import { ArrowUturnRightIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Lottie from 'react-lottie'
 import LoadingAnimation from '../lotties/search-clean.json'
+import { motion, AnimatePresence, useIsPresent } from 'framer-motion'
 
 export default function Saved() {
+
+
 
   const options = {
     loop: true,
@@ -18,7 +21,7 @@ export default function Saved() {
     }
   };
 
-    const arrayTest = [{name: 'Lasse', title: 'Mekaniker'}, {name: 'Kim', title: 'Musiker'}, {name: 'Michela', title: 'Eliteløber'}]
+    const arrayTest = [{name: 'Lasse', title: 'ekaniker'}, {name: 'Kim', title: 'Musiker'}, {name: 'Michela', title: 'Eliteløber'}]
 
     const [query, setQuery] = useState("");
 
@@ -29,6 +32,7 @@ export default function Saved() {
     const [loading, setLoading] = useState(false);
 
     const user = useSelector(selectUser);
+
 
     useEffect(() => {
 
@@ -46,10 +50,8 @@ export default function Saved() {
     
         }
         fetchUser() */
+        setLoading(false);
 
-        setTimeout(() => {
-          setLoading(false);
-        }, 3000)
       }, [])
 
   if(loading) {
@@ -63,6 +65,25 @@ export default function Saved() {
     )
   }
 
+  const IsPresent = useIsPresent();
+
+  const listAnimations = {
+    initial: {
+      opacity: 0,
+      y: -5
+    },
+    enter:  {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.1
+      }
+    },
+    exit: {
+      opacity: 0,
+      y: -5
+    },
+  }
 
   ///////////////////////////////////////////////////
   // Look up how to make swipe remove with react
@@ -73,7 +94,7 @@ export default function Saved() {
       { /* Search field */ }
       <div className='flex relative justify-between items-center w-full p-4'>
         <input value={query} onChange={ e => setQuery(e.target.value)}
-        type="text" spellCheck="false" placeholder='Search profiles..' className='w-full h-full p-4 rounded-md bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md focus-within:outline-slate-700/80 dark:focus-within:outline-white' />
+        type="text" spellCheck="false" placeholder='Search profiles..' className='w-full h-full p-4 rounded-md bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md focus-within:outline-1 focus-within:outline-slate-700/80 dark:focus-within:outline-white' />
         {
           query.length ?
           <XMarkIcon onClick={() => {
@@ -84,11 +105,28 @@ export default function Saved() {
         }
         
       </div>
-      { /* Userlist from saved profiles */}
+      { /* Userlist from saved profiles */
+      filteredList &&
       <ul id="savedProfiles" className="w-full h-fit flex flex-col items-center justify-center px-4 gap-4">
+        <AnimatePresence>
       {
+        filteredList.length <= 0 ?
+        <motion.li
+        variants={listAnimations}
+        initial="initial"
+        animate="enter"
+        exit="exit"
+        >No matches..</motion.li>
+        :
         filteredList.map((profile, id) => (
-          <li className='w-full'>
+          <motion.li
+          style={{ position: IsPresent ? 'static' : 'absolute'}}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -5 }}
+          layout
+          transition={{ stiffness: 700, damping: 40 }}
+          className='w-full' key={id}>
           <NavLink to={`/user/${profile.name}`} className='flex p-4 rounded-md justify-start items-center bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md '>
             <img src={img_default} className='h-12 w-12 rounded-full mr-4'/>
             <span className='text-sm'>
@@ -97,10 +135,12 @@ export default function Saved() {
             </span>
             <ArrowUturnRightIcon className="h-6 w-6 ml-auto" />
           </NavLink>
-        </li>
+        </motion.li>
         ))
       }
+      </AnimatePresence>
     </ul>
+    }
     </>
 
   )
