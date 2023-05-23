@@ -8,10 +8,9 @@ export default function AppWrapper(props) {
 
   const dispatch = useDispatch();
 
-  const [wait, setWaiting] = useState(false);
+  const [wait, setWaiting] = useState(true);
 
   useEffect(() => {
-
       fetch('http://localhost:3000/auth/v1/refresh',
         { method: 'POST',
         credentials: 'include',
@@ -28,6 +27,7 @@ export default function AppWrapper(props) {
                 textAlign: 'center'
               }
             })
+            setWaiting(false)
           }
             return
           }
@@ -41,7 +41,7 @@ export default function AppWrapper(props) {
 
             dispatch(setToken({ token }));
         })
-        
+        setWaiting(false)
   }, []);
 
   if(wait) return ( <Loading /> )

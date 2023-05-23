@@ -32,7 +32,7 @@ export default function Home() {
         <h1 className=' text-4xl font-bold'>A new way of</h1>
         <h2 className=' text-4xl font-bold'>connecting</h2>
         </Trail>
-        {/* <Test /> */}
+        <Test />
 
         <div id="buttons" className='px-8 flex flex-col gap-4 w-full text-slate-50'>
         <Link to="/login" className='flex justify-center px-4 py-4 rounded-md border-2 bg-gradient-to-r from-[#06beb6] to-[#48b1bf] w-full font-bold mt-4;'>Login</Link>
