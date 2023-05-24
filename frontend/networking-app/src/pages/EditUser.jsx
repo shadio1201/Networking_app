@@ -5,7 +5,11 @@ import AccordionExp from '../components/AccordionExp'
 import EduAccordion from '../components/EduAccordion'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/user'
-import Modal from '../components/Modals/EditingModal'
+import MainProfileModal from '../components/Modals/MainProfileModal'
+import DescriptionModal from '../components/Modals/DescriptionModal'
+import ExperienceModal from '../components/Modals/ExperienceModal'
+import EducationModal from '../components/Modals/EducationModal'
+import SkillsModal from '../components/Modals/SkillsModal'
 import { AnimatePresence } from 'framer-motion'
 
 export default function EditUser() {
@@ -15,9 +19,9 @@ export default function EditUser() {
     const user = useSelector(selectUser);
     const [profile, setProfile] = useState(null)
 
-    const [modalOpen, setModalOpen] = useState(false)
+    const [modalOpen, setModalOpen] = useState('')
 
-    const close = () => setModalOpen(false);
+    const close = () => setModalOpen('');
 
     function calcAge(date) {
         const ageDif = new Date() - date.getTime();
@@ -78,7 +82,7 @@ export default function EditUser() {
           </span>
         </div>
         <button
-        onClick={() => setModalOpen(true)}
+        onClick={() => setModalOpen('1')}
         className={` absolute right-4 top-4 cursor-pointer flex gap-1 transition-all duration-150 text-slate-800 dark:text-slate-50`}
         >
             <PencilIcon className='h-6 w-6' />
@@ -91,7 +95,9 @@ export default function EditUser() {
         <h2 className='font-bold pb-2'>Description</h2>
         <span className='text-slate-600 dark:text-slate-200 flex justify-between items-start'>
         {profile.description}
-        <button>
+        <button
+        onClick={() => setModalOpen('2')}
+        >
             <PencilIcon className='h-6 w-6' />
         </button>
       </span>
@@ -100,7 +106,9 @@ export default function EditUser() {
       <article className=' grid grid-cols-1 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md p-4 rounded-xl'>
       <h2 className='font-bold pb-2'>Description</h2>
       <span className='text-slate-600 dark:text-slate-200 flex justify-between items-start'>
-      <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'>
+      <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
+      onClick={() => setModalOpen('2')}
+      >
             Add description
             <PlusIcon className='h-6 w-6' />
         </button>
@@ -132,7 +140,9 @@ export default function EditUser() {
       <h2 className='font-bold pb-2'>Experience</h2>
       <ul className='text-slate-600 dark:text-slate-200 text-[14px]'>
         <li>
-          <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'>
+          <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
+          onClick={() => setModalOpen('3')}
+          >
             Add new
             <PlusIcon className='h-6 w-6' />
           </button>
@@ -167,7 +177,9 @@ export default function EditUser() {
       <h2 className='font-bold pb-2'>Educations</h2>
       <ul className='text-slate-600 dark:text-slate-200 text-[14px]'>
         <li>
-          <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'>
+          <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
+          onClick={() => setModalOpen('4')}
+          >
             Add new
             <PlusIcon className='h-6 w-6' />
           </button>
@@ -189,20 +201,30 @@ export default function EditUser() {
           <li key={i} className='bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-50 px-2 py-1 rounded-md'>{item}</li>
         ))}
       </ul>
+      <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
+      onClick={() => setModalOpen('5')}
+      >
+            Edit skills
+            <PencilIcon className='h-6 w-6' />
+      </button>
       </>
       :
-      <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'>
-            Add skills
-            <PlusIcon className='h-6 w-6' />
+      <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
+      onClick={() => setModalOpen('5')}
+      >
+            Edit skills
+            <PencilIcon className='h-6 w-6' />
       </button>
       }
     </article>
     </section>
     }
     <AnimatePresence>
-    { modalOpen && 
-      <Modal closeModal={close} />
-    }
+    { modalOpen === '1' && <MainProfileModal closeModal={close} /> }
+    { modalOpen === '2' && <DescriptionModal closeModal={close} /> }
+    { modalOpen === '3' && <ExperienceModal closeModal={close} /> }
+    { modalOpen === '4' && <EducationModal closeModal={close} /> }
+    { modalOpen === '5' && <SkillsModal closeModal={close} skills={ (user.skills?.list ? [...user.skills.list] : [] ) } /> }
     </AnimatePresence>
     </>
   )

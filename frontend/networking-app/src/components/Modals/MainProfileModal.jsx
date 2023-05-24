@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 
-export default function EditingModal({ children, closeModal, user }) {
+export default function MainProfileModal({ children, closeModal, user }) {
 
     const ModalAnimations = {
         initial: {
@@ -28,7 +28,8 @@ export default function EditingModal({ children, closeModal, user }) {
     variants={ModalAnimations}
     initial="initial"
     animate="visible"
-    className='fixed inset-0 h-screen w-full bg-white dark:bg-slate-900 z-50 flex flex-col'
+    className='fixed inset-0 h-screen w-full bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
+    id="modalGrid"
     >
         <div id="ModalHeader"
         className='flex justify-between items-center p-4 border-b-2'
@@ -64,9 +65,10 @@ export default function EditingModal({ children, closeModal, user }) {
                 <input className='input-edit' placeholder='Enter location' type="text" name="location" />
                 </span>
             </div>
-            <button className='updateBtn'>Update</button>
         </div>
-
+        <div className='p-4'>
+        <button className='updateBtn'>Update</button>
+        </div>
     </motion.section>
   )
 }
