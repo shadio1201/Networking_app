@@ -220,11 +220,11 @@ export default function EditUser() {
     </section>
     }
     <AnimatePresence>
-    { modalOpen === '1' && <MainProfileModal closeModal={close} /> }
-    { modalOpen === '2' && <DescriptionModal closeModal={close} /> }
-    { modalOpen === '3' && <ExperienceModal closeModal={close} /> }
-    { modalOpen === '4' && <EducationModal closeModal={close} /> }
-    { modalOpen === '5' && <SkillsModal closeModal={close} skills={ (user.skills?.list ? [...user.skills.list] : [] ) } /> }
+    { modalOpen === '1' && <MainProfileModal closeModal={close} data={profile} user={user} /> }
+    { modalOpen === '2' && <DescriptionModal closeModal={close} data={profile} user={user} /> }
+    { modalOpen === '3' && <ExperienceModal closeModal={close} exp={profile} user={user} /> }
+    { modalOpen === '4' && <EducationModal closeModal={close} edu={profile} user={user} /> }
+    { modalOpen === '5' && <SkillsModal closeModal={close} user={user} skills={ (profile.skills?.list ? [...profile.skills.list] : [] ) } /> }
     </AnimatePresence>
     </>
   )

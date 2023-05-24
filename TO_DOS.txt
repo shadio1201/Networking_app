@@ -23,15 +23,21 @@ x Make like button to component
 
 x Make like function - se noter på mobil
 
+x See list of saved profiles
+
+x Make settings page where user can update profile elements
+
 Make new access token when old access token has expired
 
-Make settings page where user can update profile elements
-
-See list of saved profiles
+Make settings page able to update profile
 
 Make near search function with websockets and geolocation api
 
-Make uploading image serverside -> formData
+Protect API routes and clean XSS
+
+Clean frontend project up -> make composables
+
+Make uploading image serverside -> formData + multer
 
 Customize home page -> add about section step by step lotte animation guide.
 

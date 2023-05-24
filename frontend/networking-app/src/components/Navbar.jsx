@@ -24,7 +24,7 @@ export default function Navbar() {
           {
           user &&
           <span className='flex justify-center items-center gap-2'>
-            <img src={user ? user.profile_pic : img_default} className=' w-8 h-8 rounded-full object-cover shadow-md shadow-black' />
+            <img src={user.profile_pic ? user.profile_pic : img_default} className=' w-8 h-8 rounded-full object-cover shadow-md shadow-black' />
             <p>{user.first_name}</p>
           </span>}
         <button onClick={toggleSidebar}>

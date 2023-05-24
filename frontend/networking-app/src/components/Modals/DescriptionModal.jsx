@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 
-export default function DescriptionModal({ children, closeModal, user }) {
+export default function DescriptionModal({ data, closeModal, user }) {
 
     const [text, setText] = useState('');
 
@@ -61,7 +61,7 @@ export default function DescriptionModal({ children, closeModal, user }) {
                 value={text}
                 onChange={textInput} 
                 onPaste={(e) => e.clipboardData.getData('text/plain').slice(0, 2600)}
-                className='textarea-edit' placeholder='Create a description' type="textarea" name="description" />
+                className='textarea-edit h-64' placeholder='Create a description' type="textarea" name="description" />
                 <p className={ text.length >= 2600 ? 'text-[#06beb6]' : '' }>{ text.length } / 2600</p>
                 </span>
             </div>

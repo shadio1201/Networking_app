@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
+import useUserUpdate from '../hooks/useUserUpdate';
 
-export default function MainProfileModal({ children, closeModal, user }) {
+export default function MainProfileModal({ data, closeModal, user }) {
+
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [title, setTitle] = useState('');
+    const [birthday, setBirthday] = useState('');
+    const [location, setLocation] = useState('');
+    const [picture, setPicture] = useState(null)
+
+    const updatedData = {
+        first_name: (firstname ? firstname : null),
+        last_name: (lastname ? lastname : null),
+        profile_pic: picture,
+        birthday: (birthday ? birthday : null),
+        titel: (title ? title : null),
+        location: (location ? location : null)
+    }
 
     const ModalAnimations = {
         initial: {
@@ -46,28 +63,38 @@ export default function MainProfileModal({ children, closeModal, user }) {
             <div className='grid grid-cols-1 gap-4'>
                 <span className='flex flex-col gap-1'>
                 <label htmlFor="firstName">First name</label>
-                <input className='input-edit' placeholder='Enter first name' type="text" name="firstName" />
+                <input 
+                value={firstname} onChange={(e) => setFirstname(e.target.value)}
+                className='input-edit' placeholder='Enter first name' type="text" name="firstName" />
                 </span>
                 <span className='flex flex-col gap-1'>
                 <label htmlFor="lastName">Last name</label>
-                <input className='input-edit' placeholder='Enter last name' type="text" name="lastName" />
+                <input 
+                value={lastname} onChange={(e) => setLastname(e.target.value)}
+                className='input-edit' placeholder='Enter last name' type="text" name="lastName" />
                 </span>
                 <span className='flex flex-col gap-1'>
                 <label className='flex items-center gap-1' htmlFor="title">Title { !user?.title && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
-                <input className='input-edit' placeholder='Enter title' type="text" name="title" />
+                <input 
+                value={title} onChange={(e) => setTitle(e.target.value)}
+                className='input-edit' placeholder='Enter title' type="text" name="title" />
                 </span>
                 <span className='flex flex-col gap-1'>
                 <label className='flex items-center gap-1' htmlFor="age">Age { !user?.age && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
-                <input className='input-edit dark:darkScheme lightScheme' placeholder='Enter age' type="date" name="age" />
+                <input 
+                value={birthday} onChange={(e) => setBirthday(e.target.value)}
+                className='input-edit dark:darkScheme lightScheme' placeholder='Enter age' type="date" name="age" />
                 </span>
                 <span className='flex flex-col gap-1'>
                 <label className='flex items-center gap-1' htmlFor="location">Location { !user?.location && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
-                <input className='input-edit' placeholder='Enter location' type="text" name="location" />
+                <input 
+                value={location} onChange={(e) => setLocation(e.target.value)}
+                className='input-edit' placeholder='Enter location' type="text" name="location" />
                 </span>
             </div>
         </div>
         <div className='p-4'>
-        <button className='updateBtn'>Update</button>
+        <button onClick={() => useUserUpdate(user.id, updatedData)} className='updateBtn'>Update</button>
         </div>
     </motion.section>
   )

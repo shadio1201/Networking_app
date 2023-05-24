@@ -5,7 +5,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 import { toast } from 'react-hot-toast';
 
-export default function SkillsModal({ children, closeModal, skills }) {
+export default function SkillsModal({ user, closeModal, skills }) {
 
     const skillInput = useRef()
     const [skill, setSkill] = useState('')

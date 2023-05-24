@@ -15,5 +15,5 @@
  }
 
  .textarea-edit {
-    @apply border-2 p-2 resize-none outline-none bg-transparent h-64 rounded-md dark:border-slate-600;
+    @apply border-2 p-2 resize-none outline-none bg-transparent rounded-md dark:border-slate-600;
  }
