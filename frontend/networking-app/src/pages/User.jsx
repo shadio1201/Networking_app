@@ -70,10 +70,13 @@ export default function User() {
           }
           </span>
         </div>
-        <SaveComponent user={user} id={id} />
+        {
+          profile &&
+          <SaveComponent user={user} id={id} list={profile.saved_profiles.users} />
+        }
         {
           profile.approvals &&
-        <LikeComponent hasLiked={hasLiked} list={profile.approvals.users} user={user} id={id} />
+          <LikeComponent hasLiked={hasLiked} list={profile.approvals.users} user={user} id={id} />
         }
       </div>
 

@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
 
     const userId = req.params.id
 
-    let string = '';
+    let finalString = []
     let inputs = []
 
     const updateUser = {
@@ -28,14 +28,14 @@ module.exports = async (req, res, next) => {
 
     for(let x = 0; x < Object.keys(updateUser).length; x++) {
         if(Object.keys(values).includes(Object.keys(updateUser)[x])) {
-            string = string + `${Object.keys(updateUser)[x]}=$${index}, `
+            finalString.push(`${Object.keys(updateUser)[x]}=$${index}`)
             inputs.push(values[Object.keys(updateUser)[x]]);
             index++
         }
     }
-    console.log(string, inputs)
+
     try {
-        await pool.query(`UPDATE users SET ${string} WHERE user_id=$${index}`, 
+        await pool.query(`UPDATE users SET ${finalString.join(', ')} WHERE user_id=$${index}`, 
         [...inputs, userId]);
         next();
     }

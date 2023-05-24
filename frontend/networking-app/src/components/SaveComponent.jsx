@@ -3,13 +3,21 @@ import { BookmarkIcon as BookmarkUnsaved } from '@heroicons/react/24/outline'
 import { BookmarkIcon as BookmarkSaved } from '@heroicons/react/24/solid'
 import toast from 'react-hot-toast'
 
-export default function SaveComponent({ user, id }) {
+export default function SaveComponent({ user, id, list }) {
 
     const [hasSaved, setHasSaved] = useState(false);
 
+    useEffect(() => {
+      if(list?.includes(user?.id)) {
+          setHasSaved(true);
+      } else {
+          setHasSaved(false);
+      }
+    }, [])
+
     async function SaveUser(logged_in_user, user_id) {
 
-      await fetch('http://localhost:3000/services/v1/like',
+      await fetch('http://localhost:3000/services/v1/saveUser',
           { 
           method: 'POST',
           headers: { "content-type" : "application/json"},
@@ -22,7 +30,7 @@ export default function SaveComponent({ user, id }) {
     
       async function UnsaveUser(logged_in_user, user_id) {
     
-        await fetch('http://localhost:3000/services/v1/dislike',
+        await fetch('http://localhost:3000/services/v1/unsaveUser',
           { 
           method: 'POST',
           headers: { "content-type" : "application/json"},
@@ -33,24 +41,16 @@ export default function SaveComponent({ user, id }) {
         })
       }
       const saveProfile = () => {
-        SaveUser(user.id, id);
+        
         setHasLiked(true);
       }
     
       const unsaveProfile = () => {
-        UnsaveUser(user.id, id);
         setHasLiked(false);
       }
 
-/*       useEffect(() => {
-        if(list?.includes(user?.id)) {
-            setHasSaved(true);
-        } else {
-            setHasSaved(false);
-        }
-    }, []) */
-
     function testSaveFunction() {
+      SaveUser(user.id, id);
       setHasSaved(state => state = !state)
       toast.success('Saved', {
         iconTheme: {
@@ -61,6 +61,7 @@ export default function SaveComponent({ user, id }) {
     }
 
     function testUnSaveFunction() {
+      UnsaveUser(user.id, id);
       setHasSaved(state => state = !state)
       toast.success('Unsaved', {
         iconTheme: {

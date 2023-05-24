@@ -18,6 +18,7 @@ export default function EditUser() {
     const [loading, setLoading] = useState(false);
     const user = useSelector(selectUser);
     const [profile, setProfile] = useState(null)
+    const [update, setUpdate] = useState(false);
 
     const [modalOpen, setModalOpen] = useState('')
 
@@ -47,7 +48,7 @@ export default function EditUser() {
         fetchUser()
     
         setLoading(false);
-      }, [])
+      }, [update])
 
       // Make change img function
 
@@ -192,7 +193,7 @@ export default function EditUser() {
       { /* Skills section */ 
       Object.keys(profile.skills).length != 0 ?
       <>
-      <button className='absolute right-4 top-4'>
+      <button onClick={() => setModalOpen('5')} className='absolute right-4 top-4'>
             <PencilIcon className='h-6 w-6' />
       </button>
       <ul className='text-[14px] flex flex-1 flex-wrap gap-2'>
@@ -201,18 +202,12 @@ export default function EditUser() {
           <li key={i} className='bg-slate-200 text-slate-800 dark:bg-slate-600 dark:text-slate-50 px-2 py-1 rounded-md'>{item}</li>
         ))}
       </ul>
-      <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
-      onClick={() => setModalOpen('5')}
-      >
-            Edit skills
-            <PencilIcon className='h-6 w-6' />
-      </button>
       </>
       :
       <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
       onClick={() => setModalOpen('5')}
       >
-            Edit skills
+            Add skills
             <PencilIcon className='h-6 w-6' />
       </button>
       }
@@ -220,9 +215,9 @@ export default function EditUser() {
     </section>
     }
     <AnimatePresence>
-    { modalOpen === '1' && <MainProfileModal closeModal={close} data={profile} user={user} /> }
+    { modalOpen === '1' && <MainProfileModal closeModal={close} data={profile} user={user} update={setUpdate} /> }
     { modalOpen === '2' && <DescriptionModal closeModal={close} data={profile} user={user} /> }
-    { modalOpen === '3' && <ExperienceModal closeModal={close} exp={profile} user={user} /> }
+    { modalOpen === '3' && <ExperienceModal closeModal={close} exp={profile.experience} user={user} /> }
     { modalOpen === '4' && <EducationModal closeModal={close} edu={profile} user={user} /> }
     { modalOpen === '5' && <SkillsModal closeModal={close} user={user} skills={ (profile.skills?.list ? [...profile.skills.list] : [] ) } /> }
     </AnimatePresence>

@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 import useUserUpdate from '../hooks/useUserUpdate';
 
-export default function MainProfileModal({ data, closeModal, user }) {
+export default function MainProfileModal({ data, closeModal, user, update }) {
 
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
@@ -13,6 +13,16 @@ export default function MainProfileModal({ data, closeModal, user }) {
     const [birthday, setBirthday] = useState('');
     const [location, setLocation] = useState('');
     const [picture, setPicture] = useState(null)
+
+    let date = `${data.birthday}`.split('T')[0];
+
+    useEffect(() => {
+        setFirstname(data.first_name);
+        setLastname(data.last_name);
+        setTitle(data.titel);
+        setBirthday(date)
+
+    }, [])
 
     const updatedData = {
         first_name: (firstname ? firstname : null),
@@ -62,31 +72,31 @@ export default function MainProfileModal({ data, closeModal, user }) {
             <p className='text-sm text-slate-600 dark:text-slate-200 flex gap-1 items-center mb-2'>Missing information <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon></p>
             <div className='grid grid-cols-1 gap-4'>
                 <span className='flex flex-col gap-1'>
-                <label htmlFor="firstName">First name</label>
+                <label htmlFor="firstName">First name { !data?.first_name && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input 
                 value={firstname} onChange={(e) => setFirstname(e.target.value)}
                 className='input-edit' placeholder='Enter first name' type="text" name="firstName" />
                 </span>
                 <span className='flex flex-col gap-1'>
-                <label htmlFor="lastName">Last name</label>
+                <label htmlFor="lastName">Last name { !data?.last_name && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input 
                 value={lastname} onChange={(e) => setLastname(e.target.value)}
                 className='input-edit' placeholder='Enter last name' type="text" name="lastName" />
                 </span>
                 <span className='flex flex-col gap-1'>
-                <label className='flex items-center gap-1' htmlFor="title">Title { !user?.title && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
+                <label className='flex items-center gap-1' htmlFor="title">Title { !data?.titel && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input 
                 value={title} onChange={(e) => setTitle(e.target.value)}
                 className='input-edit' placeholder='Enter title' type="text" name="title" />
                 </span>
                 <span className='flex flex-col gap-1'>
-                <label className='flex items-center gap-1' htmlFor="age">Age { !user?.age && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
+                <label className='flex items-center gap-1' htmlFor="age">Age { !data?.birthday && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input 
                 value={birthday} onChange={(e) => setBirthday(e.target.value)}
                 className='input-edit dark:darkScheme lightScheme' placeholder='Enter age' type="date" name="age" />
                 </span>
                 <span className='flex flex-col gap-1'>
-                <label className='flex items-center gap-1' htmlFor="location">Location { !user?.location && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
+                <label className='flex items-center gap-1' htmlFor="location">Location { Object.keys(data.location).length == 0 && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input 
                 value={location} onChange={(e) => setLocation(e.target.value)}
                 className='input-edit' placeholder='Enter location' type="text" name="location" />
@@ -94,7 +104,10 @@ export default function MainProfileModal({ data, closeModal, user }) {
             </div>
         </div>
         <div className='p-4'>
-        <button onClick={() => useUserUpdate(user.id, updatedData)} className='updateBtn'>Update</button>
+        <button onClick={() => {
+            useUserUpdate(user.id, updatedData)
+            update(true)
+        }} className='updateBtn'>Update</button>
         </div>
     </motion.section>
   )

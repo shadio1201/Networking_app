@@ -4,12 +4,17 @@ import { motion } from 'framer-motion'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 import { toast } from 'react-hot-toast';
+import useUserUpdate from '../hooks/useUserUpdate';
 
 export default function SkillsModal({ user, closeModal, skills }) {
 
     const skillInput = useRef()
     const [skill, setSkill] = useState('')
     let [list, setList] = useState([...skills])
+
+    const updatedData = {
+        skills: {"list": list},
+    }
 
     const addToList = (input) => {
         list = [...list];
@@ -83,7 +88,7 @@ export default function SkillsModal({ user, closeModal, skills }) {
                     }
                 }}
                 ref={skillInput} value={skill} onChange={(e) => setSkill(e.target.value)} className='input-edit' placeholder='Enter skill' type="text" name="skill" />
-                <button onClick={() => addToList(skill)} className='px-8 bg-[#06beb6] rounded-lg border-2'>Add</button>
+                <button onClick={() => addToList(skill)} className='px-8 bg-[#06beb6] rounded-lg border-2 text-white'>Add</button>
                 </span>
                 </span>
                 <div id="skillList" className='mt-4 h-fit flex flex-1 flex-wrap gap-2'>
@@ -102,7 +107,11 @@ export default function SkillsModal({ user, closeModal, skills }) {
             </div>
         </div>
         <div className='p-4'>
-        <button className='updateBtn'>Save</button>
+        <button
+        onClick={() => {
+            useUserUpdate(user.id, updatedData)
+        }}
+        className='updateBtn'>Save</button>
         </div>
     </motion.section>
   )

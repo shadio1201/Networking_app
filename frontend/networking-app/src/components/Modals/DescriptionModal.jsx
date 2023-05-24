@@ -1,16 +1,24 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
+import useUserUpdate from '../hooks/useUserUpdate';
 
 export default function DescriptionModal({ data, closeModal, user }) {
 
-    const [text, setText] = useState('');
+    const [text, setText] = useState(``);
+
+    useEffect(() => {
+        setText((state) => data.description !== null ? state = `${data.description}` : ``);
+    }, [])
+
+    const updatedData = {
+        description: text
+    }
 
     const textInput = (e) => {
-
-        let newText = e.target.value
+        let newText = `${e.target.value}`
         if(text.length >= 2600) {
             newText = newText.substring(0, 2600);
         }
@@ -56,19 +64,19 @@ export default function DescriptionModal({ data, closeModal, user }) {
             <p className='text-sm text-slate-600 dark:text-slate-200 flex gap-1 items-center mb-2'>Missing information <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon></p>
             <div className='grid grid-cols-1 gap-4'>
                 <span className='flex flex-col gap-1'>
-                <label className='flex items-center gap-1' htmlFor="description">Description { !user?.description && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
+                <label className='flex items-center gap-1' htmlFor="description">Description { !data?.description && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <textarea 
                 value={text}
                 onChange={textInput} 
                 onPaste={(e) => e.clipboardData.getData('text/plain').slice(0, 2600)}
                 className='textarea-edit h-64' placeholder='Create a description' type="textarea" name="description" />
-                <p className={ text.length >= 2600 ? 'text-[#06beb6]' : '' }>{ text.length } / 2600</p>
+                <p className={ text?.length >= 2600 ? 'text-[#06beb6]' : '' }>{ text?.length } / 2600</p>
                 </span>
             </div>
         </div>
         <div className='p-4'>
         <button
-        onClick={() => console.log(descriptionText.current.value)}
+        onClick={() => useUserUpdate(user.id, updatedData)}
         className='updateBtn'>Update</button>
         </div>
     </motion.section>

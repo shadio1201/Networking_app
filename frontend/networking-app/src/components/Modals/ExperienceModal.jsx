@@ -68,11 +68,11 @@ export default function ExperienceModal({ user, closeModal, exp }) {
                 <p>Period of work</p>
                 <span className='flex gap-4'>
                 <span className='w-full'>
-                <label className='flex items-center gap-1' htmlFor="startdate">Start date { !exp?.period[0] && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
+                <label className='flex items-center gap-1' htmlFor="startdate">Start date { !exp?.periode && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input className='input-edit dark:darkScheme lightScheme' placeholder='Start date' type="month" name="startdate" />
                 </span>
                 <span className='w-full'>
-                <label className='flex items-center gap-1' htmlFor="enddate">End date { !exp?.period[1] && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
+                <label className='flex items-center gap-1' htmlFor="enddate">End date { !exp?.periode && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input className='input-edit dark:darkScheme lightScheme' placeholder='End date' type="month" name="enddate" />
                 </span>
                 </span>
