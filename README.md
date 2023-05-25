@@ -2,7 +2,7 @@
 
 
 Frontend:
-React (React Router v6), Redux, Tailwind
+React (React Router v6), Redux, Tailwind, Framer Motion, React Hot Toast, Threejs, Lottie
 
 Sikkerhed:
 JWT
