@@ -4,6 +4,7 @@ import '../signup.css';
 import Button from '../components/base/button.jsx';
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import usePost from '../components/hooks/usePost';
 
 export default function Signup() {
 
@@ -59,9 +60,9 @@ export default function Signup() {
       birthday,
     }
 
-    if(username == '' || Object.values(user_data).some(x => x == '')) return toast.error('Please fill all fields');
     if(isPending) return;
-
+    if(Object.values(user_data).some(x => x == '')) return toast.error('Please fill all fields');
+    
     if(password != confirmpassword) {
       toast.error('Passwords dont match');
       return
@@ -73,15 +74,11 @@ export default function Signup() {
           primary: '#45afa7',
           secondary: '#fff',
         },
-  })
-
-    const res = await fetch('http://localhost:3000/api/v1/users/postUser',
-    { method: 'POST',
-      headers: { "content-type" : "application/json"},
-      body: JSON.stringify(user_data)
     })
 
-    const { id, error, error_type } = await res.json();
+    const data = await usePost('http://localhost:3000/api/v1/users/postUser', user_data);
+    
+    const { id, error, error_type } = data;
 
     if(error) {
 
@@ -111,14 +108,7 @@ export default function Signup() {
     }
 
     if(picture) {
-    await fetch('http://localhost:3000/api/v1/users/picture',
-    { method: 'POST',
-      headers: { "content-type" : "application/json"},
-      body: JSON.stringify({
-        id,
-        picture
-      })
-    })
+    await usePost('http://localhost:3000/api/v1/users/picture', { id, picture });
     }
 
     toast.success('Success', {

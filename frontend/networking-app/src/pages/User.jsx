@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux'
 import { selectUser } from '../redux/user'
 import LikeComponent from '../components/LikeComponent'
 import SaveComponent from '../components/SaveComponent'
+import useFetch from '../components/hooks/useFetch';
 
 export default function User() {
 
@@ -36,31 +37,24 @@ export default function User() {
 
     async function fetchUser() {
 
-      const response1 = await fetch(`http://localhost:3000/api/v1/users/${id}`);
-
-      const data = await response1.json();
-
-      console.log(data[0]);
+      const data = await useFetch(`http://localhost:3000/api/v1/users/${id}`)
       
       setProfile(() => data[0])
 
     }
     fetchUser()
 
-    async function fetchCurrent() {
+    async function fetchSaves() {
 
-      const response2 = await fetch(`http://localhost:3000/api/v1/users/savedProfiles/${user?.id}`);
+      const data = await useFetch(`http://localhost:3000/api/v1/users/savedProfiles/${user?.id}`)
 
-      const data2 = await response2.json();
-
-      console.log(data2);
-
-      setSaves(() => data2)
+      setSaves(() => data)
 
     }
     if(user) {
-      fetchCurrent() 
+      fetchSaves() 
     }
+    
     setLoading(false);
   }, [])
 

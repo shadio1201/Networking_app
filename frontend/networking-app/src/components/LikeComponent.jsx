@@ -3,6 +3,7 @@ import Lottie from 'react-lottie'
 import likeEffect from '../lotties/like-particle.json'
 import { HandThumbUpIcon as ThumpUpOutline } from '@heroicons/react/24/outline'
 import { HandThumbUpIcon as ThumpUpSolid} from '@heroicons/react/24/solid'
+import usePost from '../components/hooks/usePost';
 
 export default function LikeComponent({list, user, id}) {
 
@@ -18,41 +19,16 @@ export default function LikeComponent({list, user, id}) {
       setTotalLikes((list ? list?.length : 0))
   }, [])
 
-  async function LikeUser(logged_in_user, user_id) {
-
-    await fetch('http://localhost:3000/services/v1/like',
-      { 
-      method: 'POST',
-      headers: { "content-type" : "application/json"},
-      body: JSON.stringify({
-        logged_in_user,
-        user_id
-      })
-    })
-  }
-
-  async function dislikeUser(logged_in_user, user_id) {
-
-    await fetch('http://localhost:3000/services/v1/dislike',
-      { 
-      method: 'POST',
-      headers: { "content-type" : "application/json"},
-      body: JSON.stringify({
-        logged_in_user,
-        user_id
-      })
-    })
-  }
 
   // function to fetch api and like post 
-  const likeProfile = () => {
-    LikeUser(user.id, id);
+  const likeProfile = async () => {
+    await usePost('http://localhost:3000/services/v1/like', { logged_in_user: user.id, user_id: id });
     setTotalLikes((state) => state + 1);
     setHasLiked(true);
   }
 
-  const dislikeProfile = () => {
-    dislikeUser(user.id, id);
+  const dislikeProfile = async () => {
+    await usePost('http://localhost:3000/services/v1/dislike', { logged_in_user: user.id, user_id: id });
     setTotalLikes((state) => state - 1);
     setHasLiked(false);
   }

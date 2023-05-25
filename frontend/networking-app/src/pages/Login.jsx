@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { login, selectToken, setToken } from '../redux/user';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../redux/user';
+import usePost from '../components/hooks/usePost';
 
 export default function Login() {
 
@@ -27,7 +28,7 @@ export default function Login() {
 
     const [isPending, setIsPending] = useState(false);
 
-      const toggle = async (e)=> {
+      const authenticate = async (e)=> {
         e.preventDefault();
         if(username == '' || password == '') return toast.error('Please fill out all fields!');
         setIsPending(true);
@@ -45,14 +46,9 @@ export default function Login() {
 
         setIsNotVerified(false);
 
-        const res = await fetch('http://localhost:3000/auth/v1/login',
-        { method: 'POST',
-          credentials: 'include',
-          headers: { "content-type" : "application/json"},
-          body: JSON.stringify(user_data)
-        });
+        const data = await usePost('http://localhost:3000/auth/v1/login', user_data);
 
-        const { message, error, token, isNotVerified, id, email, first_name, profile_pic } = await res.json();
+        const { message, error, token, isNotVerified, id, email, first_name, profile_pic } = data;
 
         if(error) {
 
@@ -115,7 +111,7 @@ export default function Login() {
                 value={password} required placeholder='Password' className={password ? 'input checkIfvalid' : 'input'} type="password" name="email" id="password" />
             </div>
             
-            {!isPending && <button onClick={toggle} className='registerBtn'>Login</button>}
+            {!isPending && <button onClick={authenticate} className='registerBtn'>Login</button>}
             {isPending && <button disabled className='registerBtn'><span className='btn-loading'></span></button>}
             {isNotVerified && <p className='text-center'>Please check your email for a verification link</p>}
             {isNotVerified && <p className='text-center'>Or <button onClick={sentVerification} className='px-2 py-1 text-slate-50 rounded-md bg-gradient-to-r from-[#06beb6] to-[#48b1bf]'>click here</button> to get a new link</p>}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
+import usePost from '../components/hooks/usePost';
 
 export default function Confirm() {
 
@@ -10,15 +11,9 @@ export default function Confirm() {
 
     async function verifyToken() {
 
-        const res = await fetch('http://localhost:3000/services/v1/email/verify',
-          { method: 'POST',
-          headers: { "content-type" : "application/json"},
-          body: JSON.stringify({
-            token
-          })
-        })
+        const data = await usePost('http://localhost:3000/services/v1/email/verify', { token });
     
-        const { error } = await res.json()
+        const { error } = data
 
         if(error) {
            return navigate('/failure', { state: { error }, replace: true });

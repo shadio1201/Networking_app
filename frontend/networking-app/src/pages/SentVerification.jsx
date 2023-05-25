@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
+import usePost from '../components/hooks/usePost';
 
 export default function Verify() {
 
@@ -7,17 +8,7 @@ export default function Verify() {
   const navigate = useNavigate();
 
   async function sendConfirmation(user_email, user_id) {
-
-    await fetch('http://localhost:3000/services/v1/email/confirmation',
-      { method: 'POST',
-      headers: { "content-type" : "application/json"},
-      body: JSON.stringify({
-        email: user_email, 
-        id: user_id
-      })
-    })
-
-
+    await usePost('http://localhost:3000/services/v1/email/confirmation', { email: user_email, id: user_id});
   }
 
   useEffect(() => {
