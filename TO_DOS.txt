@@ -33,7 +33,7 @@ x Make settings page able to update profile
 
 Fast clean up
 
-Protect API routes and clean XSS
+Protect API routes and clean XSS, make password longer
 
 Send projekt over to wiseflow
 
@@ -42,6 +42,8 @@ Make it possible to update experience and education
 Make near search function with websockets and geolocation api
 
 Clean frontend project up -> make composables
+
+Switch to real mail provider
 
 Make new access token when old access token has expired
 
