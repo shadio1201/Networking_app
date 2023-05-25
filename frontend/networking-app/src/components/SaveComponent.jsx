@@ -8,11 +8,13 @@ export default function SaveComponent({ user, id, list }) {
     const [hasSaved, setHasSaved] = useState(false);
 
     useEffect(() => {
-      if(list?.includes(user?.id)) {
-          setHasSaved(true);
+
+      if(list?.users.includes(id)) {
+        setHasSaved(true);
       } else {
-          setHasSaved(false);
+        setHasSaved(false);
       }
+
     }, [])
 
     async function SaveUser(logged_in_user, user_id) {

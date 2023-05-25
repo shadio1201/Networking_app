@@ -6,6 +6,8 @@ module.exports = async (req, res, next) => {
 
     //if email exist in database
 
+        console.log(req.body.picture)
+
         const checkUsername = await pool.query('SELECT user_id FROM users WHERE username=$1', [req.body.username] );
 
         if(checkUsername.rowCount > 0) {

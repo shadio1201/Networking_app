@@ -15,11 +15,9 @@ module.exports = async (req, res, next) => {
     
     const selectedUsers = info.rows[0].saved_profiles.users;
     const array = selectedUsers;
-    console.log(array)
     const parameters = JSON.stringify(array).replace(/[\[\]]+/g, '').replace(/"/g, "'");
-    console.log(parameters)
     try {
-        const users = await pool.query(`SELECT first_name, last_name, titel, location, profile_pic, user_id FROM users WHERE user_id IN (${parameters})`);
+        const users = await pool.query(`SELECT first_name, last_name, titel, profile_pic, user_id FROM users WHERE user_id IN (${parameters})`);
         res.locals.users = users.rows
     }
     catch (err) {

@@ -29,6 +29,7 @@ module.exports = async (req, res, next) => {
     }
 
     if(isTokenActive.rows[0].session_id != user_token.sessionId) {
+        res.cookie('0_0', '');
         return res.json({
             error: "Credentials invalid",
         })
@@ -37,6 +38,7 @@ module.exports = async (req, res, next) => {
     const user = await pool.query(`SELECT email, first_name, profile_pic, user_id, isActive FROM users WHERE user_id=$1`, [isTokenActive.rows[0].user_id]);
 
     if(user.rowCount === 0) {
+        res.cookie('0_0', '');
         return res.json({
             error: "No user found",
         });

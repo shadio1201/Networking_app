@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom'
 import { motion } from 'framer-motion'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
-import { toast } from 'react-hot-toast';
+import toast from 'react-hot-toast'
 import useUserUpdate from '../hooks/useUserUpdate';
 
-export default function SkillsModal({ user, closeModal, skills }) {
+export default function SkillsModal({ user, closeModal, skills, update }) {
 
     const skillInput = useRef()
     const [skill, setSkill] = useState('')
     let [list, setList] = useState([...skills])
+
+    const [isPending, setIsPending] = useState(false);
 
     const updatedData = {
         skills: {"list": list},
@@ -54,6 +56,23 @@ export default function SkillsModal({ user, closeModal, skills }) {
         exit: {
             y: "100vh"
         }
+    }
+
+    const updateElems = async () => {
+        setIsPending(true)
+        const notification = toast.loading('Updating...', {
+            iconTheme: {
+                primary: '#45afa7',
+                secondary: '#fff',
+              },
+          })
+        await useUserUpdate(user.id, updatedData)
+        update();
+        closeModal();
+        toast.success('Update success', {
+            id: notification
+          })
+        setIsPending(false)
     }
 
   return (
@@ -108,9 +127,7 @@ export default function SkillsModal({ user, closeModal, skills }) {
         </div>
         <div className='p-4'>
         <button
-        onClick={() => {
-            useUserUpdate(user.id, updatedData)
-        }}
+        onClick={updateElems}
         className='updateBtn'>Save</button>
         </div>
     </motion.section>

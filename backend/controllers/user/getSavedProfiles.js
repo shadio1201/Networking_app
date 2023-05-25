@@ -4,7 +4,7 @@ module.exports = async (req, res, next) => {
 
     const userId = req.params.id
 
-    const information = 'first_name, last_name, profile_pic, birthday, titel, description, industry_type, contact_details, location, experience, educations, skills, approvals, saved_profiles'
+    const information = 'saved_profiles'
 
     try {
         const user = await pool.query(`SELECT ${information} FROM users WHERE user_id=$1`, [userId]);

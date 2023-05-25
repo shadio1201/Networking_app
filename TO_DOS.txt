@@ -27,17 +27,23 @@ x See list of saved profiles
 
 x Make settings page where user can update profile elements
 
-Make new access token when old access token has expired
+x Make uploading image serverside
 
-Make settings page able to update profile
+x Make settings page able to update profile
 
-Make near search function with websockets and geolocation api
+Fast clean up
 
 Protect API routes and clean XSS
 
+Send projekt over to wiseflow
+
+Make it possible to update experience and education
+
+Make near search function with websockets and geolocation api
+
 Clean frontend project up -> make composables
 
-Make uploading image serverside -> formData + multer
+Make new access token when old access token has expired
 
 Customize home page -> add about section step by step lotte animation guide.
 

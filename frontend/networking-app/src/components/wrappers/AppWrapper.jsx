@@ -26,9 +26,8 @@ export default function AppWrapper(props) {
               style: {
                 textAlign: 'center'
               }
-            })
-            setWaiting(false)
-          }
+            })}
+          setWaiting(false)
             return
           }
           dispatch(
@@ -41,7 +40,8 @@ export default function AppWrapper(props) {
 
             dispatch(setToken({ token }));
         })
-        setWaiting(false)
+        setTimeout(() => { setWaiting(false) }, 500)
+        
   }, []);
 
   if(wait) return ( <Loading /> )

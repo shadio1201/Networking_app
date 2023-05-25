@@ -4,6 +4,7 @@ const router = express.Router();
 // Controllers
 const selectedUsers = require('../controllers/user/selectedUsers');
 const getUser = require('../controllers/user/getUser');
+const getSaved = require('../controllers/user/getSavedProfiles');
 const postUser = require('../controllers/user/createUser');
 const updateUser = require('../controllers/user/updateUser');
 const uploadPic = require('../controllers/user/uploadPic');
@@ -35,6 +36,13 @@ router.post('/picture', uploadPic, (req, res) => {
 
 
 router.get('/:id', getUser, (req, res) => {
+        
+    // send data to request
+        const data = res.locals.user
+        res.json(data)
+} )
+
+router.get('/savedProfiles/:id', getSaved, (req, res) => {
         
     // send data to request
         const data = res.locals.user

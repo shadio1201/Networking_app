@@ -15,7 +15,7 @@ export default function LikeComponent({list, user, id}) {
       } else {
         setHasLiked(false);
       }
-      setTotalLikes(list?.length)
+      setTotalLikes((list ? list?.length : 0))
   }, [])
 
   async function LikeUser(logged_in_user, user_id) {

@@ -18,6 +18,7 @@ export default function User() {
   
   const { id } = useParams();
   const [profile, setProfile] = useState(null)
+  const [saves, setSaves] = useState([])
 
   const [loading, setLoading] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
@@ -35,9 +36,9 @@ export default function User() {
 
     async function fetchUser() {
 
-      const response = await fetch(`http://localhost:3000/api/v1/users/${id}`);
+      const response1 = await fetch(`http://localhost:3000/api/v1/users/${id}`);
 
-      const data = await response.json();
+      const data = await response1.json();
 
       console.log(data[0]);
       
@@ -46,6 +47,20 @@ export default function User() {
     }
     fetchUser()
 
+    async function fetchCurrent() {
+
+      const response2 = await fetch(`http://localhost:3000/api/v1/users/savedProfiles/${user?.id}`);
+
+      const data2 = await response2.json();
+
+      console.log(data2);
+
+      setSaves(() => data2)
+
+    }
+    if(user) {
+      fetchCurrent() 
+    }
     setLoading(false);
   }, [])
 
@@ -71,8 +86,8 @@ export default function User() {
           </span>
         </div>
         {
-          profile &&
-          <SaveComponent user={user} id={id} list={profile.saved_profiles.users} />
+          saves.length &&
+          <SaveComponent user={user} id={id} list={saves.saved_profiles} />
         }
         {
           profile.approvals &&

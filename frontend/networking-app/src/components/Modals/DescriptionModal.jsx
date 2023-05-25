@@ -4,10 +4,13 @@ import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 import useUserUpdate from '../hooks/useUserUpdate';
+import toast from 'react-hot-toast'
 
-export default function DescriptionModal({ data, closeModal, user }) {
+export default function DescriptionModal({ data, closeModal, user, update }) {
 
     const [text, setText] = useState(``);
+
+    const [isPending, setIsPending] = useState(false);
 
     useEffect(() => {
         setText((state) => data.description !== null ? state = `${data.description}` : ``);
@@ -39,6 +42,25 @@ export default function DescriptionModal({ data, closeModal, user }) {
         exit: {
             y: "100vh"
         }
+    }
+
+    
+
+    const updateElems = async () => {
+        setIsPending(true)
+        const notification = toast.loading('Updating...', {
+            iconTheme: {
+                primary: '#45afa7',
+                secondary: '#fff',
+              },
+          })
+        await useUserUpdate(user.id, updatedData)
+        update();
+        closeModal();
+        toast.success('Update success', {
+            id: notification
+          })
+        setIsPending(false)
     }
 
   return (
@@ -76,7 +98,7 @@ export default function DescriptionModal({ data, closeModal, user }) {
         </div>
         <div className='p-4'>
         <button
-        onClick={() => useUserUpdate(user.id, updatedData)}
+        onClick={updateElems}
         className='updateBtn'>Update</button>
         </div>
     </motion.section>

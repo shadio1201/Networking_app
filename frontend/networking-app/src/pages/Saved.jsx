@@ -10,7 +10,31 @@ import { motion, AnimatePresence, useIsPresent } from 'framer-motion'
 
 export default function Saved() {
 
+  const user = useSelector(selectUser);
+  const [profiles, setProfiles] = useState([])
 
+  useEffect(() => {
+
+    setLoading(true);
+
+    async function fetchUser() {
+
+      const response = await fetch(`http://localhost:3000/api/v1/users/selected?id=${user?.id}`);
+
+      const data = await response.json();
+
+      if(data.error) return
+
+      console.log(data);
+      
+      setProfiles(() => data)
+
+    }
+    fetchUser()
+
+    setLoading(false);
+
+  }, [])
 
   const options = {
     loop: true,
@@ -21,38 +45,22 @@ export default function Saved() {
     }
   };
 
-    const arrayTest = [{name: 'Lasse', title: 'ekaniker'}, {name: 'Kim', title: 'Musiker'}, {name: 'Michela', title: 'Eliteløber'}]
+
 
     const [query, setQuery] = useState("");
 
-    const filteredList = arrayTest.filter(item => {
-      return item.name.toLowerCase().includes(query.toLowerCase()) || item.title.toLowerCase().includes(query.toLowerCase());
-    })
+      const filteredList = profiles.filter(item => {
+        let name = item.first_name + ' ' + item.last_name
+        return name.toLowerCase().includes(query.toLowerCase()) || item.titel?.toLowerCase().includes(query.toLowerCase());
+      })
+
 
     const [loading, setLoading] = useState(false);
 
-    const user = useSelector(selectUser);
 
 
-    useEffect(() => {
 
-        setLoading(true);
-    
-/*         async function fetchUser() {
-    
-          const response = await fetch(`http://localhost:3000/api/v1/users/selected?id=${user?.id}`);
-    
-          const data = await response.json();
-    
-          console.log(data[0]);
-          
-          setProfile(() => data[0])
-    
-        }
-        fetchUser() */
-        setLoading(false);
 
-      }, [])
 
   if(loading) {
     return (
@@ -127,11 +135,11 @@ export default function Saved() {
           layout
           transition={{ stiffness: 700, damping: 40 }}
           className='w-full' key={id}>
-          <NavLink to={`/user/${profile.name}`} className='flex p-4 rounded-md justify-start items-center bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md '>
-            <img src={img_default} className='h-12 w-12 rounded-full mr-4'/>
+          <NavLink to={`/user/${profile.user_id}`} className='flex p-4 rounded-md justify-start items-center bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md '>
+            <img src={ profile.profile_pic ? profile.profile_pic : img_default} className='h-12 w-12 rounded-full mr-4 object-cover'/>
             <span className='text-sm'>
-            <p className='text-lg'>{ profile.name }</p>
-            <p>{ profile.title }</p>
+            <p className='text-lg'>{ profile.first_name } { profile.last_name }</p>
+            <p>{ profile.titel }</p>
             </span>
             <ArrowUturnRightIcon className="h-6 w-6 ml-auto" />
           </NavLink>
@@ -139,7 +147,7 @@ export default function Saved() {
         ))
       }
       </AnimatePresence>
-    </ul>
+      </ul>
     }
     </>
 

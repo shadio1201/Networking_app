@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import img_default from '../../assets/imgs/DefaultPicture.jpg'
 import { PlusIcon, PencilIcon, PhoneIcon} from '@heroicons/react/24/solid'
 import AccordionExp from '../components/AccordionExp'
@@ -11,6 +11,7 @@ import ExperienceModal from '../components/Modals/ExperienceModal'
 import EducationModal from '../components/Modals/EducationModal'
 import SkillsModal from '../components/Modals/SkillsModal'
 import { AnimatePresence } from 'framer-motion'
+import toast from 'react-hot-toast'
 
 export default function EditUser() {
 
@@ -19,6 +20,43 @@ export default function EditUser() {
     const user = useSelector(selectUser);
     const [profile, setProfile] = useState(null)
     const [update, setUpdate] = useState(false);
+
+
+  
+    const imageUploader = useRef(null);
+    const [picture, setPicture] = useState(null)
+
+    const [selectedImage, setSelectedImage] = useState(null)
+
+    const addProfileImage = async (e) => {
+      const notification = toast.loading('Uploading image..', {
+        iconTheme: {
+            primary: '#45afa7',
+            secondary: '#fff',
+          },
+      })
+      const reader = new FileReader();
+      if (e.target.files[0]) {
+        reader.readAsDataURL(e.target.files[0]);
+      }
+      reader.onload = (readerEvent) => {
+        setPicture(readerEvent.target.result);
+        setSelectedImage(readerEvent.target.result);
+      }
+
+      await fetch('http://localhost:3000/api/v1/users/picture',
+        { method: 'POST',
+          headers: { "content-type" : "application/json"},
+          body: JSON.stringify({
+            id: user.id,
+            picture
+          })
+        })
+
+      toast.success('Image uploaded', {
+        id: notification
+      })
+    }
 
     const [modalOpen, setModalOpen] = useState('')
 
@@ -58,8 +96,7 @@ export default function EditUser() {
     <section id='profile' className=' m-4 mt-32 flex flex-col gap-4'>
       <div className='flex flex-col gap-4 bg-white shadow-lg dark:bg-slate-700/80 dark:shadow-md p-4 pt-0 rounded-xl relative'>
         <div id="imgContainer" className=' w-full h-16 flex justify-center'>
-          <div className='rounded-full overflow-hidden w-32 h-32 shadow-md shadow-black -translate-y-16 relative border-[#06beb6] border-2 flex justify-center'>
-            <span className='absolute text-sm bottom-0 font-bold text-slate-50 bg-[#06beb6] w-full text-center h-8'>Change</span>
+          <div className='rounded-full overflow-hidden w-32 h-32 shadow-md shadow-black -translate-y-16 relative flex justify-center'>
             <img src={profile.profile_pic ? profile.profile_pic : img_default} className='object-cover w-full' />
           </div>
         </div>
@@ -215,11 +252,11 @@ export default function EditUser() {
     </section>
     }
     <AnimatePresence>
-    { modalOpen === '1' && <MainProfileModal closeModal={close} data={profile} user={user} update={setUpdate} /> }
-    { modalOpen === '2' && <DescriptionModal closeModal={close} data={profile} user={user} /> }
-    { modalOpen === '3' && <ExperienceModal closeModal={close} exp={profile.experience} user={user} /> }
-    { modalOpen === '4' && <EducationModal closeModal={close} edu={profile} user={user} /> }
-    { modalOpen === '5' && <SkillsModal closeModal={close} user={user} skills={ (profile.skills?.list ? [...profile.skills.list] : [] ) } /> }
+    { modalOpen === '1' && <MainProfileModal closeModal={close} data={profile} user={user} update={() => setUpdate((state) => state = !state)} /> }
+    { modalOpen === '2' && <DescriptionModal closeModal={close} data={profile} user={user} update={() => setUpdate((state) => state = !state)} /> }
+    { modalOpen === '3' && <ExperienceModal closeModal={close} exp={profile.experience} user={user} update={() => setUpdate((state) => state = !state)} /> }
+    { modalOpen === '4' && <EducationModal closeModal={close} edu={profile} user={user} update={() => setUpdate((state) => state = !state)} /> }
+    { modalOpen === '5' && <SkillsModal closeModal={close} user={user} skills={ (profile.skills?.list ? [...profile.skills.list] : [] ) } update={() => setUpdate((state) => state = !state)} /> }
     </AnimatePresence>
     </>
   )

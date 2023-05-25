@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import { motion } from 'framer-motion'
-import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon, QuestionMarkCircleIcon, PhotoIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 import useUserUpdate from '../hooks/useUserUpdate';
+import toast from 'react-hot-toast'
+import { login } from '../../redux/user'
+import { useDispatch } from 'react-redux'
 
 export default function MainProfileModal({ data, closeModal, user, update }) {
+
+    const dispatch = useDispatch();
 
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
@@ -13,6 +18,32 @@ export default function MainProfileModal({ data, closeModal, user, update }) {
     const [birthday, setBirthday] = useState('');
     const [location, setLocation] = useState('');
     const [picture, setPicture] = useState(null)
+
+    const imageUploader = useRef(null);
+    const [selectedImage, setSelectedImage] = useState(null)
+
+    const [isPending, setIsPending] = useState(false);
+
+    const addProfileImage = async (e) => {
+        const notification = toast.loading('Uploading image..', {
+          iconTheme: {
+              primary: '#45afa7',
+              secondary: '#fff',
+            },
+        })
+        const reader = new FileReader();
+        if (e.target.files[0]) {
+          reader.readAsDataURL(e.target.files[0]);
+        }
+        reader.onload = (readerEvent) => {
+          setPicture(readerEvent.target.result);
+          setSelectedImage(readerEvent.target.result);
+        }
+  
+        toast.success('Image uploaded', {
+          id: notification
+        })
+      }
 
     let date = `${data.birthday}`.split('T')[0];
 
@@ -49,6 +80,30 @@ export default function MainProfileModal({ data, closeModal, user, update }) {
         }
     }
 
+    const updateElems = async () => {
+        setIsPending(true)
+        const notification = toast.loading('Updating...', {
+            iconTheme: {
+                primary: '#45afa7',
+                secondary: '#fff',
+              },
+          })
+        await useUserUpdate(user.id, updatedData)
+        update();
+        dispatch(
+        login({
+            id: user.id,
+            email: user.email,
+            first_name: firstname,
+            profile_pic: (selectedImage ? selectedImage : user.profile_pic)
+        }))
+        closeModal();
+        toast.success('Update success', {
+            id: notification
+          })
+        setIsPending(false)
+    }
+
   return (
     <motion.section
     onClick={(e) => e.stopPropagation()}
@@ -71,6 +126,17 @@ export default function MainProfileModal({ data, closeModal, user, update }) {
         <div id="editingSection" className='p-4'>
             <p className='text-sm text-slate-600 dark:text-slate-200 flex gap-1 items-center mb-2'>Missing information <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon></p>
             <div className='grid grid-cols-1 gap-4'>
+                <div id="imgContainer" className=' w-full h-fit flex justify-center'>
+                    <div 
+                        onClick={() => imageUploader.current.click()}
+                        className='rounded-full overflow-hidden w-32 h-32 shadow-md shadow-black relative border-[#06beb6] border-2 flex justify-center group cursor-pointer'>
+                        <span className='absolute text-sm bottom-0 font-bold text-slate-50 bg-[#06beb57c] w-full h-full hidden group-hover:flex justify-center items-center'><PhotoIcon className='h-12 w-12'/></span>
+                        <img src={!selectedImage ? (data.profile_pic ? data.profile_pic : img_default) : selectedImage} className='object-cover w-full' />
+                        <input type="file" accept='image/*' hidden ref={imageUploader} onChange={addProfileImage} />
+                    </div>
+                </div>
+                <p className='text-sm text-center text-slate-600 dark:text-slate-200 mb-2'>Click to change image</p>
+
                 <span className='flex flex-col gap-1'>
                 <label htmlFor="firstName">First name { !data?.first_name && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input 
@@ -104,10 +170,7 @@ export default function MainProfileModal({ data, closeModal, user, update }) {
             </div>
         </div>
         <div className='p-4'>
-        <button onClick={() => {
-            useUserUpdate(user.id, updatedData)
-            update(true)
-        }} className='updateBtn'>Update</button>
+        <button onClick={updateElems} className='updateBtn'>Update</button>
         </div>
     </motion.section>
   )

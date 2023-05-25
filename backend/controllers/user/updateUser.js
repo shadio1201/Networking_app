@@ -20,6 +20,17 @@ module.exports = async (req, res, next) => {
         skills: null
     }
 
+    if(req.body.profile_pic) {
+        await fetch('http://localhost:3000/api/v1/users/picture',
+        { method: 'POST',
+          headers: { "content-type" : "application/json"},
+          body: JSON.stringify({
+            id: userId,
+            picture: req.body.profile_pic
+          })
+        })
+    }
+
     const toBeUpdated = { ...updateUser, ...req.body }
 
     const values = Object.fromEntries(Object.entries(toBeUpdated).filter(([_, v]) => v != null));

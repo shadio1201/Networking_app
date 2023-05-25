@@ -4,12 +4,8 @@ import '../signup.css';
 import Button from '../components/base/button.jsx';
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { createClient } from '@supabase/supabase-js';
-import img_default from '../../assets/imgs/DefaultPicture.jpg'
 
 export default function Signup() {
-
-  const supabase = createClient('https://isyxtgrylrryhqkxccyb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzeXh0Z3J5bHJyeWhxa3hjY3liIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODMyODkwNDYsImV4cCI6MTk5ODg2NTA0Nn0.oWSdZd23JkqCTN_eYfvlJzpfL1vxcLRZgdSW_WtTjJY');
 
   const navigate = useNavigate();
 
@@ -32,13 +28,15 @@ export default function Signup() {
 
   const [isPending, setIsPending] = useState(false);
 
+  const form = new FormData();
+
   const addProfileImage = (e) => {
-    setPicture(e.target.files[0]);
     const reader = new FileReader();
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
     reader.onload = (readerEvent) => {
+      setPicture(readerEvent.target.result);
       setSelectedImage(readerEvent.target.result);
     }
     toast.success('Profile picture uploaded!', {
@@ -113,16 +111,12 @@ export default function Signup() {
     }
 
     if(picture) {
-    const { data, error} = await supabase.storage.from('images').upload(id + '/' + 'profilePicture', picture);
-
-    const img_url = `https://isyxtgrylrryhqkxccyb.supabase.co/storage/v1/object/public/images/${data.path}`
-
     await fetch('http://localhost:3000/api/v1/users/picture',
     { method: 'POST',
       headers: { "content-type" : "application/json"},
       body: JSON.stringify({
         id,
-        image: img_url
+        picture
       })
     })
     }

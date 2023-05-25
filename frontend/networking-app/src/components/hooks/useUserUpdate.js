@@ -6,14 +6,14 @@ const useUserUpdate = async (id, user_data) => {
     body: JSON.stringify(user_data)
     })
 
-/*     const { success, error } = await res.json()
+    const { success, error } = await res.json()
 
     if(error) {
         console.log('Error')
         return 
     }
 
-    return { success } */
+    return { success }
 
 }
 
