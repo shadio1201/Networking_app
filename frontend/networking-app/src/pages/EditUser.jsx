@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import img_default from '../../assets/imgs/DefaultPicture.jpg'
-import { PlusIcon, PencilIcon, PhoneIcon} from '@heroicons/react/24/solid'
+import { PlusIcon, PencilIcon, PhoneIcon, XMarkIcon} from '@heroicons/react/24/solid'
 import AccordionExp from '../components/AccordionExp'
 import EduAccordion from '../components/EduAccordion'
 import { useSelector } from 'react-redux'
@@ -12,6 +12,7 @@ import EducationModal from '../components/Modals/EducationModal'
 import SkillsModal from '../components/Modals/SkillsModal'
 import { AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
+import useFetch from '../components/hooks/useFetch'
 
 export default function EditUser() {
 
@@ -67,23 +68,34 @@ export default function EditUser() {
         return Math.abs(currentAge.getUTCFullYear() - 1970);
       }
 
+      async function fetchUser() {
+  
+        const data = await useFetch(`http://localhost:3000/api/v1/users/${user.id}`)
+    
+        setProfile(() => data[0])
+  
+      }
+
     useEffect(() => {
 
         setLoading(true);
     
-        async function fetchUser() {
-  
-          const data = await useFetch(`http://localhost:3000/api/v1/users/${user.id}`)
-      
-          setProfile(() => data[0])
-    
-        }
+
         fetchUser()
     
         setLoading(false);
       }, [update])
 
       // Make change img function
+      const clearExperience = async () => {
+        await useFetch(`http://localhost:3000/api/v1/users/update/experience/clear/${user.id}`)
+        fetchUser();
+      }
+
+      const clearEducations = async () => {
+        await useFetch(`http://localhost:3000/api/v1/users/update/educations/clear/${user.id}`)
+        fetchUser();
+      }
 
   return (
     <>
@@ -156,16 +168,30 @@ export default function EditUser() {
         <h2 className='font-bold pb-2'>Experience</h2>
         <ul className='text-slate-600 dark:text-slate-200 text-[14px]'>
           {
-          profile.experience.map((item, i)=> (
+          profile.experience.list.map((item, i)=> (
             <AccordionExp
             key={i} 
             position={item.position}
             company={item.company}
-            periode={item.periode}
+            periode={item.period}
             location={item.location}
-            text={item.text}
+            text={item.description}
             recommendation={item.recom}  />
           ))}
+          <li>
+          <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
+          onClick={() => setModalOpen('3')}
+          >
+            Add new
+            <PlusIcon className='h-6 w-6' />
+          </button>
+          <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4 mt-4'
+          onClick={clearExperience}
+          >
+            Clear all
+            <XMarkIcon className='h-6 w-6' />
+          </button>
+        </li>
         </ul>
       </article>
       :
@@ -191,18 +217,31 @@ export default function EditUser() {
         <h2 className='font-bold pb-2'>Educations</h2>
         <ul className='text-slate-600 dark:text-slate-200 text-[14px]'>
           {
-            profile.educations.map((item, i) => (
+            profile.educations.list.map((item, i) => (
               <EduAccordion
               key={i} 
               education={item.education}
               school={item.school}
-              periode={item.periode}
+              periode={item.period}
               location={item.location}
-              text={'Hej med dig 123'}
+              text={item.description}
               recommendation={item.recom}  />
             ))
           }
-
+        <li>
+          <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4'
+          onClick={() => setModalOpen('4')}
+          >
+            Add new
+            <PlusIcon className='h-6 w-6' />
+          </button>
+          <button className='flex justify-center items-center bg-white shadow-around dark:bg-slate-700/80 p-4 rounded-md w-full gap-4 mt-4'
+          onClick={clearEducations}
+          >
+            Clear all
+            <XMarkIcon className='h-6 w-6' />
+          </button>
+        </li>
         </ul>
       </article>
       :

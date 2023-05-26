@@ -3,24 +3,18 @@ import ReactDOM from 'react-dom'
 import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
+import toast from 'react-hot-toast'
 
 export default function ExperienceModal({ user, closeModal, exp, update }) {
 
     const [position, setPosition] = useState('');
     const [company, setCompany] = useState('');
-    const [period, setPeriod] = useState([]);
+    const [period, setPeriod] = useState(['', '']);
     const [location, setLocation] = useState('');
 
+    const [isPending, setIsPending] = useState(false);
+
     const [text, setText] = useState('');
-
-    useEffect(() => {
-        setPosition(exp.position);
-        setCompany(exp.company);
-        setPeriod((exp.periode ? exp.periode : []));
-        setLocation(exp.location);
-        setText(exp.text);
-
-    }, [])
 
     const textInput = (e) => {
 
@@ -30,6 +24,10 @@ export default function ExperienceModal({ user, closeModal, exp, update }) {
         }
         setText(newText)
     }
+
+    useEffect(() => {
+        console.log(period)
+    },[period])
 
     const ModalAnimations = {
         initial: {
@@ -52,7 +50,7 @@ export default function ExperienceModal({ user, closeModal, exp, update }) {
         company: (company ? company : null),
         period: (period.length ? period : null),
         location: (location ? location : null),
-        text: (text ? text : null)
+        description: (text ? text : null)
     }
 
     const updateElems = async () => {
@@ -63,7 +61,11 @@ export default function ExperienceModal({ user, closeModal, exp, update }) {
                 secondary: '#fff',
               },
           })
-        await useUserUpdate(user.id, updatedData)
+        await fetch(`http://localhost:3000/api/v1/users/update/experience/${user.id}`, 
+          { method: 'PUT',
+          headers: { "content-type" : "application/json"},
+          body: JSON.stringify(updatedData)
+        })
         update();
         closeModal();
         toast.success('Update success', {
@@ -113,13 +115,13 @@ export default function ExperienceModal({ user, closeModal, exp, update }) {
                 <span className='w-full'>
                 <label className='flex items-center gap-1' htmlFor="startdate">Start date</label>
                 <input 
-                value={period[0]} onChange={(e) => setPeriod([e.target.value, period[1]])}
+                onChange={(e) => setPeriod([new Intl.DateTimeFormat('en-US', { year: "numeric", month: "short" }).format(new Date(e.target.value)), period[1]])}
                 className='input-edit dark:darkScheme lightScheme' placeholder='Start date' type="month" name="startdate" />
                 </span>
                 <span className='w-full'>
                 <label className='flex items-center gap-1' htmlFor="enddate">End date</label>
                 <input 
-                value={period[1]} onChange={(e) => setPeriod([period[0], e.target.value])}
+                onChange={(e) => setPeriod([period[0], new Intl.DateTimeFormat('en-US', { year: "numeric", month: "short" }).format(new Date(e.target.value))])}
                 className='input-edit dark:darkScheme lightScheme' placeholder='End date' type="month" name="enddate" />
                 </span>
                 </span>
@@ -129,6 +131,7 @@ export default function ExperienceModal({ user, closeModal, exp, update }) {
                 <input 
                 value={location} onChange={(e) => setLocation(e.target.value)}
                 className='input-edit' placeholder='Enter location' type="text" name="location" />
+                <p className='text-sm text-slate-600 dark:text-slate-200 flex gap-1 items-center my-2'>Format: city, country</p>
                 </span>
                 
                 
@@ -148,7 +151,7 @@ export default function ExperienceModal({ user, closeModal, exp, update }) {
         </div>
         <div className='p-4'>
         <button 
-        onClick={exp ? updateElems : handleNewExp } 
+        onClick={updateElems} 
         className='updateBtn'>Update</button>
         </div>
     </motion.section>

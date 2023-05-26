@@ -106,14 +106,14 @@ export default function User() {
         <h2 className='font-bold pb-2'>Experience</h2>
         <ul className='text-slate-600 dark:text-slate-200 text-[14px]'>
           {
-          profile.experience.map((item, i)=> (
+          profile.experience.list.map((item, i)=> (
             <AccordionExp
             key={i} 
             position={item.position}
             company={item.company}
-            periode={item.periode}
+            periode={item.period}
             location={item.location}
-            text={item.text}
+            text={item.description}
             recommendation={item.recom}  />
           ))}
         </ul>
@@ -127,14 +127,14 @@ export default function User() {
         <h2 className='font-bold pb-2'>Educations</h2>
         <ul className='text-slate-600 dark:text-slate-200 text-[14px]'>
           {
-            profile.educations.map((item, i) => (
+            profile.educations.list.map((item, i) => (
               <EduAccordion
               key={i} 
               education={item.education}
               school={item.school}
-              periode={item.periode}
+              periode={item.period}
               location={item.location}
-              text={'Hej med dig 123'}
+              text={item.description}
               recommendation={item.recom}  />
             ))
           }

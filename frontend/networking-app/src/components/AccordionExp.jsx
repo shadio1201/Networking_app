@@ -28,11 +28,11 @@ export default function AccordionExp({ position, company, periode, location, tex
             {company}
         </p>
         <p className='pb-1 text-slate-400'>
-            {periode} - {location}
+        { periode[0] } - { periode[1] } {location}
         </p>
         {
         (text || recommendation) &&
-        <div className={`pb-1 text-slate-400 overflow-hidden transition-all duration-150 ease-in-out ${isOpen ? 'h-fit' : 'h-0'}`}>
+        <div className={`pb-1 overflow-hidden transition-all duration-150 ease-in-out ${isOpen ? 'h-fit' : 'h-0'}`}>
             {
                 text &&
             <p>

@@ -19,21 +19,14 @@ module.exports = async (req, res, next) => {
     const url = process.env.CONFIRMATION_BASEURL + "?id=" + verification_mail;
 
     var transport = nodemailer.createTransport({
-        host: "smtp-relay.sendinblue.com",
-        port: 587,
+        host: "sandbox.smtp.mailtrap.io",
+        port: 2525,
         auth: {
-          user: "lkr97km@gmail.com",
-          pass: "GwOIDqWXMa1KmsZy"
+          user: "743a3c2239965c",
+          pass: "4c9469d57aca59"
         }
       });
-
-     /*  host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
-      auth: {
-        user: "743a3c2239965c",
-        pass: "4c9469d57aca59"
-      } */
-    
+      
     try {
 
         transport.sendMail({

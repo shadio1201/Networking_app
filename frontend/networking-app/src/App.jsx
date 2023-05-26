@@ -24,6 +24,7 @@ import Saved from './pages/Saved'
 import EditUser from './pages/EditUser'
 import NearbySearch from './pages/NearbySearch'
 import { SocketProvider } from './contexts/SocketContext'
+import NotFound from './pages/NotFound'
 
 function App() {
 
@@ -78,9 +79,8 @@ function App() {
           <ProtectedPublic>
             <Verify />
           </ProtectedPublic>
-        } />        
-        <Route path="/user/:id" element={<User />} />
-
+        } />
+        
         // Private routes
         <Route path="/test" element={
           <ProtectedPrivate>
@@ -106,6 +106,8 @@ function App() {
         // is already protected by code in component
         <Route path="/account/verify" element={<Verification />} /> 
         <Route path="/account/confirm" element={<Confirm />} /> 
+        <Route path="/user/:id" element={<User />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Wrapper>
     </>
