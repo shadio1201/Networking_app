@@ -62,6 +62,7 @@ export default function Signup() {
     }
 
     if(isPending) return;
+
     if(Object.values(user_data).some(x => x == '')) return toast.error('Please fill all fields');
     
     if(password != confirmpassword) {
@@ -69,11 +70,14 @@ export default function Signup() {
       return
     }
 
-    if(!/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8}$/.test(password)) {
+    const passValidator = /[a-zA-Z0-9]/g;
+
+    if(!passValidator.test(password) || password.length < 8) {
       inputPassword.current.focus();
       toast.error('Password is not matching the minimum requirements');
       return
     }
+
     setIsPending(true)
 
     const notification = toast.loading('Signing up...', {

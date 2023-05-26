@@ -37,11 +37,17 @@ x Send projekt over to wiseflow
 
 x Clean frontend project up -> make composables
 
+404 page
+
+fix save icon not working correct
+
 Protect API routes and clean XSS
 
 Switch to real mail provider
 
 Make new access token when old access token has expired
+
+custom datepicker
 
 Customize home page -> add about section step by step lotte animation guide. - not gonna do
 

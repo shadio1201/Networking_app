@@ -1,18 +1,13 @@
 const pool = require('./utilities/database');
 
 require('dotenv').config();
-/* const socket = require('socket.io')(3200, {
-    cors: {
-        origin: ['http://localhost:5173', 'http://192.168.1.19:5173'],
-    }
-}); */
-
 const express = require('express');
 const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
+app.disable('x-powered-by')
 app.use(cookieParser());
 
 app.use(express.json({limit: '50mb'}));
@@ -25,6 +20,13 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 app.use(require('./Routes'))
+
+/* const socket = require('socket.io')(3200, {
+    cors: {
+        origin: ['http://localhost:5173', 'http://192.168.1.19:5173'],
+    }
+}); */
+
 /* const { CalcDist } = require('./controllers/services/calcDistance') */
 
 /* const createNewLocation = async (lat, long, users) => {
@@ -72,10 +74,8 @@ app.use(require('./Routes'))
     }
 
     socket.emit('current-location', currentLocation);
-      // Process or store the geolocation data as needed
     });
-    
-    // Rest of your server code
+  
   }); */
 
 

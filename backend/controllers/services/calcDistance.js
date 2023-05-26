@@ -40,22 +40,4 @@ module.exports = {
         return distancesBetweenInMeters;
     },
 
-    /* unsave: async (req, res, next) => {
-
-        let saves = [];
-
-        const userSaves = await pool.query('SELECT saved_profiles FROM users WHERE user_id=$1', [req.body.logged_in_user])
-        
-        //filter user out
-        saves = [...userSaves.rows[0].saved_profiles.users].filter(save => {
-            return save != req.body.user_id;
-        });
-    
-        const updatedSaves = { users: saves };
-    
-        await pool.query('UPDATE users SET saved_profiles=$1 WHERE user_id=$2', [updatedSaves, req.body.logged_in_user])
-    
-        next();
-    } */
-
 }
