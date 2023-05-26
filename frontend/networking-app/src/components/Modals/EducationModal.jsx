@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 
-export default function EducationModal({ user, closeModal, edu }) {
+export default function EducationModal({ user, closeModal, edu, update }) {
 
     const [text, setText] = useState('');
 
@@ -39,7 +39,7 @@ export default function EducationModal({ user, closeModal, edu }) {
     variants={ModalAnimations}
     initial="initial"
     animate="visible"
-    className='fixed inset-0 h-screen w-full bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
+    className='fixed inset-0 h-screen w-full overflow-y-scroll pb-8 bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
     id="modalGrid"
     >
         <div id="ModalHeader"

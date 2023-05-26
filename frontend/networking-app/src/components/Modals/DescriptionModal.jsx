@@ -69,7 +69,7 @@ export default function DescriptionModal({ data, closeModal, user, update }) {
     variants={ModalAnimations}
     initial="initial"
     animate="visible"
-    className='fixed inset-0 h-screen w-full bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
+    className='fixed inset-0 h-screen w-full overflow-y-scroll pb-8 bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
     id="modalGrid"
     >
         <div id="ModalHeader"

@@ -22,6 +22,8 @@ import ProtectedPrivate from './utils/ProtectedPrivate'
 import ProtectedPublic from './utils/ProtectedPublic'
 import Saved from './pages/Saved'
 import EditUser from './pages/EditUser'
+import NearbySearch from './pages/NearbySearch'
+import { SocketProvider } from './contexts/SocketContext'
 
 function App() {
 
@@ -46,7 +48,6 @@ function App() {
     </SidebarProvider>
     <Wrapper>
       <Routes>
-
         // Public routes
         <Route exact path="/" element={
           <ProtectedPublic>
@@ -89,6 +90,11 @@ function App() {
         <Route path="/saved" element={
           <ProtectedPrivate>
             <Saved />
+          </ProtectedPrivate>
+        } />
+        <Route path="/nearbysearch" element={
+          <ProtectedPrivate>
+            <NearbySearch />
           </ProtectedPrivate>
         } />
         <Route path="/edit/profile" element={

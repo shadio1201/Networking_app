@@ -15,7 +15,6 @@ import toast from 'react-hot-toast'
 
 export default function EditUser() {
 
-    
     const [loading, setLoading] = useState(false);
     const user = useSelector(selectUser);
     const [profile, setProfile] = useState(null)
@@ -73,13 +72,9 @@ export default function EditUser() {
         setLoading(true);
     
         async function fetchUser() {
-    
-          const response = await fetch(`http://localhost:3000/api/v1/users/${user.id}`);
-    
-          const data = await response.json();
-    
-          console.log(data[0]);
-          
+  
+          const data = await useFetch(`http://localhost:3000/api/v1/users/${user.id}`)
+      
           setProfile(() => data[0])
     
         }
@@ -255,7 +250,7 @@ export default function EditUser() {
     { modalOpen === '1' && <MainProfileModal closeModal={close} data={profile} user={user} update={() => setUpdate((state) => state = !state)} /> }
     { modalOpen === '2' && <DescriptionModal closeModal={close} data={profile} user={user} update={() => setUpdate((state) => state = !state)} /> }
     { modalOpen === '3' && <ExperienceModal closeModal={close} exp={profile.experience} user={user} update={() => setUpdate((state) => state = !state)} /> }
-    { modalOpen === '4' && <EducationModal closeModal={close} edu={profile} user={user} update={() => setUpdate((state) => state = !state)} /> }
+    { modalOpen === '4' && <EducationModal closeModal={close} edu={profile.education} user={user} update={() => setUpdate((state) => state = !state)} /> }
     { modalOpen === '5' && <SkillsModal closeModal={close} user={user} skills={ (profile.skills?.list ? [...profile.skills.list] : [] ) } update={() => setUpdate((state) => state = !state)} /> }
     </AnimatePresence>
     </>

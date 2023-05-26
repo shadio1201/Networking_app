@@ -12,6 +12,7 @@ export default function Signup() {
 
   const inputEmail = useRef();
   const inputUsername = useRef();
+  const inputPassword = useRef();
 
   // Password confirmation
   const [password, setPassword] = useState('');
@@ -67,6 +68,12 @@ export default function Signup() {
       toast.error('Passwords dont match');
       return
     }
+
+    if(!/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8}$/.test(password)) {
+      inputPassword.current.focus();
+      toast.error('Password is not matching the minimum requirements');
+      return
+    }
     setIsPending(true)
 
     const notification = toast.loading('Signing up...', {
@@ -76,7 +83,7 @@ export default function Signup() {
         },
     })
 
-    const data = await usePost('http://localhost:3000/api/v1/users/postUser', user_data);
+    const data = await usePost('http://192.168.1.19:3000/api/v1/users/postUser', user_data);
     
     const { id, error, error_type } = data;
 
@@ -108,7 +115,7 @@ export default function Signup() {
     }
 
     if(picture) {
-    await usePost('http://localhost:3000/api/v1/users/picture', { id, picture });
+    await usePost('http://192.168.1.19:3000/api/v1/users/picture', { id, picture });
     }
 
     toast.success('Success', {
@@ -162,7 +169,8 @@ export default function Signup() {
                 <label>Password</label>
                 <input 
                 onChange={(e) => setPassword(e.target.value)}
-                value={password} required placeholder='Password' className={password ? 'input checkIfvalid' : 'input'} type="password" name="email" id="password" />
+                value={password} ref={inputPassword} required placeholder='Password' className={password ? 'input checkIfvalid' : 'input'} type="password" name="email" id="password" />
+                <p className='text-sm text-slate-600 dark:text-slate-200 flex gap-1 items-center my-2'>Minimum password requirements: <br /> 8 characters long, one uppercase letter, one lowercase letter, one number</p>
             </div>
             <div className='flex flex-col'>
                 <label>Confirm Password</label>

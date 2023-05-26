@@ -30,8 +30,15 @@ CREATE TABLE users(
 CREATE TABLE cards(
     card_id VARCHAR(255) PRIMARY KEY,
     user_id VARCHAR(100) NOT NULL UNIQUE,
-    is_locked BOOLEAN DEFAULT FALSE,
+    is_locked VARCHAR(100) DEFAULT FALSE,
     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE locations(
+    lat FLOAT,
+    long FLOAT,
+    users jsonb DEFAULT '{}',
+    PRIMARY KEY(lat, long)
 );
 
 CREATE TABLE tokens(
@@ -102,6 +109,8 @@ CREATE TRIGGER auto_insert_cardId
         "email": "test2@test.dk"
     }
 }
+
+UPDATE locations SET experience=$1 WHERE lat=$2 AND long=$3;
 
 UPDATE users SET experience='[{"position":"Marketing Expert","company":"CCTV Nordic", "periode":"2020-2022", "location": "Kolding, Danmark"}]' WHERE user_id='1c1efb55d8e5468396c52e9f75ce608d';
 

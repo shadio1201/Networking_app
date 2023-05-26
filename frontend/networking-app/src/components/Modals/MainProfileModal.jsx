@@ -16,7 +16,7 @@ export default function MainProfileModal({ data, closeModal, user, update }) {
     const [lastname, setLastname] = useState('');
     const [title, setTitle] = useState('');
     const [birthday, setBirthday] = useState('');
-    const [location, setLocation] = useState('');
+    const [location, setLocation] = useState(null);
     const [picture, setPicture] = useState(null)
 
     const imageUploader = useRef(null);
@@ -61,7 +61,7 @@ export default function MainProfileModal({ data, closeModal, user, update }) {
         profile_pic: picture,
         birthday: (birthday ? birthday : null),
         titel: (title ? title : null),
-        location: (location ? location : null)
+        location: (location ? {"city": location.city, "region": location.region, "country": location.country} : null)
     }
 
     const ModalAnimations = {
@@ -110,7 +110,7 @@ export default function MainProfileModal({ data, closeModal, user, update }) {
     variants={ModalAnimations}
     initial="initial"
     animate="visible"
-    className='fixed inset-0 h-screen w-full bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
+    className='fixed inset-0 h-screen w-full overflow-y-scroll pb-8 bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
     id="modalGrid"
     >
         <div id="ModalHeader"
@@ -165,7 +165,7 @@ export default function MainProfileModal({ data, closeModal, user, update }) {
                 <label className='flex items-center gap-1' htmlFor="location">Location { Object.keys(data.location).length == 0 && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
                 <input 
                 value={location} onChange={(e) => setLocation(e.target.value)}
-                className='input-edit' placeholder='Enter location' type="text" name="location" />
+                className='input-edit' placeholder='City, Region, Country' type="text" name="location" />
                 </span>
             </div>
         </div>

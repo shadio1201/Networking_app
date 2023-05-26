@@ -21,14 +21,14 @@ export default function SkillsModal({ user, closeModal, skills, update }) {
     const addToList = (input) => {
         list = [...list];
         if(input == '') return
-        if(list.includes(input.toUpperCase())) return toast.error('Skill already added', {
+        if(list.some(listItem => { return listItem.toLowerCase().replace(' ','') === input.toLowerCase().replace(' ','') })) return toast.error('Skill already added', {
             duration: 2000,
             iconTheme: {
                 primary: '#45afa7',
                 secondary: '#fff',
               }
         })
-        list.push(input.toUpperCase());
+        list.push(input);
         setList(list);
 
         setSkill('');
@@ -81,7 +81,7 @@ export default function SkillsModal({ user, closeModal, skills, update }) {
     variants={ModalAnimations}
     initial="initial"
     animate="visible"
-    className='fixed inset-0 h-screen w-full bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
+    className='fixed inset-0 h-screen w-full overflow-y-scroll pb-8 bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
     id="modalGrid"
     >
         <div id="ModalHeader"

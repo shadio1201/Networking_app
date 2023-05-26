@@ -42,12 +42,10 @@ module.exports = async (req, res, next) => {
 
             fs.unlink(`${req.body.id}-profilepic.png`, function (err) {
                 if (err) return console.log(err, 28);
-                console.log('png deleted!');
             });
 
             fs.unlink(`${req.body.id}-optimise-profilepic.webp`, function (err) {
                 if (err) return console.log(err, 28);
-                console.log('optimised deleted!');
             });
             
             next();

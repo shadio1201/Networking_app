@@ -31,23 +31,25 @@ x Make uploading image serverside
 
 x Make settings page able to update profile
 
-Fast clean up
+x Fast clean up
 
-Protect API routes and clean XSS, make password longer
+x Send projekt over to wiseflow
 
-Send projekt over to wiseflow
+x Clean frontend project up -> make composables
 
-Make it possible to update experience and education
-
-Make near search function with websockets and geolocation api
-
-Clean frontend project up -> make composables
+Protect API routes and clean XSS
 
 Switch to real mail provider
 
 Make new access token when old access token has expired
 
-Customize home page -> add about section step by step lotte animation guide.
+Customize home page -> add about section step by step lotte animation guide. - not gonna do
 
 Calculate social score - not gonna do
+
+Jumping animation fix on saved page - not gonna do
+
+Make near search function with websockets and geolocation api - not gonna do
+
+Make it possible to update experience and education - not gonna do
 

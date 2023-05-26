@@ -54,7 +54,7 @@ export default function User() {
     if(user) {
       fetchSaves() 
     }
-    
+
     setLoading(false);
   }, [])
 

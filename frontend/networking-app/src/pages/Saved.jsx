@@ -19,7 +19,7 @@ export default function Saved() {
 
     async function fetchUser() {
 
-      const response = await fetch(`http://localhost:3000/api/v1/users/selected?id=${user?.id}`);
+      const response = await fetch(`http://192.168.1.19:3000/api/v1/users/selected?id=${user?.id}`);
 
       const data = await response.json();
 

@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
     }
 
     if(req.body.profile_pic) {
-        await fetch('http://localhost:3000/api/v1/users/picture',
+        await fetch('http://192.168.1.19:3000/api/v1/users/picture',
         { method: 'POST',
           headers: { "content-type" : "application/json"},
           body: JSON.stringify({

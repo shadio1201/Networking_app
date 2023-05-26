@@ -1,17 +1,31 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { motion } from 'framer-motion'
 import { XMarkIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import '../../editingModal.css';
 
-export default function ExperienceModal({ user, closeModal, exp }) {
+export default function ExperienceModal({ user, closeModal, exp, update }) {
+
+    const [position, setPosition] = useState('');
+    const [company, setCompany] = useState('');
+    const [period, setPeriod] = useState([]);
+    const [location, setLocation] = useState('');
 
     const [text, setText] = useState('');
+
+    useEffect(() => {
+        setPosition(exp.position);
+        setCompany(exp.company);
+        setPeriod((exp.periode ? exp.periode : []));
+        setLocation(exp.location);
+        setText(exp.text);
+
+    }, [])
 
     const textInput = (e) => {
 
         let newText = e.target.value
-        if(text.length >= 1300) {
+        if(text?.length >= 1300) {
             newText = newText.substring(0, 1300);
         }
         setText(newText)
@@ -33,13 +47,38 @@ export default function ExperienceModal({ user, closeModal, exp }) {
         }
     }
 
+    const updatedData = {
+        position: (position ? position : null),
+        company: (company ? company : null),
+        period: (period.length ? period : null),
+        location: (location ? location : null),
+        text: (text ? text : null)
+    }
+
+    const updateElems = async () => {
+        setIsPending(true)
+        const notification = toast.loading('Updating...', {
+            iconTheme: {
+                primary: '#45afa7',
+                secondary: '#fff',
+              },
+          })
+        await useUserUpdate(user.id, updatedData)
+        update();
+        closeModal();
+        toast.success('Update success', {
+            id: notification
+          })
+        setIsPending(false)
+    }
+
   return (
     <motion.section
     onClick={(e) => e.stopPropagation()}
     variants={ModalAnimations}
     initial="initial"
     animate="visible"
-    className='fixed inset-0 h-screen w-full bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
+    className='fixed inset-0 h-screen w-full overflow-y-scroll pb-8 bg-white dark:bg-slate-900 z-50 grid grid-cols-1'
     id="modalGrid"
     >
         <div id="ModalHeader"
@@ -56,30 +95,40 @@ export default function ExperienceModal({ user, closeModal, exp }) {
             <p className='text-sm text-slate-600 dark:text-slate-200 flex gap-1 items-center mb-2'>Missing information <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon></p>
             <div className='grid grid-cols-1 gap-4'>
                 <span className='flex flex-col gap-1'>
-                <label className='flex items-center gap-1' htmlFor="title">Title { !exp?.title && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
-                <input className='input-edit' placeholder='Enter title' type="text" name="title" />
+                <label className='flex items-center gap-1' htmlFor="position">Position { !exp?.position && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
+                <input 
+                value={position} onChange={(e) => setPosition(e.target.value)}
+                className='input-edit' placeholder='Enter position' type="text" name="position" />
                 </span>
 
                 <span className='flex flex-col gap-1'>
                 <label className='flex items-center gap-1' htmlFor="company">Company { !exp?.company && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
-                <input className='input-edit' placeholder='Enter company' type="text" name="company" />
+                <input 
+                value={company} onChange={(e) => setCompany(e.target.value)}
+                className='input-edit' placeholder='Enter company' type="text" name="company" />
                 </span>
                 
                 <p>Period of work</p>
                 <span className='flex gap-4'>
                 <span className='w-full'>
-                <label className='flex items-center gap-1' htmlFor="startdate">Start date { !exp?.periode && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
-                <input className='input-edit dark:darkScheme lightScheme' placeholder='Start date' type="month" name="startdate" />
+                <label className='flex items-center gap-1' htmlFor="startdate">Start date</label>
+                <input 
+                value={period[0]} onChange={(e) => setPeriod([e.target.value, period[1]])}
+                className='input-edit dark:darkScheme lightScheme' placeholder='Start date' type="month" name="startdate" />
                 </span>
                 <span className='w-full'>
-                <label className='flex items-center gap-1' htmlFor="enddate">End date { !exp?.periode && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
-                <input className='input-edit dark:darkScheme lightScheme' placeholder='End date' type="month" name="enddate" />
+                <label className='flex items-center gap-1' htmlFor="enddate">End date</label>
+                <input 
+                value={period[1]} onChange={(e) => setPeriod([period[0], e.target.value])}
+                className='input-edit dark:darkScheme lightScheme' placeholder='End date' type="month" name="enddate" />
                 </span>
                 </span>
 
                 <span className='flex flex-col gap-1'>
                 <label className='flex items-center gap-1' htmlFor="location">Location { !exp?.location && <QuestionMarkCircleIcon className='w-4 h-4'></QuestionMarkCircleIcon> }</label>
-                <input className='input-edit' placeholder='Enter location' type="text" name="location" />
+                <input 
+                value={location} onChange={(e) => setLocation(e.target.value)}
+                className='input-edit' placeholder='Enter location' type="text" name="location" />
                 </span>
                 
                 
@@ -90,7 +139,7 @@ export default function ExperienceModal({ user, closeModal, exp }) {
                 onChange={textInput} 
                 onPaste={(e) => e.clipboardData.getData('text/plain').slice(0, 1300)}
                 className='textarea-edit h-32' placeholder='Describe your work' type="textarea" name="description" />
-                <p className={ text.length >= 1300 ? 'text-[#06beb6]' : '' }>{ text.length } / 1300</p>
+                <p className={ text?.length >= 1300 ? 'text-[#06beb6]' : '' }>{ text?.length ? text.length : 0 } / 1300</p>
                 </span>
 
                 {/* Upload pdf til anbefaling */}
@@ -98,7 +147,9 @@ export default function ExperienceModal({ user, closeModal, exp }) {
             </div>
         </div>
         <div className='p-4'>
-        <button className='updateBtn'>Update</button>
+        <button 
+        onClick={exp ? updateElems : handleNewExp } 
+        className='updateBtn'>Update</button>
         </div>
     </motion.section>
   )

@@ -23,10 +23,12 @@ export default function Navbar() {
         <div className='flex justify-center items-center gap-4'>
           {
           user &&
-          <span className='flex justify-center items-center gap-2'>
+          <Link to={`/user/${user.id}`} className='flex justify-center items-center gap-2'
+          
+          >
             <img src={user.profile_pic ? user.profile_pic : img_default} className=' w-8 h-8 rounded-full object-cover shadow-md shadow-black' />
             <p>{user.first_name}</p>
-          </span>}
+          </Link>}
         <button onClick={toggleSidebar}>
           <Bars3BottomRightIcon className='w-8 h-8' />
         </button>

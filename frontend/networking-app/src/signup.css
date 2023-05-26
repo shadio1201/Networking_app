@@ -12,7 +12,7 @@
 }
 
 .input {
-    @apply px-2 py-4 text-slate-800 mt-2 rounded-md border-2;
+    @apply px-2 py-4 text-slate-800 mt-2 rounded-md border-2 w-full;
 }
 
 .input:focus,

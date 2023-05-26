@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
 
     const info = await pool.query(`SELECT saved_profiles FROM users WHERE user_id=$1`, [currentUser]);
 
-    if(!info.rows[0].saved_profiles || !info.rows[0].saved_profiles.users) {
+    if(!info.rows[0]?.saved_profiles || !info.rows[0].saved_profiles?.users) {
         return res.json({
             error: 'Failed to fetch saved users..'
         })
@@ -19,13 +19,15 @@ module.exports = async (req, res, next) => {
     try {
         const users = await pool.query(`SELECT first_name, last_name, titel, profile_pic, user_id FROM users WHERE user_id IN (${parameters})`);
         res.locals.users = users.rows
+
+        next();
     }
     catch (err) {
         res.json({
         error: err.message
         })
     }
-    next();
+    
 }
 
 

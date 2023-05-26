@@ -1,6 +1,6 @@
 import React from 'react'
 import Lottie from 'react-lottie'
-import SuccesAnimation from '../lotties/search-clean.json'
+import SuccesAnimation from '../lotties/dot-loading.json'
 
 const options = {
     loop: true,
@@ -15,8 +15,8 @@ export default function Loading() {
   return (
     <div className='bg-slate-50 dark:bg-slate-800 flex flex-col justify-center items-center h-screen w-full fixed'>
         <Lottie options={options}
-              height={250}
-              width={250} 
+              height={150}
+              width={150} 
               isClickToPauseDisabled={true}
               />
 

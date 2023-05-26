@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const sentConfirmation = require('../controllers/services/confirmEmail')
 const verifyUser = require('../controllers/services/verifyUser')
 const likeUser = require('../controllers/services/likeService')
@@ -50,6 +49,5 @@ router.post('/unsaveUser', saveService.unsave, (req, res, next) => {
         success: true
     })
 })
-
 
 module.exports = router;

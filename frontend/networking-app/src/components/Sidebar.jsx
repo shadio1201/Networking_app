@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useSidebar, useUpdateSidebar } from '../contexts/SidebarContext'
 import '../sidebar.css'
 import { XMarkIcon, SunIcon, MoonIcon, UserCircleIcon, HomeIcon, Cog8ToothIcon, BookmarkIcon, ViewfinderCircleIcon } from '@heroicons/react/24/outline'
-import { NavLink } from 'react-router-dom'
 import Button from './base/button.jsx';
 import routeLinks from '../RouterLinks'
 import { useSelector } from 'react-redux'
@@ -10,7 +9,7 @@ import { selectUser } from '../redux/user'
 import { selectColormode, setColormode } from '../redux/colormode'
 import { useDispatch } from 'react-redux'
 import { logout, removeToken } from '../redux/user';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 
 
 export default function Sidebar() {
@@ -34,7 +33,7 @@ export default function Sidebar() {
     }
 
     const signout = () => {
-        fetch('http://localhost:3000/auth/v1/logout',
+        fetch('http://192.168.1.19:3000/auth/v1/logout',
         { method: 'POST',
         credentials: 'include',
         });
@@ -88,9 +87,11 @@ export default function Sidebar() {
             {
             user &&
             <li id="nearbySearchItem">
-                <Button>
+                <NavLink 
+                to="/nearbysearch" onClick={toggleSidebar}
+                className='flex gap-2 px-4 py-4 rounded-md border-2 bg-gradient-to-r from-[#06beb6] to-[#48b1bf] w-full'>
                     <ViewfinderCircleIcon className='h-6 w-6' />Nearby Search
-                </Button>
+                </NavLink>
             </li>}
         </ul>
     </div>
